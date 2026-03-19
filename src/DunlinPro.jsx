@@ -389,10 +389,18 @@ export default function App({ session }){
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}.pulse{animation:pulse 1.6s ease-in-out infinite}
         .ocard{background:#fff;border:1px solid rgba(26,74,74,0.1);border-radius:10px;padding:14px;margin-bottom:9px}
         h2,h3{font-family:'Cormorant Garamond',serif;font-weight:300}
+        @media(max-width:600px){
+          .nb{font-size:10px;padding:8px 1px}
+          .nb span:first-child{font-size:14px}
+          .bp{font-size:13px;padding:12px}
+        }
+        @media(max-width:900px){
+          .nb{font-size:11px}
+        }
       `}</style>
 
       {/* Header */}
-      <div style={{borderBottom:"1px solid rgba(26,74,74,0.1)",padding:"12px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",background:"#1A4A4A",position:"sticky",top:0,zIndex:10}}>
+      <div style={{borderBottom:"1px solid rgba(26,74,74,0.1)",padding:"10px 12px",display:"flex",justifyContent:"space-between",alignItems:"center",background:"#1A4A4A",position:"sticky",top:0,zIndex:10,flexWrap:"wrap",gap:8}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <svg width="26" height="19" viewBox="0 0 56 40" fill="none">
             <ellipse cx="28" cy="23" rx="15" ry="9" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" fill="none"/>
@@ -434,7 +442,7 @@ export default function App({ session }){
         ))}
       </div>
 
-      <div style={{padding:"16px 14px",maxWidth:700,margin:"0 auto"}}>
+      <div style={{padding:"12px 10px",maxWidth:700,margin:"0 auto"}}>
 
         {/* ══ SEARCH ══════════════════════════════════════════════════════════ */}
         {tab==="search"&&(
