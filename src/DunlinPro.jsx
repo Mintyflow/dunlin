@@ -199,9 +199,9 @@ export default function App({ session }){
     try{
       const od=bType==="any"?"serviced, flexible, co-working, and managed offices":`${bType} offices`;
       const prompt=`UK B2B lead database. Generate 10 realistic office contacts for companies in ${od} in ${loc}, UK. Use real buildings (Regus,WeWork,Bruntwood,IWG,BE Offices,Orega,Landmark,TOG,Spaces). Real names, UK phones, realistic emails, actual buildings. Estimate tenure and contract_expiry (month+year e.g. "March 2026"). Return ONLY JSON no markdown: {"results":[{"name":"","title":"","phone":"+44...","email":"","company":"","building":"","location":"${loc}","tenure":"","contract_expiry":"e.g. March 2026","source":"","confidence":"high"}]}`;
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},signal:controller.signal,body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:3000,messages:[{role:"user",content:prompt}]})});
+      const res=await fetch("/.netlify/functions/search",{method:"POST",headers:{"Content-Type":"application/json"},signal:controller.signal,body:JSON.stringify({prompt})});
       clearTimeout(timer);
-      if(!res.ok) throw new Error(`API error ${res.status}`);
+      if(!res.ok) throw new Error("API error "+res.status);
       const data=await res.json();
       const raw=data.content.filter(b=>b.type==="text").map(b=>b.text).join("").replace(/```json|```/gi,"").trim();
       const s=raw.indexOf("{"),e=raw.lastIndexOf("}");
