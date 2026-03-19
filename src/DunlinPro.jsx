@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
+import { supabase } from "./supabase";
 
 // ─── EMAIL VERIFICATION ───────────────────────────────────────────────────────
 const DISPOSABLE = new Set(["mailinator.com","guerrillamail.com","tempmail.com","throwaway.email","yopmail.com","trashmail.com","trashmail.me","dispostable.com","maildrop.cc","discard.email","fakeinbox.com","mailnesia.com"]);
@@ -33,21 +34,23 @@ const SAMPLE=[
 
 const BLANK_LEAD={name:"",title:"",phone:"",email:"",company:"",building:"",location:"",tenure:"",contract_expiry:"",source:"Manual",confidence:"medium"};
 
-export default function App(){
+export default function App({ session }){
+  const userId = session?.user?.id;
   const [tab,setTab]=useState("search");
   const [loc,setLoc]=useState("");
   const [bType,setBType]=useState("any");
-  const [leads,setLeads]=useState([]);  // single source of truth for all contacts
+  const [leads,setLeads]=useState([]);
   const [emailChecks,setEmailChecks]=useState({});
   const [verifying,setVerifying]=useState(false);
   const [loading,setLoading]=useState(false);
+  const [dbLoading,setDbLoading]=useState(true);
   const [error,setError]=useState(null);
   const [demo,setDemo]=useState(true);
   const [schedule,setSchedule]=useState({enabled:false,frequency:"daily",time:"08:00"});
   const [history,setHistory]=useState([]);
   const [expanded,setExpanded]=useState(null);
   // Pipeline
-  const [pipeline,setPipeline]=useState({});   // id -> stage id
+  const [pipeline,setPipeline]=useState({});
   const [dragId,setDragId]=useState(null);
   const [dragOver,setDragOver]=useState(null);
   // Calendar
@@ -68,6 +71,33 @@ export default function App(){
   // CSV import
   const csvRef=useRef(null);
   const abortRef=useRef(null);
+
+  // ── Load data from Supabase on mount ──────────────────────────────────────
+  useEffect(()=>{
+    if(!userId){setDbLoading(false);return;}
+    (async()=>{
+      const {data:leadsData}=await supabase.from("leads").select("*").eq("user_id",userId).order("created_at",{ascending:false});
+      if(leadsData&&leadsData.length){
+        setLeads(leadsData.map(l=>({...l,found:l.found_at})));
+      }
+      const {data:pipelineData}=await supabase.from("pipeline").select("*").eq("user_id",userId);
+      if(pipelineData&&pipelineData.length){
+        const map={};
+        pipelineData.forEach(p=>{map[p.lead_id]=p.stage;});
+        setPipeline(map);
+      }
+      const {data:outreachData}=await supabase.from("outreach").select("*").eq("user_id",userId).order("logged_at",{ascending:false});
+      if(outreachData&&outreachData.length){
+        const map={};
+        outreachData.forEach(o=>{
+          if(!map[o.lead_id])map[o.lead_id]=[];
+          map[o.lead_id].push({...o,date:o.logged_at,followup:o.followup||""});
+        });
+        setOutreach(map);
+      }
+      setDbLoading(false);
+    })();
+  },[userId]);
 
   // ── Background email verification ───────────────────────────────────────────
   useEffect(()=>{
@@ -133,6 +163,14 @@ export default function App(){
       setLeads(p=>[...p,...deduped]);
       setHistory(p=>[{loc,bType,count:deduped.length,date:new Date().toISOString(),mode:"Live"},...p].slice(0,20));
       setTab("results");
+      if(userId&&deduped.length){
+        supabase.from("leads").insert(deduped.map(r=>({
+          user_id:userId,name:r.name,title:r.title,email:r.email,phone:r.phone,
+          company:r.company,building:r.building,location:r.location,tenure:r.tenure,
+          contract_expiry:r.contract_expiry,source:r.source,confidence:r.confidence,
+          found_at:r.found||new Date().toISOString()
+        }))).then(()=>{});
+      }
     }catch(e){
       if(e.name==="AbortError") setError("Timed out. Please try again.");
       else setError(e.message);
@@ -140,13 +178,22 @@ export default function App(){
   };
 
   // ── Manual add ──────────────────────────────────────────────────────────────
-  const submitManual=()=>{
+  const submitManual=async()=>{
     if(!addForm.name.trim()){setAddError("Name is required.");return;}
     if(!addForm.company.trim()){setAddError("Company is required.");return;}
     const newLead={...addForm,id:newId(),found:new Date().toISOString()};
     setLeads(p=>[newLead,...p]);
     setAddForm(BLANK_LEAD);setShowAddForm(false);setAddError("");
     setTab("results");
+    if(userId){
+      await supabase.from("leads").insert({
+        user_id:userId,name:addForm.name,title:addForm.title,email:addForm.email,
+        phone:addForm.phone,company:addForm.company,building:addForm.building,
+        location:addForm.location,tenure:addForm.tenure,contract_expiry:addForm.contract_expiry,
+        source:addForm.source||"Manual",confidence:addForm.confidence||"medium",
+        found_at:new Date().toISOString()
+      });
+    }
   };
 
   // ── CSV import ───────────────────────────────────────────────────────────────
@@ -185,14 +232,24 @@ export default function App(){
   };
 
   // ── Outreach ─────────────────────────────────────────────────────────────────
-  const logOutreach=(id)=>{
+  const logOutreach=async(id)=>{
     const entry={...newLog,date:new Date().toISOString()};
     setOutreach(p=>({...p,[id]:[entry,...(p[id]||[])]}));
-    // Move to Contacted stage if still New
-    if(!pipeline[id]||pipeline[id]==="new") setPipeline(p=>({...p,[id]:"contacted"}));
-    if(newLog.outcome==="converted") setPipeline(p=>({...p,[id]:"converted"}));
-    if(newLog.outcome==="interested") setPipeline(p=>({...p,[id]:"interested"}));
+    let newStage=null;
+    if(!pipeline[id]||pipeline[id]==="new") newStage="contacted";
+    if(newLog.outcome==="converted") newStage="converted";
+    if(newLog.outcome==="interested") newStage="interested";
+    if(newStage) setPipeline(p=>({...p,[id]:newStage}));
     setOutreachForm(null);setNewLog({type:"email",note:"",outcome:"no_reply",followup:""});
+    if(userId){
+      await supabase.from("outreach").insert({
+        user_id:userId,lead_id:id,type:newLog.type,outcome:newLog.outcome,
+        note:newLog.note,followup:newLog.followup||null,logged_at:new Date().toISOString()
+      });
+      if(newStage){
+        await supabase.from("pipeline").upsert({user_id:userId,lead_id:id,stage:newStage,updated_at:new Date().toISOString()},{onConflict:"user_id,lead_id"});
+      }
+    }
   };
 
   const lastContact=(id)=>(outreach[id]||[])[0]||null;
@@ -201,7 +258,12 @@ export default function App(){
 
   // ── Pipeline ─────────────────────────────────────────────────────────────────
   const getStage=(id)=>pipeline[id]||"new";
-  const moveStage=(id,stage)=>setPipeline(p=>({...p,[id]:stage}));
+  const moveStage=async(id,stage)=>{
+    setPipeline(p=>({...p,[id]:stage}));
+    if(userId){
+      await supabase.from("pipeline").upsert({user_id:userId,lead_id:id,stage,updated_at:new Date().toISOString()},{onConflict:"user_id,lead_id"});
+    }
+  };
 
   // ── Export ────────────────────────────────────────────────────────────────────
   const exportXLSX=(data)=>{
@@ -286,6 +348,8 @@ export default function App(){
           <span style={{fontSize:9,color:"#3a4870"}}>DEMO</span>
           <div className={`sw ${demo?"on":""}`} onClick={()=>setDemo(!demo)}><div className="sk"/></div>
           <span style={{fontSize:9,color:demo?"#a78bfa":"#3a4870",minWidth:18}}>{demo?"ON":"OFF"}</span>
+          <div style={{width:1,height:14,background:"#1e2535"}}/>
+          <button onClick={()=>supabase.auth.signOut()} style={{background:"none",border:"1px solid #1e2535",color:"#4a5880",padding:"3px 8px",borderRadius:4,fontSize:9,cursor:"pointer",fontFamily:"monospace",letterSpacing:1}}>SIGN OUT</button>
         </div>
       </div>
 
