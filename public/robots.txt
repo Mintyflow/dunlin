@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dunlin.netlify.app/sitemap.xml
+Sitemap: https://www.getdunlin.com/sitemap.xml

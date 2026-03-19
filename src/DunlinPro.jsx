@@ -552,9 +552,9 @@ export default function App({ session }){
                   </div>
                   <div style={{fontSize:11,color:"#3D5252",marginBottom:6,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {[r.building,r.location].filter(v=>v&&v!=="unknown").join(" — ")||"—"}</div>
                   {r.contract_expiry&&r.contract_expiry!=="unknown"&&(
-                    <div style={{background:"#0d1f0a",border:"1px solid #1e4a1a",borderRadius:5,padding:"5px 9px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                      <span style={{fontSize:9,color:"#4a7a40",letterSpacing:1,textTransform:"uppercase"}}>Contract due</span>
-                      <span style={{fontSize:11,color:"#16a34a",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>{r.contract_expiry}</span>
+                    <div style={{background:"#D6F0EE",border:"1px solid rgba(58,173,160,0.25)",borderRadius:5,padding:"5px 9px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      <span style={{fontSize:9,color:"#2A7A72",letterSpacing:0.5,textTransform:"uppercase",fontFamily:"'DM Sans',sans-serif",fontWeight:500}}>Contract due</span>
+                      <span style={{fontSize:12,color:"#1A4A4A",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>{r.contract_expiry}</span>
                     </div>
                   )}
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:5}}>
