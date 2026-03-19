@@ -4,60 +4,61 @@ import { useState } from "react";
 const STRIPE_LINKS = {
   starter_monthly: "https://buy.stripe.com/9B63cv5ZxbZP3kSd1saAw07",
   starter_annual:  "https://buy.stripe.com/fZudR9cnVbZP8Fc8LcaAw08",
-  pro_monthly:     "https://buy.stripe.com/8x200jbjR5Br9Jg9PgaAw09",
-  pro_annual:      "https://buy.stripe.com/5kQ4gzdrZ8ND4oWf9AaAw0a",
-  team_monthly:    "https://buy.stripe.com/eVq00jfA75Br6x4gdEaAw0b",
-  team_annual:     "https://buy.stripe.com/dRm4gz5Zx2pf08G4uWaAw0c",
+  growth_monthly:  "https://buy.stripe.com/8x200jbjR5Br9Jg9PgaAw09",
+  growth_annual:   "https://buy.stripe.com/5kQ4gzdrZ8ND4oWf9AaAw0a",
+  pro_monthly:     "https://buy.stripe.com/eVq00jfA75Br6x4gdEaAw0b",
+  pro_annual:      "https://buy.stripe.com/dRm4gz5Zx2pf08G4uWaAw0c",
 };
 
 const PLANS = [
   {
     id: "starter",
     name: "Starter",
-    monthly: 99,
-    annual: 79,
-    seats: "1 user",
+    monthly: 149,
+    annual: 119,
+    seats: "1 location, up to 20 spaces",
     features: [
-      "100 contact searches / month",
-      "Email verification",
-      "Renewal calendar",
-      "Outreach tracker + follow-ups",
-      "Pipeline kanban",
-      "CSV export",
+      "All 6 core modules",
+      "Space & booking management",
+      "Member profiles & portal",
+      "Manual invoicing",
+      "Stripe + GoCardless",
+      "Basic dashboard",
     ],
-    missing: ["CSV import", "Unlimited searches", "Companies House live data"],
+    missing: ["AI features", "Automated invoicing", "White-label portal"],
+  },
+  {
+    id: "growth",
+    name: "Growth",
+    monthly: 299,
+    annual: 239,
+    seats: "1–2 locations, up to 100 spaces",
+    featured: true,
+    features: [
+      "Everything in Starter",
+      "AI enquiry drafting & summaries",
+      "Automated recurring invoices",
+      "White-label member portal",
+      "Enquiry pipeline & lead CRM",
+      "Xero integration",
+      "Featured Marketplace listing",
+    ],
+    missing: ["SMS notifications", "Zapier + Open API"],
   },
   {
     id: "pro",
     name: "Pro",
-    monthly: 179,
-    annual: 143,
-    seats: "3 users",
-    featured: true,
+    monthly: 599,
+    annual: 479,
+    seats: "Unlimited locations & spaces",
     features: [
-      "Unlimited searches",
-      "Email verification",
-      "Renewal calendar",
-      "Outreach tracker + follow-ups",
-      "Pipeline kanban",
-      "CSV export + import",
-      "WhatsApp + LinkedIn shortcuts",
-    ],
-    missing: ["Companies House live data"],
-  },
-  {
-    id: "team",
-    name: "Team",
-    monthly: 349,
-    annual: 279,
-    seats: "Unlimited users",
-    features: [
-      "Everything in Pro",
-      "Companies House live data",
-      "Live contract date accuracy",
+      "Everything in Growth",
+      "AI smart pricing suggestions",
+      "Advanced analytics & reports",
+      "SMS notifications",
+      "Zapier + Open API",
+      "QuickBooks integration",
       "Priority support",
-      "Team outreach tracking",
-      "Custom onboarding call",
     ],
     missing: [],
   },
@@ -71,7 +72,7 @@ const C = {
 
 export default function Paywall({ daysLeft = 0, onPrivacy, onTerms }) {
   const [billing, setBilling] = useState("annual");
-  const [sel, setSel] = useState("pro");
+  const [sel, setSel] = useState("growth");
   const plan = PLANS.find(p => p.id === sel);
   const price = billing === "annual" ? plan.annual : plan.monthly;
   const isExpired = daysLeft <= 0;
