@@ -8,20 +8,29 @@ export default function App() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Handle the auth callback from email confirmation link
-    // Supabase puts the token in the URL hash after redirect
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setLoading(false)
-    })
+    // Check for auth code in URL (PKCE flow from email confirmation)
+    const params = new URLSearchParams(window.location.search)
+    const hasCode = params.has('code')
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    if (hasCode) {
+      // Let Supabase exchange the code for a session
+      supabase.auth.exchangeCodeForSession(window.location.href).then(({ data, error }) => {
+        if (data.session) {
+          setSession(data.session)
+          // Clean up URL
+          window.history.replaceState(null, '', '/')
+        }
+        setLoading(false)
+      })
+    } else {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session)
+        setLoading(false)
+      })
+    }
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
-      if (loading) setLoading(false)
-      // Clean up the URL after auth redirect
-      if (event === 'SIGNED_IN' && window.location.hash) {
-        window.history.replaceState(null, '', window.location.pathname)
-      }
     })
 
     return () => subscription.unsubscribe()
