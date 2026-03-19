@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { supabase } from "./supabase";
+import Onboarding from "./Onboarding";
 
 // ─── EMAIL VERIFICATION ───────────────────────────────────────────────────────
 const DISPOSABLE = new Set(["mailinator.com","guerrillamail.com","tempmail.com","throwaway.email","yopmail.com","trashmail.com","trashmail.me","dispostable.com","maildrop.cc","discard.email","fakeinbox.com","mailnesia.com"]);
@@ -67,15 +68,7 @@ const PIPELINE_STAGES=[
   {id:"converted",label:"Converted", color:"#1A4A4A"},
 ];
 
-// ─── SAMPLE DATA ──────────────────────────────────────────────────────────────
-const SAMPLE=[
-  {id:1,name:"Sarah Winters",title:"Office Manager",phone:"+44 20 7123 4567",email:"s.winters@techflow.co.uk",company:"TechFlow Solutions Ltd",building:"WeWork Liverpool Street",location:"London, EC2M",tenure:"2 years 4 months",contract_expiry:"August 2026",source:"Companies House",confidence:"high",found:new Date().toISOString()},
-  {id:2,name:"James Okafor",title:"Facilities Manager",phone:"+44 161 456 7890",email:"jokafor@meridiangroup.com",company:"Meridian Group UK",building:"Bruntwood Circle Square",location:"Manchester, M1",tenure:"11 months",contract_expiry:"April 2026",source:"Endole",confidence:"medium",found:new Date().toISOString()},
-  {id:3,name:"Priya Nair",title:"Operations Director",phone:"+44 121 234 5678",email:"p.nair@novacreative.co.uk",company:"Nova Creative Agency",building:"Brindleyplace Business Quarter",location:"Birmingham, B1",tenure:"3 years 1 month",contract_expiry:"May 2026",source:"Companies House",confidence:"high",found:new Date().toISOString()},
-  {id:4,name:"Daniel Marsh",title:"Office Manager",phone:"+44 113 321 9988",email:"d.marsh@axiompartners.co.uk",company:"Axiom Partners Ltd",building:"Platform Leeds",location:"Leeds, LS1",tenure:"8 months",contract_expiry:"November 2026",source:"Apollo",confidence:"medium",found:new Date().toISOString()},
-  {id:5,name:"Claire Hutchins",title:"Office Manager",phone:"+44 161 555 0234",email:"c.hutchins@vertexdigital.co.uk",company:"Vertex Digital",building:"Regus Spinningfields",location:"Manchester, M3",tenure:"1 year 2 months",contract_expiry:"June 2026",source:"LinkedIn",confidence:"high",found:new Date().toISOString()},
-  {id:6,name:"Marcus Reid",title:"Facilities Director",phone:"+44 20 7890 1234",email:"m.reid@clearstone.co.uk",company:"Clearstone Advisory",building:"IWG The Shard",location:"London, SE1",tenure:"2 years",contract_expiry:"July 2026",source:"Endole",confidence:"high",found:new Date().toISOString()},
-];
+
 
 const BLANK_LEAD={name:"",title:"",phone:"",email:"",company:"",building:"",location:"",tenure:"",contract_expiry:"",source:"Manual",confidence:"medium"};
 
@@ -89,8 +82,8 @@ export default function App({ session }){
   const [verifying,setVerifying]=useState(false);
   const [loading,setLoading]=useState(false);
   const [dbLoading,setDbLoading]=useState(true);
+  const [showOnboarding,setShowOnboarding]=useState(false);
   const [error,setError]=useState(null);
-  const [demo,setDemo]=useState(true);
   const [schedule,setSchedule]=useState({enabled:false,frequency:"daily",time:"08:00"});
   const [history,setHistory]=useState([]);
   const [expanded,setExpanded]=useState(null);
@@ -142,6 +135,12 @@ export default function App({ session }){
         });
         setOutreach(map);
       }
+      // Show onboarding for first-time users (no leads yet)
+      const isFirstTime = !leadsData || leadsData.length === 0;
+      if(isFirstTime){
+        const seen = localStorage.getItem("dunlin_onboarded_"+userId);
+        if(!seen) setShowOnboarding(true);
+      }
       setDbLoading(false);
     })();
   },[userId]);
@@ -182,18 +181,6 @@ export default function App({ session }){
   const run=async()=>{
     if(!loc.trim()){setError("Enter a location.");return;}
     setLoading(true);setError(null);
-    if(demo){
-      await new Promise(r=>setTimeout(r,1500));
-      const newLeads=SAMPLE.filter(s=>!leads.find(l=>l.email===s.email));
-      // Enrich with Companies House in background
-      newLeads.forEach(async(lead)=>{
-        const ch=await lookupCompany(lead.company);
-        if(ch) setLeads(p=>p.map(l=>l.id===lead.id?{...l,...ch}:l));
-      });
-      setLeads(p=>[...p,...newLeads]);
-      setHistory(p=>[{loc,bType,count:newLeads.length,date:new Date().toISOString(),mode:"Demo"},...p].slice(0,20));
-      setLoading(false);setTab("results");return;
-    }
     const controller=new AbortController();abortRef.current=controller;
     const timer=setTimeout(()=>controller.abort(),30000);
     try{
@@ -331,6 +318,11 @@ export default function App({ session }){
     }
   };
 
+  const completeOnboarding = () => {
+    if(userId) localStorage.setItem("dunlin_onboarded_"+userId, "1");
+    setShowOnboarding(false);
+  };
+
   // ── Export ────────────────────────────────────────────────────────────────────
   const exportXLSX=(data)=>{
     const doExport=(XLSX)=>{
@@ -415,10 +407,7 @@ export default function App({ session }){
           {verifying&&<span style={{fontSize:11,color:"#7DD4CC",fontFamily:"'DM Sans',sans-serif"}} className="pulse">Verifying emails...</span>}
           {!verifying&&leads.length>0&&<span style={{fontSize:11,color:"#7DD4CC",fontFamily:"'DM Sans',sans-serif"}}>✓ {verifiedCount} verified</span>}
           <div style={{width:1,height:14,background:"rgba(255,255,255,0.15)"}}/>
-          <span style={{fontSize:11,color:"rgba(255,255,255,0.5)",fontFamily:"'DM Sans',sans-serif"}}>Demo</span>
-          <div className={"sw "+(demo?"on":"")} onClick={()=>setDemo(!demo)}><div className="sk"/></div>
-          <span style={{fontSize:11,color:demo?"#7DD4CC":"rgba(255,255,255,0.4)",minWidth:20,fontFamily:"'DM Sans',sans-serif"}}>{demo?"On":"Off"}</span>
-          <div style={{width:1,height:14,background:"rgba(255,255,255,0.15)"}}/>
+          <button onClick={()=>setShowOnboarding(true)} style={{background:"none",border:"1px solid rgba(255,255,255,0.15)",color:"rgba(255,255,255,0.5)",padding:"5px 12px",borderRadius:6,fontSize:11,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Tour</button>
           <button onClick={()=>supabase.auth.signOut()} style={{background:"none",border:"1px solid rgba(255,255,255,0.2)",color:"rgba(255,255,255,0.6)",padding:"5px 12px",borderRadius:6,fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Sign out</button>
         </div>
       </div>
@@ -459,7 +448,7 @@ export default function App({ session }){
                 </div>
               ))}
             </div>
-            {demo&&<div style={notice(true)}><strong style={{color:"#f59e0b"}}>Demo Mode ON</strong> — loads sample data. Toggle off for live results.</div>}
+
             <div style={{...card,marginBottom:12}}>
               <div className="fg">
                 <label className="lbl">Location <span style={{color:"#3AADA0"}}>*</span></label>
@@ -870,6 +859,7 @@ export default function App({ session }){
         )}
 
       </div>
+      {showOnboarding&&<Onboarding onComplete={completeOnboarding}/>}
     </div>
   );
 }
