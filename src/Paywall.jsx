@@ -2,12 +2,12 @@ import { useState } from "react";
 
 // Replace these with your real Stripe payment links from stripe.com/dashboard
 const STRIPE_LINKS = {
-  starter_monthly: "https://buy.stripe.com/9B63cv5ZxbZP3kSd1saAw07",
-  starter_annual:  "https://buy.stripe.com/fZudR9cnVbZP8Fc8LcaAw08",
-  growth_monthly:  "https://buy.stripe.com/8x200jbjR5Br9Jg9PgaAw09",
-  growth_annual:   "https://buy.stripe.com/5kQ4gzdrZ8ND4oWf9AaAw0a",
-  pro_monthly:     "https://buy.stripe.com/eVq00jfA75Br6x4gdEaAw0b",
-  pro_annual:      "https://buy.stripe.com/dRm4gz5Zx2pf08G4uWaAw0c",
+  starter_monthly: "https://buy.stripe.com/8x28wP3Rp2pf7B89PgaAw0d",
+  starter_annual:  "https://buy.stripe.com/7sYbJ1gEbgg508GbXoaAw0e",
+  growth_monthly:  "https://buy.stripe.com/28E7sL0Fd6Fvg7E9PgaAw0f",
+  growth_annual:   "https://buy.stripe.com/5kQ3cvgEb5Br1cK2mOaAw0g",
+  pro_monthly:     "https://buy.stripe.com/3cIeVdew34xnbRo9PgaAw0h",
+  pro_annual:      "https://buy.stripe.com/28EaEX3Rp3tj7B83qSaAw0i",
 };
 
 const PLANS = [
