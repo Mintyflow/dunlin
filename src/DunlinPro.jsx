@@ -8,6 +8,79 @@ function validSyntax(e){return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:
 async function checkMX(domain){try{const r=await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=MX`,{headers:{Accept:"application/json"}});if(!r.ok)return null;const d=await r.json();if(d.Status===3)return false;return(d.Answer||[]).filter(r=>r.type===15).length>0;}catch{return null;}}
 async function verifyEmail(email){if(!email||email==="unknown")return{status:"unknown",score:0,detail:"No email"};email=email.trim().toLowerCase();if(!validSyntax(email))return{status:"invalid",score:0,detail:"Invalid format"};const[local,domain]=email.split("@");if(DISPOSABLE.has(domain))return{status:"invalid",score:10,detail:"Disposable domain"};const isRole=ROLE_PREFIXES.has(local);const mx=await checkMX(domain);if(mx===false)return{status:"invalid",score:15,detail:"No mail server for domain"};let score=50;if(mx===true)score+=25;if(!isRole)score+=10;if(/^[a-z]+\.[a-z]+$/.test(local))score+=15;else if(/^[a-z]\.[a-z]+$/.test(local))score+=10;if(domain.endsWith(".co.uk")||domain.endsWith(".com"))score+=5;if(/\d/.test(local))score-=5;score=Math.max(0,Math.min(100,score));const status=score>=75?"valid":score>=50?"risky":"invalid";const detail=mx===null?`Pattern looks ${status} — DNS inconclusive`:isRole?`Role address — mail server confirmed`:`Mail server confirmed for ${domain}`;return{status,score,detail,isRole,hasMX:mx};}
 
+// ─── COMPANIES HOUSE ─────────────────────────────────────────────────────────
+const CH_KEY = import.meta.env.VITE_CH_API_KEY;
+const chAuth = () => "Basic " + btoa(CH_KEY + ":");
+
+async function lookupCompany(companyName) {
+  try {
+    const searchRes = await fetch(
+      "https://api.company-information.service.gov.uk/search/companies?q=" + encodeURIComponent(companyName) + "&items_per_page=1",
+      { headers: { Authorization: chAuth() } }
+    );
+    if (!searchRes.ok) return null;
+    const searchData = await searchRes.json();
+    const company = searchData.items?.[0];
+    if (!company) return null;
+
+    // Get officers (directors)
+    const officersRes = await fetch(
+      "https://api.company-information.service.gov.uk/company/" + company.company_number + "/officers?items_per_page=10",
+      { headers: { Authorization: chAuth() } }
+    );
+    const officersData = officersRes.ok ? await officersRes.json() : null;
+    const directors = (officersData?.items || [])
+      .filter(o => o.officer_role === "director" && !o.resigned_on)
+      .map(o => ({
+        name: o.name,
+        appointed: o.appointed_on,
+        role: "Director"
+      }));
+
+    return {
+      name: company.title,
+      number: company.company_number,
+      status: company.company_status,
+      type: company.company_type,
+      incorporated: company.date_of_creation,
+      address: company.registered_office_address
+        ? [company.registered_office_address.address_line_1, company.registered_office_address.locality, company.registered_office_address.postal_code].filter(Boolean).join(", ")
+        : null,
+      directors,
+    };
+  } catch (e) {
+    return null;
+  }
+}
+
+// ─── COMPANIES HOUSE ──────────────────────────────────────────────────────────
+const CH_KEY = import.meta.env.VITE_CH_API_KEY;
+
+async function lookupCompany(companyName) {
+  if (!CH_KEY || !companyName) return null;
+  try {
+    const q = encodeURIComponent(companyName);
+    const auth = btoa(CH_KEY + ":");
+    const res = await fetch(
+      "https://api.company-information.service.gov.uk/search/companies?q=" + q + "&items_per_page=1",
+      { headers: { Authorization: "Basic " + auth } }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const co = data.items && data.items[0];
+    if (!co) return null;
+    return {
+      ch_number: co.company_number,
+      ch_status: co.company_status,
+      ch_type: co.company_type,
+      ch_incorporated: co.date_of_creation,
+      ch_address: co.registered_office_address
+        ? [co.registered_office_address.address_line_1, co.registered_office_address.locality, co.registered_office_address.postal_code].filter(Boolean).join(", ")
+        : null,
+    };
+  } catch { return null; }
+}
+
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 const MONTHS_FULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
 function parseExpiry(str){if(!str||str==="unknown")return null;const d=new Date(`1 ${str}`);return isNaN(d.getTime())?null:d;}
@@ -71,6 +144,8 @@ export default function App({ session }){
   // CSV import
   const csvRef=useRef(null);
   const abortRef=useRef(null);
+  const [chData,setChData]=useState({});
+  const [chLoading,setChLoading]=useState({});
 
   // ── Load data from Supabase on mount ──────────────────────────────────────
   useEffect(()=>{
@@ -138,6 +213,11 @@ export default function App({ session }){
     if(demo){
       await new Promise(r=>setTimeout(r,1500));
       const newLeads=SAMPLE.filter(s=>!leads.find(l=>l.email===s.email));
+      // Enrich with Companies House in background
+      newLeads.forEach(async(lead)=>{
+        const ch=await lookupCompany(lead.company);
+        if(ch) setLeads(p=>p.map(l=>l.id===lead.id?{...l,...ch}:l));
+      });
       setLeads(p=>[...p,...newLeads]);
       setHistory(p=>[{loc,bType,count:newLeads.length,date:new Date().toISOString(),mode:"Demo"},...p].slice(0,20));
       setLoading(false);setTab("results");return;
@@ -161,6 +241,11 @@ export default function App({ session }){
       const existing=new Set(leads.map(l=>l.email?.toLowerCase()).filter(Boolean));
       const deduped=newR.filter(r=>!r.email||!existing.has(r.email.toLowerCase()));
       setLeads(p=>[...p,...deduped]);
+      // Enrich with Companies House in background
+      deduped.forEach(async(lead)=>{
+        const ch=await lookupCompany(lead.company);
+        if(ch) setLeads(p=>p.map(l=>l.id===lead.id?{...l,...ch}:l));
+      });
       setHistory(p=>[{loc,bType,count:deduped.length,date:new Date().toISOString(),mode:"Live"},...p].slice(0,20));
       setTab("results");
       if(userId&&deduped.length){
@@ -178,6 +263,14 @@ export default function App({ session }){
   };
 
   // ── Manual add ──────────────────────────────────────────────────────────────
+  const lookupCH=async(lead)=>{
+    if(!lead.company||chData[lead.id])return;
+    setChLoading(p=>({...p,[lead.id]:true}));
+    const result=await lookupCompany(lead.company);
+    setChData(p=>({...p,[lead.id]:result||"not_found"}));
+    setChLoading(p=>({...p,[lead.id]:false}));
+  };
+
   const submitManual=async()=>{
     if(!addForm.name.trim()){setAddError("Name is required.");return;}
     if(!addForm.company.trim()){setAddError("Company is required.");return;}
@@ -515,8 +608,8 @@ export default function App({ session }){
                         </div>
                       </div>
                       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9,marginBottom:11}}>
-                        {[["Company",r.company],["Building",r.building],["Location",r.location],["Tenure",r.tenure],["Contract Due",r.contract_expiry],["Source",r.source]].map(([l,v])=>(
-                          <div key={l}><div style={{fontSize:9,letterSpacing:2,color:"#3a4870",textTransform:"uppercase",marginBottom:2}}>{l}</div><div style={{fontSize:11,wordBreak:"break-word",color:v&&v!=="unknown"?"#e2e8f0":"#2a3a4a"}}>{v&&v!=="unknown"?v:"—"}</div></div>
+                        {[["Company",r.company],["Building",r.building],["Location",r.location],["Tenure",r.tenure],["Contract Due",r.contract_expiry],["Source",r.source],["CH Number",r.ch_number],["Incorporated",r.ch_incorporated],["CH Status",r.ch_status],["Reg. Address",r.ch_address]].map(([l,v])=>(
+                          v ? <div key={l}><div style={{fontSize:9,letterSpacing:2,color:"#3a4870",textTransform:"uppercase",marginBottom:2}}>{l}</div><div style={{fontSize:11,wordBreak:"break-word",color:v&&v!=="unknown"?"#e2e8f0":"#2a3a4a"}}>{v&&v!=="unknown"?v:"—"}</div></div> : null
                         ))}
                       </div>
                       <div style={{display:"flex",gap:7,flexWrap:"wrap"}}>
@@ -525,7 +618,27 @@ export default function App({ session }){
                         {r.phone&&r.phone!=="unknown"&&<a href={`https://wa.me/${r.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a5020",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>💬 WhatsApp</a>}
                         <a href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(r.name+" "+r.company)}`} target="_blank" rel="noreferrer" style={{color:"#38bdf8",fontSize:11,textDecoration:"none",background:"#071520",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>
                         <button onClick={e=>{e.stopPropagation();setOutreachForm(r.id);setTab("outreach");}} style={{background:"#1a1030",border:"1px solid #3a2060",color:"#818cf8",fontSize:11,padding:"6px 11px",borderRadius:5,cursor:"pointer",fontFamily:"monospace"}}>◉ Log</button>
+                      {!chData[r.id]&&<button onClick={e=>{e.stopPropagation();lookupCH(r);}} disabled={chLoading[r.id]} style={{background:"#0a1a0a",border:"1px solid #1a4a1a",color:"#22c55e",fontSize:11,padding:"6px 11px",borderRadius:5,cursor:"pointer",fontFamily:"monospace"}}>{chLoading[r.id]?"Checking...":"🏛 Companies House"}</button>}
                       </div>
+                    {chData[r.id]&&chData[r.id]!=="not_found"&&(
+                      <div style={{marginTop:10,background:"#0a1a0a",border:"1px solid #1a4a1a",borderRadius:7,padding:"10px 12px"}}>
+                        <div style={{fontSize:9,color:"#22c55e",letterSpacing:2,textTransform:"uppercase",marginBottom:7}}>Companies House Data</div>
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>
+                          {[["Registered name",chData[r.id].name],["Company no.",chData[r.id].number],["Status",chData[r.id].status],["Incorporated",chData[r.id].incorporated],["Address",chData[r.id].address]].map(([l,v])=>v?(
+                            <div key={l}><div style={{fontSize:9,color:"#3a4870",letterSpacing:1,textTransform:"uppercase",marginBottom:1}}>{l}</div><div style={{fontSize:11,color:"#22c55e"}}>{v}</div></div>
+                          ):null)}
+                        </div>
+                        {chData[r.id].directors&&chData[r.id].directors.length>0&&(
+                          <div>
+                            <div style={{fontSize:9,color:"#3a4870",letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>Active directors</div>
+                            {chData[r.id].directors.map((d,i)=>(
+                              <div key={i} style={{fontSize:11,color:"#e2e8f0",padding:"3px 0",borderBottom:"1px solid #111827"}}>{d.name}{d.appointed&&<span style={{color:"#3a4870",marginLeft:8,fontSize:10}}>apptd {d.appointed}</span>}</div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {chData[r.id]==="not_found"&&<div style={{marginTop:8,fontSize:11,color:"#3a4870",fontStyle:"italic"}}>No match found on Companies House.</div>}
                     </div>
                   )}
                 </div>
