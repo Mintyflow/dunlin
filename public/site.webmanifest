@@ -1,0 +1,17 @@
+{
+  "name": "dunlin",
+  "short_name": "dunlin",
+  "description": "Office Intelligence for Flex Space",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F0E8",
+  "theme_color": "#1A4A4A",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -230,6 +230,7 @@ export default function App({ session }){
       }
     }catch(e){
       if(e.name==="AbortError") setError("Timed out. Please try again.");
+      else if(e.message&&e.message.includes("fetch")) setError("Live search requires the API key. Enable Demo mode to search with sample data, or contact support.");
       else setError(e.message);
     }finally{clearTimeout(timer);setLoading(false);}
   };
@@ -378,8 +379,8 @@ export default function App({ session }){
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#F5F0E8}::-webkit-scrollbar-thumb{background:rgba(26,74,74,0.2);border-radius:2px}
         input,select,textarea{outline:none;-webkit-appearance:none;font-family:'DM Sans',sans-serif}
         input::placeholder,textarea::placeholder{color:#7A9696}
-        .nb{flex:1;background:none;border:none;cursor:pointer;padding:8px 2px;color:#7A9696;font-family:'DM Sans',sans-serif;font-size:12px;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;transition:color .15s;min-width:0}
-        .nb:hover{color:#1A4A4A}.nb.act{color:#3AADA0;border-bottom-color:#3AADA0}
+        .nb{flex:1;background:none;border:none;cursor:pointer;padding:10px 2px;color:#3D5252;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .15s;min-width:0}
+        .nb:hover{color:#1A4A4A}.nb.act{color:#1A4A4A;border-bottom-color:#3AADA0;background:rgba(58,173,160,0.06)}
         .bp{background:#3AADA0;color:#fff;border:none;padding:13px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border-radius:8px;width:100%;transition:background .2s}.bp:hover{background:#2A7A72}
         .bs{background:#1A4A4A;color:#fff;border:none;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;border-radius:6px;transition:background .2s}.bs:hover{background:#2A7A72}
         .bg{background:none;border:1px solid rgba(26,74,74,0.2);color:#7A9696;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;border-radius:6px;transition:all .15s}.bg:hover{border-color:#3AADA0;color:#3AADA0}.bg:disabled{opacity:.3;cursor:not-allowed}
@@ -433,12 +434,12 @@ export default function App({ session }){
       )}
 
       {/* Nav */}
-      <div style={{borderBottom:"1px solid rgba(26,74,74,0.1)",display:"flex",background:"#fff",position:"sticky",top:followupsDueToday.length>0?81:49,zIndex:9,overflowX:"auto"}}>
+      <div style={{borderBottom:"1px solid rgba(26,74,74,0.12)",display:"flex",background:"#EDE8DF",position:"sticky",top:followupsDueToday.length>0?81:49,zIndex:9,overflowX:"auto"}}>
         {navTabs.map(n=>(
           <button key={n.id} className={`nb ${tab===n.id?"act":""}`} onClick={()=>setTab(n.id)} style={{padding:"7px 4px",minWidth:50}}>
-            <span style={{fontSize:13}}>{n.i}</span>
-            <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:9,whiteSpace:"nowrap"}}>{n.l}</span>
-            {n.b>0&&<span style={{background:"rgba(58,173,160,0.2)",color:"#3AADA0",fontSize:8,padding:"1px 4px",borderRadius:10}}>{n.b}</span>}
+            <span style={{fontSize:16}}>{n.i}</span>
+            <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,whiteSpace:"nowrap"}}>{n.l}</span>
+            {n.b>0&&<span style={{background:"#3AADA0",color:"#fff",fontSize:9,padding:"1px 6px",borderRadius:10,fontWeight:500}}>{n.b}</span>}
             {n.dot&&!n.b&&<span style={{width:5,height:5,borderRadius:3,background:"#ef4444",display:"inline-block"}} className="pulse"/>}
           </button>
         ))}
