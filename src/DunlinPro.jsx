@@ -53,34 +53,6 @@ async function lookupCompany(companyName) {
   }
 }
 
-// ─── COMPANIES HOUSE ──────────────────────────────────────────────────────────
-const CH_KEY = import.meta.env.VITE_CH_API_KEY;
-
-async function lookupCompany(companyName) {
-  if (!CH_KEY || !companyName) return null;
-  try {
-    const q = encodeURIComponent(companyName);
-    const auth = btoa(CH_KEY + ":");
-    const res = await fetch(
-      "https://api.company-information.service.gov.uk/search/companies?q=" + q + "&items_per_page=1",
-      { headers: { Authorization: "Basic " + auth } }
-    );
-    if (!res.ok) return null;
-    const data = await res.json();
-    const co = data.items && data.items[0];
-    if (!co) return null;
-    return {
-      ch_number: co.company_number,
-      ch_status: co.company_status,
-      ch_type: co.company_type,
-      ch_incorporated: co.date_of_creation,
-      ch_address: co.registered_office_address
-        ? [co.registered_office_address.address_line_1, co.registered_office_address.locality, co.registered_office_address.postal_code].filter(Boolean).join(", ")
-        : null,
-    };
-  } catch { return null; }
-}
-
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 const MONTHS_FULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
 function parseExpiry(str){if(!str||str==="unknown")return null;const d=new Date(`1 ${str}`);return isNaN(d.getTime())?null:d;}
