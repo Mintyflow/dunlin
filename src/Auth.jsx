@@ -271,17 +271,8 @@ export default function Auth() {
     link.rel = 'stylesheet'
     link.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap'
     document.head.appendChild(link)
-    const style = document.createElement('style')
-    style.textContent = `
-      .auth-sidebar { display: flex; flex-shrink: 0; }
-      .auth-form { flex: 1; background: #F5F0E8; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 48px 32px; min-height: 100vh; }
-      @media (max-width: 640px) {
-        .auth-sidebar { display: none !important; }
-        .auth-form { padding: 48px 24px; min-height: 100vh; }
-      }
-    `
-    document.head.appendChild(style)
   }, [])
+
   const sidebar = (
     <div style={{ background: C.dt, width: 360, minHeight: '100vh', padding: '48px 40px', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -330,13 +321,13 @@ export default function Auth() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
-      {/* Sidebar - hidden on mobile via CSS */}
-      <div className="auth-sidebar">
+      {/* Sidebar - hide on small screens */}
+      <div style={{ display: 'flex', flexShrink: 0 }}>
         {sidebar}
       </div>
 
       {/* Form */}
-      <div className="auth-form">
+      <div style={{ flex: 1, background: C.sand, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '48px 32px', minHeight: '100vh' }}>
         <div style={{ width: '100%', maxWidth: 400 }}>
           {screen === 'signup'
             ? <SignUp onSwitch={() => setScreen('login')} />

@@ -75,7 +75,7 @@ export default function App() {
   if (!session) return <Auth />
 
   const daysLeft = daysLeftOnTrial(profile?.trial_started)
-  const isPaid = ['paid','starter','pro','team'].includes(profile?.plan)
+  const isPaid = ['paid','starter','growth','pro','team'].includes(profile?.plan)
   const trialExpired = daysLeft <= 0 && !isPaid
 
   if (page === 'paywall' || trialExpired) {

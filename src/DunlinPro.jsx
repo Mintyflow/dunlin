@@ -72,7 +72,7 @@ const PIPELINE_STAGES=[
 
 const BLANK_LEAD={name:"",title:"",phone:"",email:"",company:"",building:"",location:"",tenure:"",contract_expiry:"",source:"Manual",confidence:"medium"};
 
-export default function App({ session }){
+export default function App({ session, daysLeft=14, isPaid=false, onUpgrade, onPrivacy, onTerms }){
   const userId = session?.user?.id;
   const [tab,setTab]=useState("search");
   const [loc,setLoc]=useState("");
@@ -402,12 +402,15 @@ export default function App({ session }){
       {/* Header */}
       <div style={{borderBottom:"1px solid rgba(26,74,74,0.1)",padding:"10px 12px",display:"flex",justifyContent:"space-between",alignItems:"center",background:"#1A4A4A",position:"sticky",top:0,zIndex:10,flexWrap:"wrap",gap:8}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <svg width="26" height="19" viewBox="0 0 56 40" fill="none">
-            <ellipse cx="28" cy="23" rx="15" ry="9" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" fill="none"/>
-            <circle cx="40" cy="14" r="6" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" fill="none"/>
-            <path d="M44 12 L52 9" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
-            <line x1="23" y1="32" x2="21" y2="40" stroke="rgba(255,255,255,0.5)" strokeWidth="1.3" strokeLinecap="round"/>
-            <line x1="31" y1="32" x2="29" y2="40" stroke="rgba(255,255,255,0.5)" strokeWidth="1.3" strokeLinecap="round"/>
+          <svg width="34" height="23" viewBox="0 0 120 80" fill="none">
+            <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" strokeWidth="1.5"/>
+            <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" strokeWidth="1.5"/>
+            <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.65)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+            <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.65)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+            <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
+            <line x1="54" y1="72" x2="48" y2="74" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
+            <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
+            <line x1="68" y1="72" x2="62" y2="74" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
           </svg>
           <span style={{fontFamily:"'Cormorant Garamond',serif",fontWeight:300,fontSize:20,color:"#F5F0E8",letterSpacing:1}}>dunlin</span>
         </div>
@@ -415,6 +418,9 @@ export default function App({ session }){
           {verifying&&<span style={{fontSize:11,color:"#7DD4CC",fontFamily:"'DM Sans',sans-serif"}} className="pulse">Verifying emails...</span>}
           {!verifying&&leads.length>0&&<span style={{fontSize:11,color:"#7DD4CC",fontFamily:"'DM Sans',sans-serif"}}>✓ {verifiedCount} verified</span>}
           <div style={{width:1,height:14,background:"rgba(255,255,255,0.15)"}}/>
+          <button onClick={onUpgrade} style={{background:"none",border:"1px solid rgba(255,255,255,0.15)",color:"rgba(255,255,255,0.7)",padding:"5px 12px",borderRadius:6,fontSize:11,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",display:"flex",alignItems:"center",gap:5}}>
+            {isPaid ? <><span style={{color:"#7DD4CC"}}>●</span> Active</> : <><span style={{color:"#fbbf24"}}>●</span> Trial · {daysLeft}d left</>}
+          </button>
           <button onClick={()=>setShowOnboarding(true)} style={{background:"none",border:"1px solid rgba(255,255,255,0.15)",color:"rgba(255,255,255,0.5)",padding:"5px 12px",borderRadius:6,fontSize:11,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Tour</button>
           <button onClick={()=>supabase.auth.signOut()} style={{background:"none",border:"1px solid rgba(255,255,255,0.2)",color:"rgba(255,255,255,0.6)",padding:"5px 12px",borderRadius:6,fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Sign out</button>
         </div>
@@ -867,6 +873,20 @@ export default function App({ session }){
         )}
 
       </div>
+      {/* Footer */}
+      <div style={{borderTop:"1px solid rgba(26,74,74,0.08)",padding:"16px 12px",marginTop:8,background:"#F5F0E8"}}>
+        <div style={{maxWidth:700,margin:"0 auto",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10}}>
+          <div style={{fontSize:11,color:"#7A9696",fontFamily:"'DM Sans',sans-serif"}}>© 2026 <span style={{color:"#3D5252",fontWeight:500}}>Marvanova Ltd</span>. All rights reserved.</div>
+          <div style={{display:"flex",gap:16,alignItems:"center"}}>
+            <span onClick={onPrivacy} style={{fontSize:11,color:"#3AADA0",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Privacy Policy</span>
+            <span style={{fontSize:11,color:"rgba(26,74,74,0.2)"}}>·</span>
+            <span onClick={onTerms} style={{fontSize:11,color:"#3AADA0",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Terms of Service</span>
+            <span style={{fontSize:11,color:"rgba(26,74,74,0.2)"}}>·</span>
+            <span onClick={onPrivacy} style={{fontSize:11,color:"#3AADA0",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Cookie Policy</span>
+          </div>
+        </div>
+      </div>
+
       {showOnboarding&&<Onboarding onComplete={completeOnboarding}/>}
     </div>
   );
