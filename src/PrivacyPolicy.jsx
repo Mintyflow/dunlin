@@ -31,13 +31,13 @@ export default function PrivacyPolicy({ onBack }) {
         <h1 style={s.h1}>Privacy Policy</h1>
         <p style={s.updated}>Last updated: March 2026</p>
 
-        <p style={s.p}>Dunlin is operated by Marvanova Ltd, a company registered in England and Wales. We are committed to protecting your personal data and complying with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.</p>
+        <p style={s.p}>Dunlin is operated by Marvanova, a company registered in England and Wales. We are committed to protecting your personal data and complying with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.</p>
         <p style={s.p}>This policy explains how we collect, use, store, and protect your personal data when you use our platform at getdunlin.com.</p>
 
         <hr style={s.divider}/>
 
         <h2 style={s.h2}>1. Who We Are</h2>
-        <p style={s.p}>Data Controller: Marvanova Ltd</p>
+        <p style={s.p}>Data Controller: Marvanova</p>
         <p style={s.p}>Contact: privacy@getdunlin.com</p>
         <p style={s.p}>Website: getdunlin.com</p>
 
@@ -74,7 +74,7 @@ export default function PrivacyPolicy({ onBack }) {
         </ul>
 
         <h2 style={s.h2}>5. Data You Hold About Your Members</h2>
-        <p style={s.p}>When you use Dunlin to manage your members and tenants, you act as a Data Controller for that data, and Marvanova Ltd acts as a Data Processor on your behalf. We process that data only according to your instructions and this policy. You are responsible for ensuring you have a lawful basis for storing your members' data in Dunlin.</p>
+        <p style={s.p}>When you use Dunlin to manage your members and tenants, you act as a Data Controller for that data, and Marvanova acts as a Data Processor on your behalf. We process that data only according to your instructions and this policy. You are responsible for ensuring you have a lawful basis for storing your members' data in Dunlin.</p>
 
         <h2 style={s.h2}>6. Third-Party Services</h2>
         <p style={s.p}>We use the following trusted third-party services to operate the platform:</p>
@@ -116,7 +116,7 @@ export default function PrivacyPolicy({ onBack }) {
         <p style={s.p}>If you have concerns about how we handle your data, please contact us first at privacy@getdunlin.com. You also have the right to lodge a complaint with the Information Commissioner's Office (ICO) at ico.org.uk.</p>
 
         <hr style={s.divider}/>
-        <p style={{...s.p, color: "#7A9696", fontSize: 12}}>Marvanova Ltd · getdunlin.com · privacy@getdunlin.com</p>
+        <p style={{...s.p, color: "#7A9696", fontSize: 12}}>Marvanova · getdunlin.com · privacy@getdunlin.com</p>
       </div>
     </div>
   );

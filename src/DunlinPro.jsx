@@ -876,7 +876,7 @@ export default function App({ session, daysLeft=14, isPaid=false, onUpgrade, onP
       {/* Footer */}
       <div style={{borderTop:"1px solid rgba(26,74,74,0.08)",padding:"16px 12px",marginTop:8,background:"#F5F0E8"}}>
         <div style={{maxWidth:700,margin:"0 auto",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10}}>
-          <div style={{fontSize:11,color:"#7A9696",fontFamily:"'DM Sans',sans-serif"}}>© 2026 <span style={{color:"#3D5252",fontWeight:500}}>Marvanova Ltd</span>. All rights reserved.</div>
+          <div style={{fontSize:11,color:"#7A9696",fontFamily:"'DM Sans',sans-serif"}}>© 2026 <span style={{color:"#3D5252",fontWeight:500}}>Marvanova</span>. All rights reserved.</div>
           <div style={{display:"flex",gap:16,alignItems:"center"}}>
             <span onClick={onPrivacy} style={{fontSize:11,color:"#3AADA0",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Privacy Policy</span>
             <span style={{fontSize:11,color:"rgba(26,74,74,0.2)"}}>·</span>

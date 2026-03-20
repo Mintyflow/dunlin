@@ -31,7 +31,7 @@ export default function TermsOfService({ onBack }) {
         <h1 style={s.h1}>Terms of Service</h1>
         <p style={s.updated}>Last updated: March 2026</p>
 
-        <p style={s.p}>These Terms of Service ("Terms") govern your use of the Dunlin platform ("Service") operated by Marvanova Ltd ("we", "us", "our"), a company registered in England and Wales.</p>
+        <p style={s.p}>These Terms of Service ("Terms") govern your use of the Dunlin platform ("Service") operated by Marvanova ("we", "us", "our"), a company registered in England and Wales.</p>
         <p style={s.p}>By creating an account or using the Service, you agree to be bound by these Terms. If you do not agree, do not use the Service.</p>
 
         <hr style={s.divider}/>
@@ -72,18 +72,18 @@ export default function TermsOfService({ onBack }) {
         <p style={s.p}>You may export your data at any time using the CSV export features within the platform. Upon cancellation, your data will be retained for 90 days and then permanently deleted. You may request immediate deletion by contacting support@getdunlin.com.</p>
 
         <h2 style={s.h2}>9. Intellectual Property</h2>
-        <p style={s.p}>The Service, including its design, code, trademarks, and content, is owned by Marvanova Ltd and protected by intellectual property laws. These Terms do not grant you any ownership rights in the Service. The "Dunlin" name and brand are the property of Marvanova Ltd.</p>
+        <p style={s.p}>The Service, including its design, code, trademarks, and content, is owned by Marvanova and protected by intellectual property laws. These Terms do not grant you any ownership rights in the Service. The "Dunlin" name and brand are the property of Marvanova.</p>
 
         <h2 style={s.h2}>10. Availability and Support</h2>
         <p style={s.p}>We aim to maintain high availability of the Service but do not guarantee uninterrupted access. We may carry out maintenance, which we will aim to schedule outside of UK business hours. Support is provided by email at support@getdunlin.com. Response times vary by plan.</p>
 
         <h2 style={s.h2}>11. Limitation of Liability</h2>
-        <p style={s.p}>To the maximum extent permitted by law, Marvanova Ltd shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the Service, including loss of profits, data, or business opportunity.</p>
+        <p style={s.p}>To the maximum extent permitted by law, Marvanova shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the Service, including loss of profits, data, or business opportunity.</p>
         <p style={s.p}>Our total liability to you for any claim arising under these Terms shall not exceed the total fees paid by you in the 12 months preceding the claim.</p>
         <p style={s.p}>Nothing in these Terms limits liability for death or personal injury caused by our negligence, fraud, or any other liability that cannot be excluded by law.</p>
 
         <h2 style={s.h2}>12. Indemnification</h2>
-        <p style={s.p}>You agree to indemnify and hold harmless Marvanova Ltd from any claims, damages, or expenses arising from your use of the Service, your breach of these Terms, or your violation of any third-party rights.</p>
+        <p style={s.p}>You agree to indemnify and hold harmless Marvanova from any claims, damages, or expenses arising from your use of the Service, your breach of these Terms, or your violation of any third-party rights.</p>
 
         <h2 style={s.h2}>13. Termination</h2>
         <p style={s.p}>We may suspend or terminate your account immediately if you breach these Terms, fail to pay, or if we are required to do so by law. Upon termination, your right to use the Service ceases immediately. Sections relating to intellectual property, limitation of liability, and governing law survive termination.</p>
@@ -98,7 +98,7 @@ export default function TermsOfService({ onBack }) {
         <p style={s.p}>For any questions about these Terms, contact us at support@getdunlin.com.</p>
 
         <hr style={s.divider}/>
-        <p style={{...s.p, color: "#7A9696", fontSize: 12}}>Marvanova Ltd · getdunlin.com · support@getdunlin.com</p>
+        <p style={{...s.p, color: "#7A9696", fontSize: 12}}>Marvanova · getdunlin.com · support@getdunlin.com</p>
       </div>
     </div>
   );
