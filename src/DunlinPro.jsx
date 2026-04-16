@@ -68,7 +68,7 @@ function mapApolloResult(r, loc) {
   };
 }
 
-export default function App({ session }){
+export default function App({ session, onBack }){
   const userId = session?.user?.id;
 
   // ── Core state ──────────────────────────────────────────────────────────────
@@ -469,26 +469,39 @@ export default function App({ session }){
       `}</style>
 
       {/* Header */}
-      <div style={{borderBottom:"1px solid #111827",padding:"10px 13px",display:"flex",justifyContent:"space-between",alignItems:"center",background:"#070a0e",position:"sticky",top:0,zIndex:10}}>
-        <div style={{display:"flex",alignItems:"center",gap:9}}>
-          <div style={{width:26,height:26,background:"linear-gradient(135deg,#38bdf8,#818cf8)",borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,flexShrink:0}}>⬡</div>
-          <div>
-            <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:14,letterSpacing:3}}>DUNLIN</div>
-            <div style={{fontSize:7,color:"#3a4870",letterSpacing:3,marginTop:-2}}>LEASE INTELLIGENCE</div>
+      <div style={{borderBottom:"1px solid rgba(255,255,255,0.07)",padding:"0 13px",display:"flex",justifyContent:"space-between",alignItems:"center",background:"#1a4a4a",position:"sticky",top:0,zIndex:10,height:56}}>
+        <div style={{display:"flex",alignItems:"center",gap:14}}>
+          {onBack&&(
+            <button onClick={onBack} style={{background:"none",border:"none",color:"rgba(125,212,204,0.6)",cursor:"pointer",fontSize:12,padding:0,fontFamily:"'DM Sans',sans-serif",display:"flex",alignItems:"center",gap:5,letterSpacing:"0.02em"}}>← back</button>
+          )}
+          {onBack&&<div style={{width:1,height:18,background:"rgba(255,255,255,0.1)"}}/>}
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <svg width="26" height="18" viewBox="0 0 120 80" fill="none">
+              <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
+              <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
+              <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+              <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+              <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
+              <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
+            </svg>
+            <div>
+              <span style={{fontFamily:"'Cormorant Garamond',serif",fontWeight:300,fontSize:20,color:"#ffffff",letterSpacing:"0.06em"}}>dunlin</span>
+              <span style={{fontSize:10,color:"rgba(125,212,204,0.6)",letterSpacing:"0.18em",marginLeft:10,textTransform:"uppercase",fontFamily:"'DM Sans',sans-serif"}}>Renewal Radar</span>
+            </div>
           </div>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:7}}>
-          {verifying&&<span style={{fontSize:9,color:"#38bdf8"}} className="pulse">✉ CHECKING</span>}
-          {!verifying&&leads.length>0&&<span style={{fontSize:9,color:"#22c55e"}}>✉ {verifiedCount}/{leads.filter(r=>r.email&&r.email!=="unknown").length}</span>}
-          <div style={{width:1,height:14,background:"#1e2535"}}/>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          {verifying&&<span style={{fontSize:9,color:"#7dd4cc",fontFamily:"'IBM Plex Mono',monospace"}} className="pulse">✉ CHECKING</span>}
+          {!verifying&&leads.length>0&&<span style={{fontSize:9,color:"#22c55e",fontFamily:"'IBM Plex Mono',monospace"}}>✉ {verifiedCount}/{leads.filter(r=>r.email&&r.email!=="unknown").length}</span>}
+          <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
           {apolloKey
-            ? <span style={{fontSize:9,color:"#22c55e",letterSpacing:1}}>⬡ APOLLO</span>
-            : <span style={{fontSize:9,color:"#f59e0b",letterSpacing:1,cursor:"pointer"}} onClick={()=>setTab("settings")}>⚙ ADD KEY</span>
+            ? <span style={{fontSize:9,color:"#22c55e",letterSpacing:1,fontFamily:"'IBM Plex Mono',monospace"}}>⬡ APOLLO</span>
+            : <span style={{fontSize:9,color:"#f59e0b",letterSpacing:1,cursor:"pointer",fontFamily:"'IBM Plex Mono',monospace"}} onClick={()=>setTab("settings")}>⚙ ADD KEY</span>
           }
-          <div style={{width:1,height:14,background:"#1e2535"}}/>
-          <span style={{fontSize:9,color:"#3a4870"}}>DEMO</span>
+          <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
+          <span style={{fontSize:9,color:"rgba(125,212,204,0.4)",fontFamily:"'IBM Plex Mono',monospace"}}>DEMO</span>
           <div className={`sw ${demo?"on":""}`} onClick={()=>setDemo(!demo)}><div className="sk"/></div>
-          <span style={{fontSize:9,color:demo?"#a78bfa":"#3a4870",minWidth:18}}>{demo?"ON":"OFF"}</span>
+          <span style={{fontSize:9,color:demo?"#7dd4cc":"rgba(125,212,204,0.3)",minWidth:18,fontFamily:"'IBM Plex Mono',monospace"}}>{demo?"ON":"OFF"}</span>
         </div>
       </div>
 
