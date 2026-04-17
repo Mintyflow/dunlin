@@ -234,12 +234,12 @@ export default function Dashboard({ session, onSelect }) {
           <div>
             <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 14 }}>Product</div>
             {[
-              { label: 'Home', href: 'https://getdunlin.com' },
-              { label: 'Features', href: 'https://getdunlin.com#features' },
-              { label: 'Pricing', href: 'https://getdunlin.com#pricing' },
-              { label: 'Product Overview', href: 'https://getdunlin.com/one-pager.html' },
+              { label: 'Home', href: '/' },
+              { label: 'Features', href: '/#features' },
+              { label: 'Pricing', href: '/#pricing' },
+              { label: 'Product Overview', href: '/one-pager.html' },
             ].map(({ label, href }) => (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+              <a key={label} href={href}"
                 style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
                 onMouseOver={e => e.currentTarget.style.color = '#7dd4cc'} onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}>
                 {label}
@@ -250,12 +250,12 @@ export default function Dashboard({ session, onSelect }) {
           <div>
             <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 14 }}>Company</div>
             {[
-              { label: 'Affiliate Programme', href: 'https://getdunlin.com/affiliate.html' },
-              { label: 'Refer a Friend — earn £50', href: 'https://getdunlin.com/refer.html' },
-              { label: 'Sitemap', href: 'https://getdunlin.com/sitemap.html' },
+              { label: 'Affiliate Programme', href: '/affiliate.html' },
+              { label: 'Refer a Friend — earn £50', href: '/refer.html' },
+              { label: 'Sitemap', href: '/sitemap.html' },
               { label: 'Contact us', href: 'mailto:hello@getdunlin.com' },
             ].map(({ label, href }) => (
-              <a key={label} href={href} target={href.startsWith('mailto') ? undefined : '_blank'} rel="noopener noreferrer"
+              <a key={label} href={href}"
                 style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
                 onMouseOver={e => e.currentTarget.style.color = '#7dd4cc'} onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}>
                 {label}
@@ -266,12 +266,12 @@ export default function Dashboard({ session, onSelect }) {
           <div>
             <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 14 }}>Legal</div>
             {[
-              { label: 'Privacy Policy', href: 'https://getdunlin.com/privacy.html' },
-              { label: 'Terms of Service', href: 'https://getdunlin.com/terms.html' },
-              { label: 'Cookie Policy', href: 'https://getdunlin.com/cookies.html' },
-              { label: 'GDPR', href: 'https://getdunlin.com/privacy.html#gdpr' },
+              { label: 'Privacy Policy', href: '/privacy.html' },
+              { label: 'Terms of Service', href: '/terms.html' },
+              { label: 'Cookie Policy', href: '/cookies.html' },
+              { label: 'GDPR', href: '/privacy.html#gdpr' },
             ].map(({ label, href }) => (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+              <a key={label} href={href}"
                 style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
                 onMouseOver={e => e.currentTarget.style.color = '#7dd4cc'} onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}>
                 {label}
