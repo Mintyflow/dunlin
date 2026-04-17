@@ -1200,17 +1200,17 @@
       <table class="vs-table">
         <thead>
           <tr>
-            <th style="min-width:200px">Feature</th>
-            <th class="dunlin-col" style="min-width:110px">✦ Dunlin</th>
+            <th style="min-width:220px">Feature</th>
+            <th class="dunlin-col" style="min-width:120px">✦ Dunlin</th>
+            <th style="min-width:110px">Apollo.io Org</th>
             <th style="min-width:90px">VTS</th>
             <th style="min-width:90px">CoStar</th>
             <th style="min-width:90px">Leasecake</th>
-            <th style="min-width:100px">Apollo alone</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="feat-col">Space Pressure Score™<small>Urgency scoring from 4 combined signals</small></td>
+            <td class="feat-col">Space Pressure Score™<small>Urgency score from 4 combined signals</small></td>
             <td class="dunlin-col"><span class="tick">✓</span> Exclusive</td>
             <td><span class="cross">✗</span></td>
             <td><span class="cross">✗</span></td>
@@ -1220,62 +1220,87 @@
           <tr>
             <td class="feat-col">UK lease expiry estimation<small>Companies House + Apollo cross-reference</small></td>
             <td class="dunlin-col"><span class="tick">✓</span></td>
+            <td><span class="cross">✗</span> No lease data</td>
             <td><span class="cross">✗</span></td>
             <td><span class="partial">Partial</span></td>
             <td><span class="tick">✓</span> Tenants only</td>
+          </tr>
+          <tr>
+            <td class="feat-col">UK Companies House integration<small>Live registered address + company data</small></td>
+            <td class="dunlin-col"><span class="tick">✓</span></td>
+            <td><span class="cross">✗</span> Not integrated</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
             <td><span class="cross">✗</span></td>
           </tr>
           <tr>
-            <td class="feat-col">30/60/90-day renewal calendar<small>Urgency-sorted hit list</small></td>
-            <td class="dunlin-col"><span class="tick">✓</span></td>
-            <td><span class="partial">Partial</span></td>
+            <td class="feat-col">Email accuracy (UK contacts)<small>Real-world verified deliverability</small></td>
+            <td class="dunlin-col"><span class="tick">✓</span> Dual-layer</td>
+            <td><span class="partial">~65–70% (UK weaker)</span></td>
             <td><span class="cross">✗</span></td>
-            <td><span class="tick">✓</span></td>
+            <td><span class="cross">✗</span></td>
             <td><span class="cross">✗</span></td>
           </tr>
           <tr>
-            <td class="feat-col">Dual-layer email verification<small>Apollo + live DNS/MX checking</small></td>
+            <td class="feat-col">Purpose-built for UK flex space<small>Not a generic sales tool adapted for CRE</small></td>
             <td class="dunlin-col"><span class="tick">✓</span></td>
-            <td><span class="cross">✗</span></td>
-            <td><span class="cross">✗</span></td>
-            <td><span class="cross">✗</span></td>
-            <td><span class="partial">Apollo only</span></td>
-          </tr>
-          <tr>
-            <td class="feat-col">Built-in outreach sequences<small>Lease renewal + flex operator templates</small></td>
-            <td class="dunlin-col"><span class="tick">✓</span></td>
-            <td><span class="cross">✗</span></td>
-            <td><span class="cross">✗</span></td>
-            <td><span class="cross">✗</span></td>
-            <td><span class="tick">✓</span></td>
-          </tr>
-          <tr>
-            <td class="feat-col">Built for flex space operators<small>Not landlords, brokers, or tenants</small></td>
-            <td class="dunlin-col"><span class="tick">✓</span></td>
+            <td><span class="cross">✗</span> Generic outbound</td>
             <td><span class="cross">✗</span> Landlords</td>
             <td><span class="cross">✗</span> Brokers</td>
             <td><span class="cross">✗</span> Tenants</td>
-            <td><span class="cross">✗</span></td>
           </tr>
           <tr>
-            <td class="feat-col">HubSpot CRM integration</td>
+            <td class="feat-col">Renewal radar calendar<small>30/60/90-day urgency-sorted hit list</small></td>
+            <td class="dunlin-col"><span class="tick">✓</span> Exclusive</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="partial">Partial</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+          <tr>
+            <td class="feat-col">Built-in outreach sequences<small>Lease renewal &amp; flex operator templates</small></td>
             <td class="dunlin-col"><span class="tick">✓</span></td>
+            <td><span class="tick">✓</span> Generic</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td class="feat-col">Single user plan available<small>No forced team minimum</small></td>
+            <td class="dunlin-col"><span class="tick">✓</span> From 1 user</td>
+            <td><span class="cross">✗</span> 3 users min</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+          <tr>
+            <td class="feat-col">HubSpot CRM push</td>
+            <td class="dunlin-col"><span class="tick">✓</span> Built in</td>
+            <td><span class="tick">✓</span> Native</td>
             <td><span class="tick">✓</span></td>
             <td><span class="cross">✗</span></td>
             <td><span class="tick">✓</span></td>
-            <td><span class="partial">Via Zapier</span></td>
           </tr>
           <tr>
-            <td class="feat-col">Typical annual cost</td>
-            <td class="dunlin-col"><span class="price-tag price-good">Affordable</span></td>
-            <td><span class="price-tag price-big">£15–40k</span></td>
-            <td><span class="price-tag price-big">£8–25k</span></td>
-            <td><span class="price-tag">£2–5k</span></td>
-            <td><span class="price-tag">£1–3k</span></td>
+            <td class="feat-col">GDPR-compliant UK data<small>No US-centric compliance gaps</small></td>
+            <td class="dunlin-col"><span class="tick">✓</span></td>
+            <td><span class="partial">Partial — known GDPR gaps</span></td>
+            <td><span class="tick">✓</span></td>
+            <td><span class="tick">✓</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+          <tr>
+            <td class="feat-col">Monthly cost (entry, 1 user)</td>
+            <td class="dunlin-col"><span class="price-tag price-good">£99/mo</span></td>
+            <td><span class="price-tag price-big">£280/mo min<br><small style="font-weight:300;font-size:10px">3 users required</small></span></td>
+            <td><span class="price-tag price-big">£1,250+/mo</span></td>
+            <td><span class="price-tag price-big">£700+/mo</span></td>
+            <td><span class="price-tag">£6–8/location</span></td>
           </tr>
         </tbody>
       </table>
     </div>
+    <p style="text-align:center;font-size:12px;color:var(--ink-light);margin-top:20px;padding-bottom:8px;">Apollo pricing based on Organisation plan (minimum 3 users at $119/user/mo). VTS &amp; CoStar pricing based on publicly reported ranges. Accurate as of April 2026.</p>
   </div>
 </div>
 
@@ -1495,46 +1520,69 @@
   </div>
 </div>
 
-<!-- TESTIMONIALS -->
+<!-- SOCIAL PROOF -->
 <div class="testimonials-wrap">
   <div class="section">
-    <div class="section-label">What operators say</div>
-    <h2 class="section-headline">Built with real operators</h2>
-    <p class="section-sub">Dunlin was shaped by conversations with the operators who use it every day.</p>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <p class="testi-quote">"We were running everything across four different tools. Dunlin brought it all into one place — it's transformed how we manage the space."</p>
+    <div class="section-label">Early access</div>
+    <h2 class="section-headline">Already in use.<br><em>More reviews coming.</em></h2>
+    <p class="section-sub">Dunlin is live and being used by UK flex space operators right now. Here's what they say.</p>
+    <div class="testi-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 780px; margin: 0 auto;">
+      <div class="testi-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <p class="testi-quote" id="review-1-quote" style="font-style:italic;">
+          <!-- REAL REVIEW PLACEHOLDER 1 — replace this comment with Ryan's actual quote -->
+          "Replace this with Ryan's real quote about using Dunlin."
+        </p>
         <div class="testi-author">
-          <div class="testi-avatar">SL</div>
+          <div class="testi-avatar">RC</div>
           <div>
-            <div class="testi-name">Sarah L.</div>
-            <div class="testi-role">Operations Manager, Manchester</div>
+            <div class="testi-name">Ryan C.</div>
+            <div class="testi-role">Director, Lokate Offices</div>
           </div>
         </div>
       </div>
-      <div class="testi-card">
-        <p class="testi-quote">"The automated invoicing alone saved me three hours a week. That's time I now spend with members rather than chasing payments."</p>
+      <div class="testi-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <p class="testi-quote" id="review-2-quote" style="font-style:italic;">
+          <!-- REAL REVIEW PLACEHOLDER 2 — replace this comment with Ryan's business partner's actual quote -->
+          "Replace this with Ryan's business partner's real quote."
+        </p>
         <div class="testi-author">
-          <div class="testi-avatar">JM</div>
+          <div class="testi-avatar">LO</div>
           <div>
-            <div class="testi-name">James M.</div>
-            <div class="testi-role">Founder, London Coworking Space</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <p class="testi-quote">"Finally a platform that actually understands how flex space works. It's not a generic CRM that someone's bolted workspace features onto."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">RK</div>
-          <div>
-            <div class="testi-name">Rachel K.</div>
-            <div class="testi-role">Centre Manager, Bristol</div>
+            <div class="testi-name">Lokate Offices</div>
+            <div class="testi-role">UK Flex Space Operator</div>
           </div>
         </div>
       </div>
     </div>
+    <p style="text-align:center; margin-top:32px; font-size:13px; color:rgba(255,255,255,0.3);">More reviews coming as we grow. <a href="mailto:hello@getdunlin.com" style="color:var(--teal-light); text-decoration:none;">Contact us</a> if you'd like to share yours.</p>
   </div>
 </div>
+
+<!-- EMAIL CAPTURE -->
+<div style="background:var(--teal-mist); padding:80px 48px; text-align:center;">
+  <div style="max-width:520px; margin:0 auto;">
+    <div style="font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--teal-mid); margin-bottom:16px; font-weight:600;">Not ready to subscribe yet?</div>
+    <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(30px,4vw,44px); font-weight:300; color:var(--teal-deep); margin-bottom:14px; line-height:1.15;">Get early access updates.</h2>
+    <p style="font-size:15px; color:var(--ink-mid); margin-bottom:36px; line-height:1.65; font-weight:300;">Leave your email and we'll let you know about new features, pricing changes, and when we open founding member spots.</p>
+    <form name="early-access" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="display:flex; gap:10px; max-width:420px; margin:0 auto 14px;" onsubmit="handleFormSubmit(event)">
+      <input type="hidden" name="form-name" value="early-access"/>
+      <input type="hidden" name="bot-field"/>
+      <input type="email" name="email" required placeholder="Your work email" style="flex:1; padding:13px 16px; border:1px solid rgba(26,74,74,0.2); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--ink); background:#fff; outline:none;"/>
+      <button type="submit" style="background:var(--teal-deep); color:#fff; border:none; padding:13px 22px; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; cursor:pointer; white-space:nowrap;">Keep me posted</button>
+    </form>
+    <div id="form-success" style="display:none; background:var(--teal-pale); border:1px solid rgba(58,173,160,0.3); border-radius:8px; padding:14px 20px; font-size:14px; color:var(--teal-mid); font-weight:500; max-width:420px; margin:0 auto;">✓ You're on the list — we'll be in touch.</div>
+    <p style="font-size:12px; color:var(--ink-light); margin-top:10px;">No spam. Unsubscribe any time.</p>
+  </div>
+</div>
+<script>
+function handleFormSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  fetch('/', { method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData(form)).toString() })
+    .then(() => { form.style.display='none'; document.getElementById('form-success').style.display='block'; })
+    .catch(() => form.submit());
+}
+</script>
 
 <!-- CTA BAND -->
 <div class="cta-band">

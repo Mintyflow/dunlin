@@ -10,6 +10,15 @@ const STRIPE_LINKS = {
   pro_annual:      "https://buy.stripe.com/9B600j3Rp8NDbRo5z0aAw0o",
 };
 
+// ── Promo codes ────────────────────────────────────────────────────────────────
+// To activate: go to Stripe Dashboard → Coupons → Create a promotion code
+// with the exact code string below, set the discount %, and enable
+// "Allow promotion codes" on each payment link.
+const PROMO_CODES = {
+  "LOKATE":        { discount: 0.50, label: "Lokate Offices — 50% partner rate" },
+  "LOKATEOFFICES": { discount: 0.50, label: "Lokate Offices — 50% partner rate" },
+};
+
 const PLANS = [
   {
     id: "starter",
@@ -78,12 +87,36 @@ const C = {
 export default function Paywall({ daysLeft = 0, onPrivacy, onTerms }) {
   const [billing, setBilling] = useState("annual");
   const [sel, setSel] = useState("growth");
+  const [promoInput, setPromoInput] = useState("");
+  const [promoApplied, setPromoApplied] = useState(null);
+  const [promoError, setPromoError] = useState("");
   const plan = PLANS.find(p => p.id === sel);
   const price = billing === "annual" ? plan.annual : plan.monthly;
   const isExpired = daysLeft <= 0;
 
+  const finalPrice = promoApplied ? Math.round(price * (1 - promoApplied.discount)) : price;
+  const saving = promoApplied ? price - finalPrice : 0;
+
+  const applyPromo = () => {
+    const code = promoInput.trim().toUpperCase();
+    if (PROMO_CODES[code]) {
+      setPromoApplied({ code, ...PROMO_CODES[code] });
+      setPromoError("");
+    } else {
+      setPromoError("Code not recognised. Check the spelling and try again.");
+      setPromoApplied(null);
+    }
+  };
+
+  const removePromo = () => {
+    setPromoApplied(null);
+    setPromoInput("");
+    setPromoError("");
+  };
+
   const handleCheckout = () => {
-    const link = STRIPE_LINKS[sel + "_" + billing];
+    let link = STRIPE_LINKS[sel + "_" + billing];
+    if (promoApplied) link += `?prefilled_promo_code=${promoApplied.code}`;
     window.open(link, "_blank");
   };
 
@@ -170,8 +203,12 @@ export default function Paywall({ daysLeft = 0, onPrivacy, onTerms }) {
             <span style={{ fontSize: 12, color: C.inkl, marginLeft: 10 }}>{plan.seats} · billed {billing}</span>
           </div>
           <div style={{ textAlign: "right" }}>
-            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: 28, color: C.dt }}>£{price}<span style={{ fontSize: 13, color: C.inkl }}>/mo</span></span>
-            {billing === "annual" && <div style={{ fontSize: 11, color: C.bt, marginTop: 1 }}>Saving £{(plan.monthly - plan.annual) * 12}/year</div>}
+            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: 28, color: C.dt }}>
+              {promoApplied && <span style={{ textDecoration: "line-through", color: C.inkl, fontSize: 18, marginRight: 6 }}>£{price}</span>}
+              £{finalPrice}<span style={{ fontSize: 13, color: C.inkl }}>/mo</span>
+            </span>
+            {promoApplied && <div style={{ fontSize: 11, color: "#e05a2b", marginTop: 1, fontWeight: 500 }}>£{saving}/mo off — {promoApplied.label}</div>}
+            {!promoApplied && billing === "annual" && <div style={{ fontSize: 11, color: C.bt, marginTop: 1 }}>Saving £{(plan.monthly - plan.annual) * 12}/year</div>}
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(190px,1fr))", gap: 3 }}>
@@ -183,13 +220,43 @@ export default function Paywall({ daysLeft = 0, onPrivacy, onTerms }) {
         </div>
       </div>
 
+      {/* Promo code */}
+      <div style={{ width: "100%", maxWidth: 800, marginBottom: 12 }}>
+        {!promoApplied ? (
+          <div>
+            <div style={{ fontSize: 12, color: C.inkl, marginBottom: 6 }}>Have a promo code?</div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <input
+                value={promoInput}
+                onChange={e => { setPromoInput(e.target.value); setPromoError(""); }}
+                onKeyDown={e => e.key === "Enter" && applyPromo()}
+                placeholder="Enter code (e.g. LOKATE)"
+                style={{ flex: 1, border: "1px solid " + (promoError ? "#e05a2b" : "rgba(26,74,74,0.15)"), borderRadius: 8, padding: "10px 14px", fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: C.ink, background: "#fff", outline: "none" }}
+              />
+              <button onClick={applyPromo} style={{ background: C.dt, color: "#fff", border: "none", padding: "10px 18px", borderRadius: 8, fontFamily: "'DM Sans',sans-serif", fontSize: 13, fontWeight: 500, cursor: "pointer" }}>
+                Apply
+              </button>
+            </div>
+            {promoError && <div style={{ fontSize: 12, color: "#e05a2b", marginTop: 6 }}>{promoError}</div>}
+          </div>
+        ) : (
+          <div style={{ background: "#f0faf8", border: "1px solid rgba(58,173,160,0.3)", borderRadius: 8, padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div>
+              <span style={{ fontSize: 13, color: C.mt, fontWeight: 500 }}>✓ {promoApplied.label}</span>
+              <div style={{ fontSize: 11, color: C.inkl, marginTop: 2 }}>Code: {promoApplied.code}</div>
+            </div>
+            <button onClick={removePromo} style={{ background: "none", border: "none", color: C.inkl, cursor: "pointer", fontSize: 12, fontFamily: "'DM Sans',sans-serif" }}>Remove</button>
+          </div>
+        )}
+      </div>
+
       {/* CTA */}
       <div style={{ width: "100%", maxWidth: 800 }}>
         <button onClick={handleCheckout} style={{ width: "100%", background: C.bt, color: "#fff", border: "none", padding: "15px", fontFamily: "'DM Sans',sans-serif", fontSize: 15, fontWeight: 500, cursor: "pointer", borderRadius: 10, marginBottom: 10, transition: "background .15s" }}
           onMouseOver={e => e.target.style.background = C.mt}
           onMouseOut={e => e.target.style.background = C.bt}
         >
-          Subscribe to {plan.name} — £{price}/mo
+          Subscribe to {plan.name} — £{finalPrice}/mo{promoApplied ? ` (was £${price})` : ""}
         </button>
       </div>
 
