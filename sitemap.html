@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sitemap — Dunlin</title>
+  <meta name="description" content="All pages on Dunlin — the UK flex space lead intelligence platform. Find features, pricing, legal, and more."/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-deep: #1a4a4a;
+      --teal-dark: #0f2e2e;
+      --teal-mid: #2a7a72;
+      --teal-bright: #3aada0;
+      --teal-light: #7dd4cc;
+      --sand: #f5f0e8;
+      --ink: #1c2b2b;
+    }
+
+    body {
+      font-family: 'DM Sans', Arial, sans-serif;
+      background: var(--sand);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--teal-dark);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 300;
+      color: white; letter-spacing: 0.08em;
+    }
+    .nav-back {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--teal-light); }
+
+    /* ── HERO ── */
+    .sitemap-hero {
+      background: var(--teal-dark);
+      padding: 64px 48px 80px;
+      text-align: center;
+    }
+    .sitemap-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px; font-weight: 300;
+      color: white; letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+    .sitemap-hero p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.45);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── MAIN ── */
+    .sitemap-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .sitemap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .sitemap-section h2 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal-mid);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(26,74,74,0.12);
+    }
+
+    .sitemap-section ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .sitemap-section li {
+      border-bottom: 1px solid rgba(26,74,74,0.06);
+    }
+
+    .sitemap-section a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      text-decoration: none;
+      color: var(--ink);
+      transition: color 0.2s;
+    }
+
+    .sitemap-section a:hover {
+      color: var(--teal-bright);
+    }
+
+    .sitemap-section a:hover .arrow { opacity: 1; transform: translateX(3px); }
+
+    .link-info { display: flex; flex-direction: column; gap: 3px; }
+
+    .link-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: inherit;
+    }
+
+    .link-desc {
+      font-size: 12px;
+      color: rgba(28,43,43,0.45);
+      line-height: 1.5;
+    }
+
+    .arrow {
+      font-size: 14px;
+      color: var(--teal-bright);
+      opacity: 0.3;
+      transition: opacity 0.2s, transform 0.2s;
+      flex-shrink: 0;
+      margin-left: 12px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .tag-new { background: rgba(58,173,160,0.12); color: var(--teal-mid); }
+    .tag-app { background: rgba(26,74,74,0.08); color: var(--teal-deep); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--teal-dark);
+      padding: 64px 48px 40px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-brand .wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 300;
+      color: white; letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .footer-brand p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.7;
+      max-width: 220px;
+      margin-bottom: 20px;
+    }
+    .footer-col h4 {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; border: none; }
+    .footer-col li { border: none; }
+    .footer-col a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+      padding: 0;
+      display: inline;
+      justify-content: unset;
+    }
+    .footer-col a:hover { color: var(--teal-light); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.2); }
+    .footer-bottom .legal { display: flex; gap: 24px; }
+    .footer-bottom .legal a {
+      font-size: 12px; color: rgba(255,255,255,0.2);
+      text-decoration: none; transition: color 0.2s;
+      padding: 0; display: inline; justify-content: unset;
+    }
+    .footer-bottom .legal a:hover { color: rgba(255,255,255,0.45); }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .sitemap-hero { padding: 48px 24px 56px; }
+      .sitemap-hero h1 { font-size: 36px; }
+      .sitemap-body { padding: 48px 24px; }
+      .sitemap-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      footer { padding: 48px 24px 32px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    @media (max-width: 600px) {
+      .sitemap-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://getdunlin.com" class="nav-logo">
+    <svg width="28" height="19" viewBox="0 0 120 80" fill="none">
+      <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.55)" stroke-width="2"/>
+      <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.55)" stroke-width="2"/>
+      <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span class="nav-wordmark">dunlin</span>
+  </a>
+  <a href="https://getdunlin.com" class="nav-back">← Back to home</a>
+</nav>
+
+<!-- HERO -->
+<div class="sitemap-hero">
+  <h1>Sitemap</h1>
+  <p>Every page on Dunlin — find what you're looking for.</p>
+</div>
+
+<!-- BODY -->
+<div class="sitemap-body">
+  <div class="sitemap-grid">
+
+    <!-- MAIN SITE -->
+    <div class="sitemap-section">
+      <h2>Main Site</h2>
+      <ul>
+        <li>
+          <a href="https://getdunlin.com">
+            <div class="link-info">
+              <span class="link-title">Home</span>
+              <span class="link-desc">Overview, features, pricing, how it works</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://getdunlin.com#features">
+            <div class="link-info">
+              <span class="link-title">Features</span>
+              <span class="link-desc">What Dunlin does and how it saves you time</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://getdunlin.com#how">
+            <div class="link-info">
+              <span class="link-title">How It Works</span>
+              <span class="link-desc">Find, score, and close — the three-step flow</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://getdunlin.com#pricing">
+            <div class="link-info">
+              <span class="link-title">Pricing</span>
+              <span class="link-desc">Starter, Growth, and Pro founding rates</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="/one-pager.html">
+            <div class="link-info">
+              <span class="link-title">Product Overview <span class="tag tag-new">New</span></span>
+              <span class="link-desc">The full sales one-pager — ideal for sharing</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- APP -->
+    <div class="sitemap-section">
+      <h2>The App</h2>
+      <ul>
+        <li>
+          <a href="https://app.getdunlin.com">
+            <div class="link-info">
+              <span class="link-title">Sign In <span class="tag tag-app">App</span></span>
+              <span class="link-desc">Log in to your Dunlin account</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://app.getdunlin.com">
+            <div class="link-info">
+              <span class="link-title">Free Trial <span class="tag tag-app">App</span></span>
+              <span class="link-desc">Start for free — no credit card needed</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://app.getdunlin.com">
+            <div class="link-info">
+              <span class="link-title">Dashboard <span class="tag tag-app">App</span></span>
+              <span class="link-desc">Your Space Matcher, saved leads, and tools</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- GROW -->
+    <div class="sitemap-section">
+      <h2>Grow with Dunlin</h2>
+      <ul>
+        <li>
+          <a href="/affiliate.html">
+            <div class="link-info">
+              <span class="link-title">Affiliate Programme</span>
+              <span class="link-desc">Earn 20% recurring commission on every referral</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="/refer.html">
+            <div class="link-info">
+              <span class="link-title">Refer a Friend</span>
+              <span class="link-desc">Give £50, get £50 — no limits</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="/public/dunlin-one-pager.pdf" target="_blank" rel="noopener">
+            <div class="link-info">
+              <span class="link-title">Download PDF</span>
+              <span class="link-desc">One-pager PDF for email and presentations</span>
+            </div>
+            <span class="arrow">↓</span>
+          </a>
+        </li>
+        <li>
+          <a href="mailto:hello@getdunlin.com">
+            <div class="link-info">
+              <span class="link-title">Contact</span>
+              <span class="link-desc">hello@getdunlin.com — we reply same day</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- LEGAL -->
+    <div class="sitemap-section">
+      <h2>Legal &amp; Compliance</h2>
+      <ul>
+        <li>
+          <a href="/privacy.html">
+            <div class="link-info">
+              <span class="link-title">Privacy Policy</span>
+              <span class="link-desc">How we collect and use your data</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="/terms.html">
+            <div class="link-info">
+              <span class="link-title">Terms of Service</span>
+              <span class="link-desc">Your agreement with Marvanova Ltd</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="/cookies.html">
+            <div class="link-info">
+              <span class="link-title">Cookie Policy</span>
+              <span class="link-desc">What cookies we use and why</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="/privacy.html#gdpr">
+            <div class="link-info">
+              <span class="link-title">GDPR</span>
+              <span class="link-desc">Your data rights under UK GDPR</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- FLEX SPACE OS -->
+    <div class="sitemap-section">
+      <h2>Flex Space OS</h2>
+      <ul>
+        <li>
+          <a href="https://getdunlin.com/flexspaceos" target="_blank" rel="noopener">
+            <div class="link-info">
+              <span class="link-title">FlexSpace OS Overview</span>
+              <span class="link-desc">The full operator platform — coming soon</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="mailto:hello@getdunlin.com?subject=FlexSpace OS waitlist">
+            <div class="link-info">
+              <span class="link-title">Join the Waitlist</span>
+              <span class="link-desc">Be first when FlexSpace OS launches</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- CONNECT -->
+    <div class="sitemap-section">
+      <h2>Connect</h2>
+      <ul>
+        <li>
+          <a href="https://marvanova.com" target="_blank" rel="noopener">
+            <div class="link-info">
+              <span class="link-title">Marvanova</span>
+              <span class="link-desc">The studio behind Dunlin</span>
+            </div>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/getdunlin" target="_blank" rel="noopener">
+            <div class="link-info">
+              <span class="link-title">Twitter / X</span>
+              <span class="link-desc">@getdunlin</span>
+            </div>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://linkedin.com/company/dunlin" target="_blank" rel="noopener">
+            <div class="link-info">
+              <span class="link-title">LinkedIn</span>
+              <span class="link-desc">Follow Dunlin on LinkedIn</span>
+            </div>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="mailto:hello@getdunlin.com">
+            <div class="link-info">
+              <span class="link-title">Email Us</span>
+              <span class="link-desc">hello@getdunlin.com</span>
+            </div>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="wordmark">dunlin</div>
+      <p>The operating system for flexible workspace operators. Built for independent UK flex space businesses.</p>
+      <svg width="36" height="24" viewBox="0 0 120 80" fill="none">
+        <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="https://getdunlin.com#features">Features</a></li>
+        <li><a href="https://getdunlin.com#pricing">Pricing</a></li>
+        <li><a href="https://getdunlin.com#how">How it works</a></li>
+        <li><a href="/one-pager.html">Product Overview</a></li>
+        <li><a href="https://app.getdunlin.com">Start free trial</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="mailto:hello@getdunlin.com">About</a></li>
+        <li><a href="/affiliate.html">Affiliate Programme</a></li>
+        <li><a href="/refer.html">Refer a Friend</a></li>
+        <li><a href="/sitemap.html">Sitemap</a></li>
+        <li><a href="mailto:hello@getdunlin.com">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="/privacy.html">Privacy Policy</a></li>
+        <li><a href="/terms.html">Terms of Service</a></li>
+        <li><a href="/cookies.html">Cookie Policy</a></li>
+        <li><a href="/privacy.html#gdpr">GDPR</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Dunlin. All rights reserved. Marvanova Ltd.</p>
+    <div class="legal">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/cookies.html">Cookies</a>
+      <a href="/sitemap.html">Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MARVANOVA FOOTER STRIP -->
+<div style="background:#0b1622; padding:14px 24px; text-align:center;">
+  <a href="https://marvanova.com" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; opacity:0.75; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
+    <span style="font-family:'DM Sans',Arial,sans-serif; font-size:11px; color:#6a8a9a; letter-spacing:0.08em; font-weight:400;">Built by</span>
+    <span style="font-family:Arial,sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em;">
+      <span style="background:linear-gradient(90deg,#0066cc,#00aadd); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">MARVA</span><span style="color:#8a9aaa; -webkit-text-fill-color:#8a9aaa;">NOVA</span>
+    </span>
+    <span style="font-family:'DM Sans',Arial,sans-serif; font-size:10px; color:#4a6a7a; letter-spacing:0.14em; font-weight:500; text-transform:uppercase;">AI Agency</span>
+  </a>
+</div>
+
+</body>
+</html>
