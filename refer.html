@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Refer a Friend — Dunlin</title>
+<meta name="description" content="Give a friend £50 off their first month of Dunlin. You get £50 account credit. It's that simple." />
+<meta name="robots" content="noindex, follow" />
+<link rel="canonical" href="https://www.getdunlin.com/refer" />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" href="/favicon.ico" />
+<meta name="theme-color" content="#1A4A4A" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.getdunlin.com/refer" />
+<meta property="og:title" content="Refer a Friend to Dunlin — Give £50, Get £50" />
+<meta property="og:description" content="Give a friend £50 off their first paid month. You get £50 credit on your next bill. No limits on how many friends you refer." />
+<meta property="og:site_name" content="Dunlin" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --teal-deep:   #1a4a4a;
+    --teal-dark:   #0f2e2e;
+    --teal-mid:    #2a7a72;
+    --teal-bright: #3aada0;
+    --teal-light:  #7dd4cc;
+    --teal-pale:   #d6f0ee;
+    --teal-mist:   #f0f9f8;
+    --sand:        #f5f0e8;
+    --sand-dark:   #ede8df;
+    --ink:         #1c2b2b;
+    --ink-mid:     #3d5252;
+    --ink-light:   #7a9696;
+    --gold:        #b8872a;
+    --gold-pale:   #fdf3e0;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(26,74,74,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300;
+    color: white; letter-spacing: 0.07em;
+  }
+  .nav-back {
+    font-size: 13px; color: rgba(255,255,255,0.55);
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--teal-light); }
+  @media (max-width: 900px) { nav { padding: 16px 24px; } }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--teal-deep);
+    padding: 130px 48px 90px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 55% 50% at 30% 0%, rgba(184,135,42,0.12) 0%, transparent 65%),
+      radial-gradient(ellipse 55% 50% at 70% 0%, rgba(58,173,160,0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--teal-light); margin-bottom: 20px; opacity: 0.9;
+  }
+
+  /* Big split figure */
+  .split-figure {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin-bottom: 36px;
+    position: relative; z-index: 1;
+  }
+  .split-side {
+    text-align: center; padding: 32px 40px;
+    border-radius: 20px;
+    width: 240px;
+  }
+  .split-side.give {
+    background: rgba(184,135,42,0.15);
+    border: 1px solid rgba(184,135,42,0.25);
+  }
+  .split-side.get {
+    background: rgba(58,173,160,0.15);
+    border: 1px solid rgba(58,173,160,0.25);
+  }
+  .split-verb {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .split-side.give .split-verb { color: #d4a84b; }
+  .split-side.get .split-verb { color: var(--teal-light); }
+  .split-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px; font-weight: 300; line-height: 1;
+  }
+  .split-side.give .split-amount { color: #e8c06a; }
+  .split-side.get .split-amount { color: var(--teal-light); }
+  .split-sub {
+    font-size: 12px; margin-top: 8px; font-weight: 300; letter-spacing: 0.03em;
+  }
+  .split-side.give .split-sub { color: rgba(232,192,106,0.65); }
+  .split-side.get .split-sub { color: rgba(125,212,204,0.65); }
+
+  .split-arrow {
+    font-size: 24px; color: rgba(255,255,255,0.2);
+    padding: 0 12px;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 5.5vw, 76px); font-weight: 300;
+    color: white; line-height: 1.08; margin-bottom: 20px;
+    position: relative; z-index: 1;
+  }
+  .hero h1 em { font-style: italic; color: var(--teal-light); }
+  .hero-sub {
+    font-size: 17px; font-weight: 300;
+    color: rgba(255,255,255,0.6); line-height: 1.75;
+    max-width: 520px; margin: 0 auto 44px;
+    position: relative; z-index: 1;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--teal-bright); color: white;
+    padding: 16px 40px; border-radius: 8px;
+    font-size: 15px; font-weight: 500;
+    text-decoration: none; letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 18px rgba(58,173,160,0.35);
+    position: relative; z-index: 1;
+  }
+  .btn-primary:hover { background: var(--teal-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(58,173,160,0.45); }
+  .btn-primary:active { transform: scale(0.97); }
+  .hero-note {
+    margin-top: 16px;
+    font-size: 12px; color: rgba(255,255,255,0.25);
+    letter-spacing: 0.06em;
+    position: relative; z-index: 1;
+  }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    background: var(--teal-dark);
+    padding: 28px 48px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 56px; flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: rgba(255,255,255,0.5);
+  }
+  .trust-item .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal-bright); flex-shrink: 0;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .section { padding: 96px 48px; max-width: 1060px; margin: 0 auto; }
+  .section-label {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--teal-bright); margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 4vw, 52px); font-weight: 300;
+    color: var(--ink); line-height: 1.18; margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 16px; font-weight: 300; color: var(--ink-mid);
+    line-height: 1.75; max-width: 520px; margin-bottom: 56px;
+  }
+
+  .steps {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .step {
+    background: white; border-radius: 16px;
+    padding: 36px 28px;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .step:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(26,74,74,0.08); }
+  .step-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 20px;
+  }
+  .step h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400; color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .step p { font-size: 14px; color: var(--ink-mid); line-height: 1.75; }
+
+  /* ── REFERRAL CALCULATOR ── */
+  .calc-wrap {
+    background: var(--teal-dark);
+    padding: 96px 48px;
+  }
+  .calc-inner { max-width: 700px; margin: 0 auto; text-align: center; }
+  .calc-inner .section-title { color: white; margin-bottom: 12px; }
+  .calc-inner .section-sub { color: rgba(255,255,255,0.5); margin: 0 auto 48px; }
+
+  .calc-slider-wrap { margin-bottom: 16px; }
+  .calc-slider {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.12);
+    outline: none;
+    cursor: pointer;
+    position: relative;
+  }
+  .calc-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--teal-bright);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(58,173,160,0.4);
+    transition: box-shadow 0.2s;
+  }
+  .calc-slider::-webkit-slider-thumb:hover { box-shadow: 0 4px 16px rgba(58,173,160,0.6); }
+  .calc-slider::-moz-range-thumb {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--teal-bright); border: none; cursor: pointer;
+  }
+  .calc-label {
+    font-size: 13px; color: rgba(255,255,255,0.4);
+    margin-bottom: 32px; letter-spacing: 0.04em;
+  }
+  .calc-label span { color: var(--teal-light); font-weight: 500; }
+
+  .calc-result {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 16px; padding: 36px 40px;
+    display: grid; grid-template-columns: 1fr 1px 1fr; gap: 32px;
+    align-items: center;
+  }
+  .calc-col { text-align: center; }
+  .calc-col .label {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .calc-col.give .label { color: #d4a84b; }
+  .calc-col.get .label { color: var(--teal-light); }
+  .calc-col .amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px; font-weight: 300; line-height: 1;
+  }
+  .calc-col.give .amount { color: #e8c06a; }
+  .calc-col.get .amount { color: var(--teal-light); }
+  .calc-col .sub {
+    font-size: 12px; margin-top: 8px; font-weight: 300;
+  }
+  .calc-col.give .sub { color: rgba(232,192,106,0.5); }
+  .calc-col.get .sub { color: rgba(125,212,204,0.5); }
+  .calc-divider { background: rgba(255,255,255,0.08); }
+
+  /* ── CLAIM SECTION ── */
+  .claim-wrap {
+    padding: 96px 48px;
+    background: var(--teal-mist);
+  }
+  .claim-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+  .claim-inner .section-title { margin-bottom: 14px; }
+  .claim-inner .section-sub { margin: 0 auto 40px; }
+  .claim-form {
+    display: flex; gap: 12px; margin-bottom: 14px;
+  }
+  .claim-form input {
+    flex: 1; padding: 15px 20px;
+    background: white;
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; color: var(--ink);
+    outline: none; transition: border-color 0.2s;
+  }
+  .claim-form input:focus { border-color: var(--teal-bright); box-shadow: 0 0 0 3px rgba(58,173,160,0.12); }
+  .claim-form button {
+    padding: 15px 28px;
+    background: var(--teal-deep); color: white;
+    border: none; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500;
+    cursor: pointer; white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .claim-form button:hover { background: var(--teal-mid); }
+  .claim-form button:active { transform: scale(0.97); }
+  .claim-note { font-size: 12px; color: var(--ink-light); letter-spacing: 0.04em; }
+  #claim-success {
+    display: none;
+    background: var(--teal-pale);
+    border: 1px solid rgba(58,173,160,0.3);
+    border-radius: 10px;
+    padding: 16px 24px;
+    font-size: 14px; color: var(--teal-mid);
+    margin-bottom: 14px;
+  }
+
+  /* ── RULES ── */
+  .rules-wrap { max-width: 680px; margin: 0 auto; padding: 80px 48px; }
+  .rules-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300;
+    color: var(--ink); margin-bottom: 28px;
+  }
+  .rules-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  .rules-list li {
+    display: flex; gap: 14px;
+    font-size: 14px; color: var(--ink-mid); line-height: 1.75;
+  }
+  .rules-list li::before {
+    content: '—';
+    color: var(--teal-bright); flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--teal-dark);
+    padding: 36px 48px;
+    text-align: center;
+  }
+  footer a {
+    font-size: 13px; color: rgba(255,255,255,0.35);
+    text-decoration: none; margin: 0 16px;
+    transition: color 0.2s;
+  }
+  footer a:hover { color: var(--teal-light); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.18); margin-top: 20px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { padding: 110px 24px 72px; }
+    .trust-bar { gap: 24px; padding: 28px 24px; }
+    .section { padding: 72px 24px; }
+    .steps { grid-template-columns: 1fr; }
+    .calc-wrap { padding: 72px 24px; }
+    .calc-result { grid-template-columns: 1fr; }
+    .calc-divider { display: none; }
+    .claim-wrap { padding: 72px 24px; }
+    .rules-wrap { padding: 60px 24px; }
+    footer { padding: 28px 24px; }
+  }
+  @media (max-width: 600px) {
+    .split-figure { flex-direction: column; gap: 12px; }
+    .split-arrow { transform: rotate(90deg); }
+    .split-side { width: 100%; max-width: 280px; padding: 24px 32px; }
+    .split-amount { font-size: 56px; }
+    .claim-form { flex-direction: column; }
+    .claim-form input, .claim-form button { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://getdunlin.com" class="nav-logo">
+    <svg width="34" height="23" viewBox="0 0 120 80" fill="none">
+      <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+      <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+      <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <span class="nav-wordmark">dunlin</span>
+  </a>
+  <a href="https://getdunlin.com" class="nav-back">← Back to site</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Refer a Friend</div>
+  <div class="split-figure">
+    <div class="split-side give">
+      <div class="split-verb">You give them</div>
+      <div class="split-amount">£50</div>
+      <div class="split-sub">off their first paid month</div>
+    </div>
+    <div class="split-arrow">⇄</div>
+    <div class="split-side get">
+      <div class="split-verb">You get</div>
+      <div class="split-amount">£50</div>
+      <div class="split-sub">credit on your next bill</div>
+    </div>
+  </div>
+  <h1>Know someone who<br>needs <em>better leads?</em></h1>
+  <p class="hero-sub">Share your unique referral link. When your friend subscribes and stays past their trial, you both win £50. No caps — refer as many people as you like.</p>
+  <a href="#get-link" class="btn-primary">Get my referral link</a>
+  <p class="hero-note">For existing Dunlin subscribers only · Credit applied automatically</p>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><div class="dot"></div>£50 off first paid month for your friend</div>
+  <div class="trust-item"><div class="dot"></div>£50 credit on your account within 48 hours</div>
+  <div class="trust-item"><div class="dot"></div>No limit on referrals</div>
+  <div class="trust-item"><div class="dot"></div>Credit never expires</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section">
+  <div class="section-label">How it works</div>
+  <h2 class="section-title">Simple as it gets.</h2>
+  <p class="section-sub">Enter your email below, get your unique link, share it — and watch the credit land.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-icon" style="background:#e8f4f0;">🔗</div>
+      <h3>Get your link</h3>
+      <p>Enter your Dunlin account email below and we'll generate a unique referral link just for you. Takes 10 seconds.</p>
+    </div>
+    <div class="step">
+      <div class="step-icon" style="background:#fdf3e0;">✉️</div>
+      <h3>Share it</h3>
+      <p>Send your link to a friend, a contact, anyone in the flex space world who'd benefit from Dunlin. They get £50 off automatically.</p>
+    </div>
+    <div class="step">
+      <div class="step-icon" style="background:#f0fdf4;">💷</div>
+      <h3>Earn your credit</h3>
+      <p>Once they pay their first invoice (after their free trial), £50 credit lands on your Dunlin account within 48 hours. Automatically.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="calc-wrap">
+  <div class="calc-inner">
+    <div class="section-label" style="color:var(--teal-light); text-align:center; margin-bottom:14px;">See what you earn</div>
+    <h2 class="section-title" style="color:white; margin-bottom:12px;">How much could you save?</h2>
+    <p class="section-sub" style="text-align:center;">Refer enough friends and your Dunlin subscription pays for itself.</p>
+    <div class="calc-slider-wrap">
+      <input type="range" class="calc-slider" id="refSlider" min="1" max="20" value="3" oninput="updateCalc(this.value)">
+    </div>
+    <p class="calc-label">You refer <span id="refCount">3</span> friends who subscribe</p>
+    <div class="calc-result">
+      <div class="calc-col give">
+        <div class="label">They each save</div>
+        <div class="amount">£50</div>
+        <div class="sub">off their first month</div>
+      </div>
+      <div class="calc-divider"></div>
+      <div class="calc-col get">
+        <div class="label">You earn in total</div>
+        <div class="amount" id="calcTotal">£150</div>
+        <div class="sub" id="calcSub">3 months of Starter, free</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GET YOUR LINK -->
+<div class="claim-wrap" id="get-link">
+  <div class="claim-inner">
+    <div class="section-label" style="text-align:center; margin-bottom:14px;">Get started</div>
+    <h2 class="section-title">Get your referral link.</h2>
+    <p class="section-sub">Enter the email address on your Dunlin account. We'll send your unique referral link straight to your inbox.</p>
+    <div id="claim-success">✓ Done — check your inbox. Your referral link will arrive within a few minutes.</div>
+    <form name="referral-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleReferSubmit(event)">
+      <input type="hidden" name="form-name" value="referral-request">
+      <input type="hidden" name="bot-field">
+      <div class="claim-form">
+        <input type="email" name="email" placeholder="Your Dunlin account email" required autocomplete="email">
+        <button type="submit">Send my link →</button>
+      </div>
+    </form>
+    <p class="claim-note">Must be an active Dunlin subscriber · Link arrives by email within minutes</p>
+  </div>
+</div>
+
+<!-- RULES -->
+<div class="rules-wrap">
+  <h3 class="rules-title">The small print.</h3>
+  <ul class="rules-list">
+    <li>The referral offer is available to active Dunlin subscribers (paying, not in trial) only.</li>
+    <li>Your friend must be new to Dunlin — they must not have had a Dunlin account previously.</li>
+    <li>Your friend's £50 discount is applied automatically to their first paid invoice, after their 14-day free trial.</li>
+    <li>Your £50 credit is applied to your account within 48 hours of your friend's first successful payment.</li>
+    <li>Credit does not expire and can be applied against any future invoice. It is not redeemable for cash.</li>
+    <li>There is no limit on the number of friends you can refer — each successful referral earns you another £50.</li>
+    <li>Dunlin reserves the right to cancel referral credit if fraudulent activity is suspected.</li>
+    <li>Questions? Email <a href="mailto:hello@getdunlin.com" style="color:var(--teal-mid); text-decoration:none;">hello@getdunlin.com</a></li>
+  </ul>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://getdunlin.com">Home</a>
+  <a href="https://getdunlin.com#pricing">Pricing</a>
+  <a href="/affiliate.html">Affiliate Programme</a>
+  <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a>
+  <a href="/privacy.html">Privacy</a>
+  <a href="/terms.html">Terms</a>
+  <p class="footer-copy">© 2025 Dunlin · Marvanova Ltd · All rights reserved</p>
+</footer>
+
+<!-- MARVANOVA FOOTER STRIP -->
+<div style="background:#0b1622; padding:14px 24px; text-align:center;">
+  <a href="https://marvanova.com" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; opacity:0.75; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
+    <span style="font-family:'DM Sans',Arial,sans-serif; font-size:11px; color:#6a8a9a; letter-spacing:0.08em; font-weight:400;">Built by</span>
+    <span style="font-family:Arial,sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em;">
+      <span style="background:linear-gradient(90deg,#0066cc,#00aadd); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">MARVA</span><span style="color:#8a9aaa; -webkit-text-fill-color:#8a9aaa;">NOVA</span>
+    </span>
+    <span style="font-family:'DM Sans',Arial,sans-serif; font-size:10px; color:#4a6a7a; letter-spacing:0.14em; font-weight:500; text-transform:uppercase;">AI Agency</span>
+  </a>
+</div>
+
+<script>
+  /* ── Calculator ── */
+  function updateCalc(n) {
+    n = parseInt(n);
+    document.getElementById('refCount').textContent = n;
+    const total = n * 50;
+    document.getElementById('calcTotal').textContent = '£' + total;
+    // Work out how many months of which plan that covers
+    let sub = '';
+    if (total < 99)       sub = Math.floor(total / 99 * 10) / 10 + ' months of Starter';
+    else if (total < 179) sub = Math.round(total / 99 * 10) / 10 + ' months of Starter';
+    else if (total < 349) sub = Math.round(total / 179 * 10) / 10 + ' months of Growth';
+    else sub = Math.round(total / 349 * 10) / 10 + ' months of Pro';
+    // Simple readable label
+    const months = Math.round(total / 99);
+    if (months <= 1) sub = 'That\'s 1 month of Starter, covered';
+    else sub = 'That\'s ~' + months + ' months of Starter, covered';
+    document.getElementById('calcSub').textContent = sub;
+    // Update slider fill
+    const pct = ((n - 1) / 19) * 100;
+    document.getElementById('refSlider').style.background =
+      `linear-gradient(to right, #3aada0 ${pct}%, rgba(255,255,255,0.12) ${pct}%)`;
+  }
+  // Initialise
+  updateCalc(3);
+
+  /* ── Form submit ── */
+  function handleReferSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data).toString()
+    }).then(() => {
+      form.style.display = 'none';
+      document.getElementById('claim-success').style.display = 'block';
+    }).catch(() => {
+      form.style.display = 'none';
+      document.getElementById('claim-success').style.display = 'block';
+    });
+  }
+</script>
+
+</body>
+</html>
