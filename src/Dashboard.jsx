@@ -222,7 +222,7 @@ export default function Dashboard({ session, onSelect }) {
         {/* ── Footer note ── */}
         <p style={{ textAlign: 'center', fontSize: 12, color: C.inkl, marginTop: 28, lineHeight: 1.7 }}>
           More tools coming soon —{' '}
-          <a href="mailto:hello@getdunlin.com?subject=Tool request" style={{ color: C.bt, cursor: 'pointer', textDecoration: 'none' }}>send us a request</a>
+          <a href="mailto:apps@marvanova.com?subject=Tool request" style={{ color: C.bt, cursor: 'pointer', textDecoration: 'none' }}>send us a request</a>
         </p>
       </div>
 
@@ -253,7 +253,7 @@ export default function Dashboard({ session, onSelect }) {
               { label: 'Affiliate Programme', href: '/affiliate.html' },
               { label: 'Refer a Friend — earn £50', href: '/refer.html' },
               { label: 'Sitemap', href: '/sitemap.html' },
-              { label: 'Contact us', href: 'mailto:hello@getdunlin.com' },
+              { label: 'Contact us', href: 'mailto:apps@marvanova.com' },
             ].map(({ label, href }) => (
               <a key={label} href={href}
                 style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}

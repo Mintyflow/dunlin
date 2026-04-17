@@ -36,7 +36,7 @@ function AppFooter() {
           { label: 'Affiliate Programme', href: '/affiliate.html' },
           { label: 'Refer a Friend — earn £50', href: '/refer.html' },
           { label: 'Sitemap', href: '/sitemap.html' },
-          { label: 'Contact us', href: 'mailto:hello@getdunlin.com' },
+          { label: 'Contact us', href: 'mailto:apps@marvanova.com' },
         ])}
         {col('Legal', [
           { label: 'Privacy Policy', href: '/privacy.html' },
