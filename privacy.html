@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Privacy Policy — Dunlin</title>
+<meta name="description" content="Dunlin's Privacy Policy. How we collect, use, and protect your personal data under UK GDPR and the UK Data Protection Act 2018." />
+<meta name="author" content="Dunlin · Marvanova Ltd." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://www.getdunlin.com/privacy.html" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" href="/favicon.ico" />
+<meta name="theme-color" content="#1A4A4A" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.getdunlin.com/privacy.html" />
+<meta property="og:title" content="Privacy Policy — Dunlin" />
+<meta property="og:description" content="How Dunlin collects, uses, and protects your personal data. UK GDPR compliant." />
+<meta property="og:site_name" content="Dunlin" />
+<meta property="og:locale" content="en_GB" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal-deep: #1a4a4a;
+    --teal-dark: #0f2e2e;
+    --teal-mid: #2a7a72;
+    --teal-bright: #3aada0;
+    --teal-light: #7dd4cc;
+    --teal-pale: #d6f0ee;
+    --teal-mist: #f0f9f8;
+    --sand: #f5f0e8;
+    --sand-dark: #ede8df;
+    --ink: #1c2b2b;
+    --ink-mid: #3d5252;
+    --ink-light: #7a9696;
+    --white: #ffffff;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(26,74,74,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--white);
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px; font-weight: 400;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--teal-light); }
+
+  .nav-back {
+    background: var(--teal-bright);
+    color: white !important;
+    padding: 9px 22px;
+    border-radius: 6px;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-back:hover { background: var(--teal-mid) !important; color: white !important; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--teal-deep);
+    padding: 140px 48px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,173,160,0.1) 0%, transparent 65%);
+    top: -200px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,173,160,0.07) 0%, transparent 65%);
+    bottom: -150px; left: -80px;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: 24px;
+    opacity: 0.85;
+    position: relative; z-index: 1;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 6vw, 80px);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    position: relative; z-index: 1;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.03em;
+    position: relative; z-index: 1;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  .policy-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 56px 64px;
+    box-shadow: 0 2px 24px rgba(26,74,74,0.06), 0 1px 4px rgba(26,74,74,0.04);
+  }
+
+  /* Table of contents */
+  .toc {
+    background: var(--teal-mist);
+    border: 1px solid var(--teal-pale);
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+
+  .toc h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 400;
+    color: var(--teal-deep);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .toc ol {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .toc a {
+    font-size: 13px;
+    color: var(--teal-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .toc a:hover { color: var(--teal-bright); text-decoration: underline; }
+
+  /* Headings */
+  .policy-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 400;
+    color: var(--ink);
+    margin-top: 48px;
+    margin-bottom: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--sand-dark);
+    line-height: 1.2;
+    scroll-margin-top: 100px;
+  }
+
+  .policy-card h2:first-of-type {
+    border-top: none;
+    margin-top: 0;
+  }
+
+  .policy-card h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500;
+    color: var(--ink);
+    margin-top: 28px;
+    margin-bottom: 10px;
+    letter-spacing: 0.01em;
+  }
+
+  /* Body text */
+  .policy-card p {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+
+  .policy-card p:last-child { margin-bottom: 0; }
+
+  /* Lists */
+  .policy-card ul, .policy-card ol {
+    padding-left: 22px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .policy-card li {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+
+  .policy-card li strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Info callout */
+  .callout {
+    background: var(--teal-mist);
+    border-left: 3px solid var(--teal-bright);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+
+  .callout p {
+    font-size: 13px;
+    color: var(--ink-mid);
+    margin-bottom: 0;
+  }
+
+  /* Processor table */
+  .processor-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 24px;
+    font-size: 13px;
+  }
+
+  .processor-table th {
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--sand-dark);
+    background: var(--sand);
+  }
+
+  .processor-table td {
+    padding: 12px 12px;
+    border-bottom: 1px solid var(--sand-dark);
+    color: var(--ink-mid);
+    vertical-align: top;
+  }
+
+  .processor-table tr:last-child td { border-bottom: none; }
+
+  .processor-table td:first-child {
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  /* Rights grid */
+  .rights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .right-card {
+    background: var(--sand);
+    border-radius: 8px;
+    padding: 18px 20px;
+    border: 1px solid var(--sand-dark);
+  }
+
+  .right-card h4 {
+    font-size: 13px; font-weight: 500;
+    color: var(--teal-deep);
+    margin-bottom: 6px;
+  }
+
+  .right-card p {
+    font-size: 12px;
+    color: var(--ink-light);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  /* GDPR badge */
+  .gdpr-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(58,173,160,0.1); border: 1px solid rgba(58,173,160,0.3);
+    color: var(--teal-mid);
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 20px;
+    display: inline-flex;
+  }
+
+  /* Contact box */
+  .contact-box {
+    background: var(--teal-deep);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-top: 24px;
+  }
+
+  .contact-box h3 {
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400;
+    margin-bottom: 10px;
+    margin-top: 0;
+  }
+
+  .contact-box p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 8px;
+  }
+
+  .contact-box a {
+    color: var(--teal-light);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .contact-box a:hover { text-decoration: underline; }
+
+  /* Inline link style */
+  .policy-card a {
+    color: var(--teal-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--teal-pale);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .policy-card a:hover { color: var(--teal-bright); border-color: var(--teal-bright); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--teal-dark);
+    padding: 40px 48px 32px;
+  }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+
+  .footer-bottom p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .footer-bottom .legal {
+    display: flex; gap: 24px;
+  }
+
+  .footer-bottom .legal a {
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-bottom .legal a:hover { color: rgba(255,255,255,0.45); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 24px 60px; }
+    .content-wrap { padding: 40px 16px 64px; }
+    .policy-card { padding: 32px 24px; }
+    .rights-grid { grid-template-columns: 1fr; }
+    footer { padding: 32px 24px 24px; }
+    .processor-table { font-size: 12px; }
+    .processor-table th, .processor-table td { padding: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="34" height="23" viewBox="0 0 120 80" fill="none">
+      <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
+      <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
+      <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="nav-wordmark">dunlin</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#features">Features</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/" class="nav-back">Back to home</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Legal · Marvanova Ltd.</p>
+  <h1>Privacy Policy</h1>
+  <p class="hero-sub">Last updated: April 2026</p>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="content-wrap">
+  <div class="policy-card">
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#who-we-are">Who we are</a></li>
+        <li><a href="#data-we-collect">Data we collect</a></li>
+        <li><a href="#how-we-use-it">How we use your data</a></li>
+        <li><a href="#legal-basis">Legal basis (GDPR Article 6)</a></li>
+        <li><a href="#third-party-processors">Third-party processors</a></li>
+        <li><a href="#data-retention">How long we keep your data</a></li>
+        <li><a href="#gdpr">Your rights under UK GDPR</a></li>
+        <li><a href="#cookies">Cookies</a></li>
+        <li><a href="#international-transfers">International data transfers</a></li>
+        <li><a href="#children">Children's data</a></li>
+        <li><a href="#changes">Changes to this policy</a></li>
+        <li><a href="#contact">Contact us</a></li>
+      </ol>
+    </div>
+
+    <!-- Introduction -->
+    <p>This Privacy Policy explains what personal data Dunlin collects, why we collect it, how we use it, and what rights you have over it. We have written it in plain English — if anything is unclear, please contact us at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a>.</p>
+    <p>Dunlin is a UK SaaS product built and operated by <strong>Marvanova Ltd.</strong>, a company registered in England and Wales. When this policy says "Dunlin", "we", "us", or "our", it means Marvanova Ltd.</p>
+
+    <!-- 1. Who we are -->
+    <h2 id="who-we-are">1. Who we are</h2>
+    <p><strong>Data Controller:</strong> Marvanova Ltd.<br>
+    <strong>Product:</strong> Dunlin (getdunlin.com)<br>
+    <strong>Contact:</strong> <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a></p>
+    <p>As the data controller, we are responsible for deciding how and why your personal data is processed. We comply with the <strong>UK General Data Protection Regulation (UK GDPR)</strong> and the <strong>UK Data Protection Act 2018</strong>.</p>
+    <p>We are not required to appoint a Data Protection Officer (DPO) at this stage of our growth, but we take data privacy seriously and you can always reach us at the contact address above.</p>
+
+    <!-- 2. Data we collect -->
+    <h2 id="data-we-collect">2. Data we collect</h2>
+    <p>We only collect data that is necessary to provide and improve the Dunlin service. Here is a clear breakdown of each category:</p>
+
+    <h3>2.1 Account data</h3>
+    <p>When you sign up for Dunlin, we collect:</p>
+    <ul>
+      <li><strong>Name</strong> — so we can address you properly</li>
+      <li><strong>Email address</strong> — for authentication, product updates, and support</li>
+      <li><strong>Company name</strong> — to personalise your experience and understand your context</li>
+      <li><strong>Password (hashed)</strong> — stored securely via Supabase Auth; we never see your plain-text password</li>
+    </ul>
+    <p>This data is stored in our Supabase-hosted database and is used solely to operate your account.</p>
+
+    <h3>2.2 Billing data</h3>
+    <p>When you subscribe to a paid plan, payments are handled entirely by <strong>Stripe</strong>, our payment processor. We do not store your card number, sort code, or any payment credentials on Dunlin's servers. We receive only non-sensitive billing metadata from Stripe, such as your subscription plan, billing status, and invoice history.</p>
+
+    <h3>2.3 Apollo.io contact search data</h3>
+    <p>Dunlin integrates with the <strong>Apollo.io</strong> API to enable contact searches. To use this feature, you supply your own Apollo.io API key. We use that key to make API requests on your behalf and display results within the Dunlin interface. We do not store Apollo contact data on our servers beyond the session needed to display search results.</p>
+    <div class="callout">
+      <p>Apollo.io contact data relates to third-party business professionals (your prospective leads), not to you personally. Your use of Apollo data via Dunlin is subject to Apollo.io's own <a href="https://www.apollo.io/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and Terms of Service.</p>
+    </div>
+
+    <h3>2.4 Companies House data</h3>
+    <p>Dunlin queries the <strong>UK Companies House</strong> open data API to retrieve company registration information, registered addresses, and filing histories. This is publicly available data provided by HM Government under an open licence. It does not include private personal data in the typical sense — it relates to companies and their public filings.</p>
+
+    <h3>2.5 HubSpot CRM data</h3>
+    <p>If you choose to connect your HubSpot account, Dunlin will read and write contact and deal data to your HubSpot CRM on your behalf. This integration is entirely optional and only activated when you explicitly connect your account. We access only the data necessary to push leads and update records as directed by you. We do not use your HubSpot data for any purpose other than fulfilling the integration.</p>
+
+    <h3>2.6 Landing page enquiry data</h3>
+    <p>If you submit your email address via the contact or early-access form on our landing page (getdunlin.com), that form is handled by <strong>Netlify Forms</strong>. We receive your email address and any other information you voluntarily include in the form. We use this to respond to your enquiry and, with your permission, to send product updates.</p>
+
+    <h3>2.7 Usage data</h3>
+    <p>We collect basic usage data to understand how Dunlin is used and to improve the product. This includes:</p>
+    <ul>
+      <li>Pages visited within the app</li>
+      <li>Features used (e.g. searches performed, exports made)</li>
+      <li>Browser type and general device information</li>
+      <li>Session duration and error logs</li>
+    </ul>
+    <p>We do not currently use any third-party analytics platform (such as Google Analytics). Usage data is collected via our own application logs hosted on Supabase and Netlify infrastructure.</p>
+
+    <!-- 3. How we use it -->
+    <h2 id="how-we-use-it">3. How we use your data</h2>
+    <ul>
+      <li><strong>Providing the service</strong> — authenticating your account, running searches, displaying results, processing payments</li>
+      <li><strong>Customer support</strong> — responding to queries and troubleshooting issues</li>
+      <li><strong>Product improvement</strong> — understanding how features are used to make Dunlin better</li>
+      <li><strong>Billing and invoicing</strong> — managing your subscription via Stripe</li>
+      <li><strong>Legal compliance</strong> — keeping records we are legally obliged to retain (e.g. financial records)</li>
+      <li><strong>Security</strong> — detecting and preventing fraud, abuse, or unauthorised access</li>
+      <li><strong>Communications</strong> — sending transactional emails (e.g. receipts, password resets) and, where you have consented, product announcements</li>
+    </ul>
+    <p>We do not sell your personal data. We do not use your data for automated profiling or decisions that produce legal or similarly significant effects on you.</p>
+
+    <!-- 4. Legal basis -->
+    <h2 id="legal-basis">4. Legal basis (GDPR Article 6)</h2>
+    <p>Under UK GDPR, we must have a valid legal basis for processing your personal data. Here is our basis for each type of processing:</p>
+    <table class="processor-table">
+      <thead>
+        <tr>
+          <th>Processing activity</th>
+          <th>Legal basis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Creating and managing your account</td>
+          <td>Contract (Art. 6(1)(b)) — necessary to perform the service you signed up for</td>
+        </tr>
+        <tr>
+          <td>Processing payments via Stripe</td>
+          <td>Contract (Art. 6(1)(b)) — necessary to fulfil your subscription</td>
+        </tr>
+        <tr>
+          <td>Apollo.io contact searches</td>
+          <td>Contract (Art. 6(1)(b)) — you instruct us to perform these searches as part of the service</td>
+        </tr>
+        <tr>
+          <td>HubSpot CRM integration</td>
+          <td>Contract (Art. 6(1)(b)) — you explicitly authorise this integration</td>
+        </tr>
+        <tr>
+          <td>Sending transactional emails</td>
+          <td>Contract (Art. 6(1)(b)) — necessary to operate the service</td>
+        </tr>
+        <tr>
+          <td>Product update emails / marketing</td>
+          <td>Consent (Art. 6(1)(a)) — only where you have opted in</td>
+        </tr>
+        <tr>
+          <td>Usage analytics and logging</td>
+          <td>Legitimate interests (Art. 6(1)(f)) — improving the product and preventing abuse</td>
+        </tr>
+        <tr>
+          <td>Retaining financial records</td>
+          <td>Legal obligation (Art. 6(1)(c)) — required by UK tax and company law</td>
+        </tr>
+        <tr>
+          <td>Netlify Forms enquiry data</td>
+          <td>Consent (Art. 6(1)(a)) — you voluntarily submit your contact details</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 5. Third-party processors -->
+    <h2 id="third-party-processors">5. Third-party processors</h2>
+    <p>We use a small number of carefully chosen third-party services to run Dunlin. Each is a data processor acting on our instructions, bound by data processing agreements and applicable data protection law.</p>
+    <table class="processor-table">
+      <thead>
+        <tr>
+          <th>Processor</th>
+          <th>Purpose</th>
+          <th>Data shared</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Supabase</td>
+          <td>Database, authentication, and backend hosting</td>
+          <td>Account data, usage logs, app data</td>
+          <td>EU (AWS eu-west)</td>
+        </tr>
+        <tr>
+          <td>Stripe</td>
+          <td>Payment processing and subscription management</td>
+          <td>Billing details, subscription status</td>
+          <td>EU / US (with SCCs)</td>
+        </tr>
+        <tr>
+          <td>Netlify</td>
+          <td>Website hosting and form submissions</td>
+          <td>Email address from landing page forms, website traffic logs</td>
+          <td>US (with SCCs)</td>
+        </tr>
+        <tr>
+          <td>Apollo.io</td>
+          <td>Contact search database (user-supplied API key)</td>
+          <td>Your API key is transmitted to Apollo servers; search queries you run</td>
+          <td>US (with SCCs)</td>
+        </tr>
+        <tr>
+          <td>HubSpot</td>
+          <td>CRM integration (optional, user-activated)</td>
+          <td>Contact and deal data you choose to sync</td>
+          <td>US (with SCCs)</td>
+        </tr>
+        <tr>
+          <td>Companies House (GOV.UK)</td>
+          <td>UK company data (public open data)</td>
+          <td>Company search queries</td>
+          <td>UK</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>SCCs = Standard Contractual Clauses, the approved mechanism for lawful data transfers from the UK to countries without an adequacy decision.</p>
+    <p>We do not share your personal data with any other third parties, except where required by law (e.g. in response to a court order or regulatory request).</p>
+
+    <!-- 6. Data retention -->
+    <h2 id="data-retention">6. How long we keep your data</h2>
+    <ul>
+      <li><strong>Active account data</strong> — retained for as long as your account is active. If you close your account, we will delete your personal data within 30 days, except where we are legally required to retain it.</li>
+      <li><strong>Billing records</strong> — retained for 7 years as required by UK HMRC tax regulations (Companies Act 2006).</li>
+      <li><strong>Support correspondence</strong> — retained for 2 years after the last interaction, then deleted.</li>
+      <li><strong>Usage and error logs</strong> — retained for up to 90 days on a rolling basis.</li>
+      <li><strong>Netlify Forms submissions</strong> — retained for up to 12 months, after which we either delete or transfer to our own records and delete from Netlify.</li>
+      <li><strong>Marketing consent records</strong> — retained for as long as your consent is active. If you withdraw consent, we will remove you from marketing lists within 5 business days.</li>
+    </ul>
+
+    <!-- 7. GDPR / Your rights -->
+    <h2 id="gdpr">7. Your rights under UK GDPR</h2>
+    <span class="gdpr-badge">UK GDPR · Data Protection Act 2018</span>
+    <p>Under UK GDPR and the Data Protection Act 2018, you have the following rights over your personal data. These rights are not absolute and may be subject to certain conditions, but we will always respond to your request within one month (or let you know if we need more time).</p>
+
+    <div class="rights-grid">
+      <div class="right-card">
+        <h4>Right of access</h4>
+        <p>You can request a copy of all the personal data we hold about you (a Subject Access Request, or SAR). We will provide this free of charge within one calendar month.</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to rectification</h4>
+        <p>If any data we hold about you is inaccurate or incomplete, you have the right to have it corrected. You can update most account data yourself via your profile settings.</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to erasure</h4>
+        <p>Also known as the "right to be forgotten". You can request that we delete your personal data. We will do so promptly, subject to any legal retention obligations (e.g. billing records).</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to portability</h4>
+        <p>You can request your personal data in a structured, machine-readable format (e.g. JSON or CSV) so you can transfer it to another service.</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to object</h4>
+        <p>You can object to us processing your data on the basis of legitimate interests. You also have an unconditional right to opt out of marketing communications at any time.</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to restrict processing</h4>
+        <p>In certain circumstances (e.g. while a dispute is being resolved), you can ask us to pause processing your data without deleting it.</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to withdraw consent</h4>
+        <p>Where we process data on the basis of your consent, you can withdraw that consent at any time. Withdrawal does not affect the lawfulness of processing done before withdrawal.</p>
+      </div>
+      <div class="right-card">
+        <h4>Right to complain</h4>
+        <p>If you are unhappy with how we handle your data, you have the right to lodge a complaint with the <strong>Information Commissioner's Office (ICO)</strong> at <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer">ico.org.uk</a>.</p>
+      </div>
+    </div>
+
+    <p>To exercise any of these rights, email us at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a> with the subject line "Data Rights Request". We will respond within one calendar month. We may ask you to verify your identity before acting on a request.</p>
+
+    <div class="callout">
+      <p><strong>ICO contact:</strong> Information Commissioner's Office, Wycliffe House, Water Lane, Wilmslow, Cheshire, SK9 5AF. Helpline: 0303 123 1113. Website: <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer">ico.org.uk</a></p>
+    </div>
+
+    <!-- 8. Cookies -->
+    <h2 id="cookies">8. Cookies</h2>
+    <p>Dunlin uses cookies and similar technologies to keep you logged in and to understand basic usage patterns. We distinguish between:</p>
+    <ul>
+      <li><strong>Essential cookies</strong> — required for the service to function (e.g. authentication session tokens). These cannot be turned off.</li>
+      <li><strong>Analytics cookies</strong> — used to understand how people interact with Dunlin (only active where you have given consent).</li>
+    </ul>
+    <p>For full details on the cookies we use, how long they last, and how to manage your preferences, please read our <a href="/cookies.html">Cookie Policy</a>.</p>
+
+    <!-- 9. International transfers -->
+    <h2 id="international-transfers">9. International data transfers</h2>
+    <p>Some of our third-party processors operate outside the UK (primarily in the United States). Where personal data is transferred to countries not deemed adequate by the UK Secretary of State, we ensure appropriate safeguards are in place — specifically the use of <strong>UK Standard Contractual Clauses (SCCs)</strong> or the <strong>UK Addendum to EU SCCs</strong>, as approved by the ICO.</p>
+    <p>In particular:</p>
+    <ul>
+      <li><strong>Supabase</strong> — data is hosted in the EU (AWS eu-west-1, Ireland), within the UK adequacy decision scope.</li>
+      <li><strong>Stripe</strong> — operates under an approved transfer mechanism (SCCs).</li>
+      <li><strong>Netlify</strong> — operates under SCCs for UK-to-US data flows.</li>
+      <li><strong>Apollo.io</strong> — operates under SCCs. Note that your Apollo API key is provided by you; you accept Apollo's own terms when using their service.</li>
+      <li><strong>HubSpot</strong> — operates under SCCs. This integration is optional and only active if you connect your HubSpot account.</li>
+    </ul>
+
+    <!-- 10. Children -->
+    <h2 id="children">10. Children's data</h2>
+    <p>Dunlin is a business-to-business product and is not intended for use by anyone under the age of 18. We do not knowingly collect personal data from children. If you believe we have inadvertently collected data from a minor, please contact us immediately at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a> and we will delete it promptly.</p>
+
+    <!-- 11. Changes -->
+    <h2 id="changes">11. Changes to this policy</h2>
+    <p>We may update this Privacy Policy from time to time to reflect changes in how we operate or in applicable law. When we make significant changes, we will notify you by email (if you have an account) or by displaying a prominent notice on the website. We will always update the "Last updated" date at the top of this page.</p>
+    <p>We encourage you to review this policy periodically. Your continued use of Dunlin after changes are published constitutes your acceptance of the updated policy.</p>
+
+    <!-- 12. Contact -->
+    <h2 id="contact">12. Contact us</h2>
+    <p>If you have any questions, concerns, or requests relating to this Privacy Policy or your personal data, please get in touch. We aim to respond to all enquiries within 5 business days.</p>
+
+    <div class="contact-box">
+      <h3>Data queries &amp; rights requests</h3>
+      <p>Email us at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a> with the subject line "Privacy" or "Data Rights Request".</p>
+      <p><strong style="color:rgba(255,255,255,0.5); font-size:12px; font-weight:400;">Data Controller:</strong><br>
+      <span style="color:rgba(255,255,255,0.8); font-size:13px;">Marvanova Ltd. · getdunlin.com · United Kingdom</span></p>
+    </div>
+
+  </div><!-- /.policy-card -->
+</div><!-- /.content-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <p>© 2026 Dunlin · Marvanova Ltd. All rights reserved.</p>
+    <div class="legal">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/cookies.html">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

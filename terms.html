@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Terms of Service — Dunlin</title>
+<meta name="description" content="Dunlin's Terms of Service. The legal agreement between you and Marvanova Ltd. governing your use of the Dunlin platform." />
+<meta name="author" content="Dunlin · Marvanova Ltd." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://www.getdunlin.com/terms.html" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" href="/favicon.ico" />
+<meta name="theme-color" content="#1A4A4A" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.getdunlin.com/terms.html" />
+<meta property="og:title" content="Terms of Service — Dunlin" />
+<meta property="og:description" content="The legal agreement between you and Marvanova Ltd. governing your use of the Dunlin platform." />
+<meta property="og:site_name" content="Dunlin" />
+<meta property="og:locale" content="en_GB" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal-deep: #1a4a4a;
+    --teal-dark: #0f2e2e;
+    --teal-mid: #2a7a72;
+    --teal-bright: #3aada0;
+    --teal-light: #7dd4cc;
+    --teal-pale: #d6f0ee;
+    --teal-mist: #f0f9f8;
+    --sand: #f5f0e8;
+    --sand-dark: #ede8df;
+    --ink: #1c2b2b;
+    --ink-mid: #3d5252;
+    --ink-light: #7a9696;
+    --white: #ffffff;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(26,74,74,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--white);
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px; font-weight: 400;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--teal-light); }
+
+  .nav-back {
+    background: var(--teal-bright);
+    color: white !important;
+    padding: 9px 22px;
+    border-radius: 6px;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-back:hover { background: var(--teal-mid) !important; color: white !important; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--teal-deep);
+    padding: 140px 48px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,173,160,0.1) 0%, transparent 65%);
+    top: -200px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,173,160,0.07) 0%, transparent 65%);
+    bottom: -150px; left: -80px;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: 24px;
+    opacity: 0.85;
+    position: relative; z-index: 1;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 6vw, 80px);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    position: relative; z-index: 1;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.03em;
+    position: relative; z-index: 1;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  .policy-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 56px 64px;
+    box-shadow: 0 2px 24px rgba(26,74,74,0.06), 0 1px 4px rgba(26,74,74,0.04);
+  }
+
+  /* Table of contents */
+  .toc {
+    background: var(--teal-mist);
+    border: 1px solid var(--teal-pale);
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+
+  .toc h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 400;
+    color: var(--teal-deep);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .toc ol {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .toc a {
+    font-size: 13px;
+    color: var(--teal-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .toc a:hover { color: var(--teal-bright); text-decoration: underline; }
+
+  /* Headings */
+  .policy-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 400;
+    color: var(--ink);
+    margin-top: 48px;
+    margin-bottom: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--sand-dark);
+    line-height: 1.2;
+    scroll-margin-top: 100px;
+  }
+
+  .policy-card h2:first-of-type {
+    border-top: none;
+    margin-top: 0;
+  }
+
+  .policy-card h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500;
+    color: var(--ink);
+    margin-top: 28px;
+    margin-bottom: 10px;
+    letter-spacing: 0.01em;
+  }
+
+  /* Body text */
+  .policy-card p {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+
+  .policy-card p:last-child { margin-bottom: 0; }
+
+  /* Lists */
+  .policy-card ul, .policy-card ol {
+    padding-left: 22px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .policy-card li {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+
+  .policy-card li strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Info callout */
+  .callout {
+    background: var(--teal-mist);
+    border-left: 3px solid var(--teal-bright);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+
+  .callout p {
+    font-size: 13px;
+    color: var(--ink-mid);
+    margin-bottom: 0;
+  }
+
+  /* Warning callout */
+  .callout-warning {
+    background: #fff8f0;
+    border-left: 3px solid #e6824a;
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+
+  .callout-warning p {
+    font-size: 13px;
+    color: var(--ink-mid);
+    margin-bottom: 0;
+  }
+
+  /* Pricing table */
+  .pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 24px;
+    font-size: 13px;
+  }
+
+  .pricing-table th {
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--sand-dark);
+    background: var(--sand);
+  }
+
+  .pricing-table td {
+    padding: 12px 12px;
+    border-bottom: 1px solid var(--sand-dark);
+    color: var(--ink-mid);
+    vertical-align: top;
+  }
+
+  .pricing-table tr:last-child td { border-bottom: none; }
+
+  .pricing-table td:first-child {
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .pricing-table .popular-badge {
+    display: inline-block;
+    background: rgba(58,173,160,0.12);
+    color: var(--teal-mid);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* Trademark */
+  .trademark {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(26,74,74,0.06);
+    border: 1px solid rgba(26,74,74,0.12);
+    color: var(--ink-mid);
+    padding: 5px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 500;
+    margin: 0 2px;
+  }
+
+  /* Contact box */
+  .contact-box {
+    background: var(--teal-deep);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-top: 24px;
+  }
+
+  .contact-box h3 {
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400;
+    margin-bottom: 10px;
+    margin-top: 0;
+  }
+
+  .contact-box p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 8px;
+  }
+
+  .contact-box a {
+    color: var(--teal-light);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .contact-box a:hover { text-decoration: underline; }
+
+  /* Inline link style */
+  .policy-card a {
+    color: var(--teal-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--teal-pale);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .policy-card a:hover { color: var(--teal-bright); border-color: var(--teal-bright); }
+
+  /* Liability box */
+  .liability-box {
+    background: var(--sand);
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 20px 0;
+  }
+
+  .liability-box p {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.75;
+    margin-bottom: 10px;
+  }
+
+  .liability-box p:last-child { margin-bottom: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--teal-dark);
+    padding: 40px 48px 32px;
+  }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+
+  .footer-bottom p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .footer-bottom .legal {
+    display: flex; gap: 24px;
+  }
+
+  .footer-bottom .legal a {
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-bottom .legal a:hover { color: rgba(255,255,255,0.45); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 24px 60px; }
+    .content-wrap { padding: 40px 16px 64px; }
+    .policy-card { padding: 32px 24px; }
+    footer { padding: 32px 24px 24px; }
+    .pricing-table { font-size: 12px; }
+    .pricing-table th, .pricing-table td { padding: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="34" height="23" viewBox="0 0 120 80" fill="none">
+      <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
+      <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
+      <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="nav-wordmark">dunlin</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#features">Features</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/" class="nav-back">Back to home</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Legal · Marvanova Ltd.</p>
+  <h1>Terms of Service</h1>
+  <p class="hero-sub">Last updated: April 2026</p>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="content-wrap">
+  <div class="policy-card">
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#acceptance">Acceptance of terms</a></li>
+        <li><a href="#description">Description of service</a></li>
+        <li><a href="#accounts">Account registration and security</a></li>
+        <li><a href="#billing">Subscription plans and billing</a></li>
+        <li><a href="#apollo">Apollo.io API key</a></li>
+        <li><a href="#acceptable-use">Acceptable use and prohibited conduct</a></li>
+        <li><a href="#data-privacy">Data and privacy</a></li>
+        <li><a href="#ip">Intellectual property</a></li>
+        <li><a href="#disclaimers">Disclaimers</a></li>
+        <li><a href="#liability">Limitation of liability</a></li>
+        <li><a href="#termination">Termination</a></li>
+        <li><a href="#changes">Changes to these terms</a></li>
+        <li><a href="#governing-law">Governing law</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ol>
+    </div>
+
+    <!-- Introduction -->
+    <p>These Terms of Service ("Terms") are a legal agreement between you (the person or organisation accessing Dunlin) and <strong>Marvanova Ltd.</strong>, the company that builds and operates Dunlin. By creating an account or using the Dunlin platform, you agree to be bound by these Terms.</p>
+    <p>We have written them in plain English. If anything is unclear, email us at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a> and we will be happy to explain.</p>
+
+    <!-- 1. Acceptance -->
+    <h2 id="acceptance">1. Acceptance of terms</h2>
+    <p>By registering for an account, starting a free trial, or otherwise accessing or using any part of the Dunlin service, you confirm that:</p>
+    <ul>
+      <li>You have read, understood, and agree to be bound by these Terms;</li>
+      <li>You are aged 18 or over;</li>
+      <li>You have the authority to enter into this agreement on behalf of yourself or any organisation you represent;</li>
+      <li>Your use of Dunlin will comply with all applicable laws and regulations.</li>
+    </ul>
+    <p>If you do not agree to these Terms, you must not use Dunlin.</p>
+
+    <!-- 2. Description of service -->
+    <h2 id="description">2. Description of service</h2>
+    <p>Dunlin is a B2B SaaS platform designed to help flex space operators and serviced office brokers identify and qualify leads, understand market pressure, and manage their sales pipeline more effectively.</p>
+    <p>Core capabilities of the Dunlin platform include:</p>
+    <ul>
+      <li><strong>Lead intelligence</strong> — search for companies and contacts relevant to your flex space market using data retrieved via Apollo.io (using your own API key);</li>
+      <li><strong>Space Pressure Score™</strong> — a proprietary scoring system that estimates the likelihood of a company needing flexible office space, based on signals drawn from public data including Companies House filings;</li>
+      <li><strong>Lease estimation</strong> — indicative lease term and space-size estimates derived from publicly available Companies House data and algorithmic modelling;</li>
+      <li><strong>Pipeline management</strong> — tools to track and prioritise prospects within the Dunlin interface.</li>
+    </ul>
+    <p>We reserve the right to modify, add, or remove features at any time. We will give reasonable notice of any changes that materially reduce the functionality of the plan you have paid for.</p>
+
+    <!-- 3. Account registration and security -->
+    <h2 id="accounts">3. Account registration and security</h2>
+    <p>To use Dunlin you must create an account. When you do so, you agree to:</p>
+    <ul>
+      <li>Provide accurate, current, and complete information about yourself or your organisation;</li>
+      <li>Keep your account credentials (email address and password) secure and confidential;</li>
+      <li>Not share your login credentials with any other person or allow others to access your account;</li>
+      <li>Notify us immediately at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a> if you suspect any unauthorised access to your account.</li>
+    </ul>
+    <p>You are responsible for all activity that occurs under your account, whether or not you authorised it. We are not liable for any loss arising from unauthorised use of your account where it results from your failure to keep your credentials secure.</p>
+    <p>We reserve the right to suspend or terminate any account that appears to have been compromised, that violates these Terms, or where we reasonably suspect fraudulent activity.</p>
+
+    <!-- 4. Subscription plans and billing -->
+    <h2 id="billing">4. Subscription plans and billing</h2>
+
+    <h3>4.1 Plans and pricing</h3>
+    <p>Dunlin is offered on the following subscription plans, with pricing in British pounds (GBP) excluding VAT where applicable:</p>
+
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Monthly price</th>
+          <th>Annual price (save 20%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Starter</td>
+          <td>£99 / month</td>
+          <td>£79 / month (billed annually)</td>
+        </tr>
+        <tr>
+          <td>Growth <span class="popular-badge">Most popular</span></td>
+          <td>£179 / month</td>
+          <td>£143 / month (billed annually)</td>
+        </tr>
+        <tr>
+          <td>Pro</td>
+          <td>£349 / month</td>
+          <td>£279 / month (billed annually)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Full details of what is included in each plan (features, usage limits, number of users) are published on our pricing page at <a href="/#pricing">getdunlin.com/#pricing</a>. In the event of any conflict between these Terms and the pricing page, the pricing page takes precedence for commercial terms.</p>
+
+    <h3>4.2 Free trial</h3>
+    <p>New accounts receive a <strong>14-day free trial</strong> of the Dunlin platform. No credit card is required to start your trial. At the end of your trial period, access to paid features will be suspended until you subscribe to a plan. Your data is retained for 30 days after trial expiry before it is deleted.</p>
+
+    <h3>4.3 Payments and Stripe</h3>
+    <p>All payments are processed securely by <strong>Stripe</strong>, our third-party payment provider. By subscribing to a paid plan, you authorise Stripe to charge the payment method you provide in accordance with your chosen plan. We do not store your card details on Dunlin's servers — all payment data is held by Stripe under their own security standards.</p>
+    <p>Your use of Stripe's payment services is also subject to <a href="https://stripe.com/gb/legal/ssa" target="_blank" rel="noopener noreferrer">Stripe's Terms of Service</a>.</p>
+
+    <h3>4.4 Auto-renewal and cancellation</h3>
+    <p>Subscriptions renew automatically at the end of each billing period (monthly or annually) until you cancel. You can cancel your subscription at any time from your account settings or by contacting us at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a>.</p>
+    <p>Cancellation takes effect at the end of your current billing period. You will continue to have access to Dunlin until that date. We do not offer pro-rata refunds for unused time within a billing period, except where required by law.</p>
+
+    <h3>4.5 Annual subscriptions</h3>
+    <p>If you subscribe on an annual plan, your subscription is billed upfront for the full year. Annual subscriptions are non-refundable after 14 days from the date of initial purchase, except where required by law or where we have materially failed to deliver the service.</p>
+
+    <h3>4.6 Price changes</h3>
+    <p>We may change our subscription prices from time to time. We will give you at least 30 days' written notice (by email) of any price increase before it takes effect. If you do not agree to the new price, you may cancel your subscription before the increase comes into effect. Continued use of Dunlin after the new price takes effect constitutes acceptance of the new pricing.</p>
+
+    <h3>4.7 VAT and taxes</h3>
+    <p>Prices shown on our website are exclusive of Value Added Tax (VAT) unless otherwise stated. VAT will be applied at the applicable UK rate where required. You are responsible for any other taxes applicable in your jurisdiction.</p>
+
+    <!-- 5. Apollo.io API key -->
+    <h2 id="apollo">5. Apollo.io API key</h2>
+    <p>Certain Dunlin features — specifically the lead and contact search functionality — require you to provide your own <strong>Apollo.io API key</strong>. This key is obtained directly from your Apollo.io account and belongs to you.</p>
+
+    <div class="callout">
+      <p><strong>Your key, your responsibility.</strong> Dunlin acts as a conduit to Apollo's API using the key you supply. We do not resell Apollo data, create an Apollo account on your behalf, or take responsibility for the content, accuracy, or legality of data returned by Apollo's API.</p>
+    </div>
+
+    <p>By connecting your Apollo.io API key, you confirm that:</p>
+    <ul>
+      <li>You have a valid Apollo.io account and are authorised to use the API key you provide;</li>
+      <li>Your use of Apollo data through Dunlin complies with Apollo.io's own <a href="https://www.apollo.io/terms-of-service" target="_blank" rel="noopener noreferrer">Terms of Service</a> and <a href="https://www.apollo.io/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>;</li>
+      <li>You understand that Apollo.io is an independent third party and that Dunlin has no control over the data Apollo provides, its accuracy, or its ongoing availability;</li>
+      <li>You will not use Apollo data retrieved through Dunlin for any purpose that violates Apollo's terms, applicable data protection law (including UK GDPR), or any other applicable regulation.</li>
+    </ul>
+    <p>We store your API key securely, encrypted at rest, and use it solely to make API requests on your behalf. We will never use your Apollo API key for any purpose other than powering your use of Dunlin's search features.</p>
+    <p>Marvanova Ltd. accepts no liability for any losses, penalties, or claims arising from your use of Apollo data, including any breach of Apollo's terms or applicable law.</p>
+
+    <!-- 6. Acceptable use -->
+    <h2 id="acceptable-use">6. Acceptable use and prohibited conduct</h2>
+    <p>Dunlin is a professional tool built for legitimate business purposes. By using Dunlin, you agree that you will not:</p>
+    <ul>
+      <li>Use the platform for any unlawful purpose or in violation of any applicable law or regulation;</li>
+      <li>Scrape, harvest, or systematically extract data from Dunlin's interface beyond what is reasonably necessary for your legitimate business use;</li>
+      <li>Attempt to reverse-engineer, decompile, disassemble, or otherwise derive the source code or underlying logic of any part of the Dunlin platform;</li>
+      <li>Use Dunlin to send unsolicited commercial communications (spam) or to engage in any form of harassment;</li>
+      <li>Introduce viruses, malware, or any other harmful code into the platform;</li>
+      <li>Attempt to gain unauthorised access to any part of Dunlin's systems, infrastructure, or other users' accounts;</li>
+      <li>Use Dunlin to build a competing product or service, or to benchmark Dunlin's features for competitive intelligence purposes without our written consent;</li>
+      <li>Share, resell, or sublicense access to Dunlin to third parties without our written permission;</li>
+      <li>Use contact data obtained through Dunlin in a way that violates UK GDPR, the Privacy and Electronic Communications Regulations (PECR), or any other applicable data protection law;</li>
+      <li>Misrepresent your identity or affiliation when using Dunlin or contacting prospects discovered through it.</li>
+    </ul>
+    <p>We reserve the right to investigate any suspected violation of these rules and to suspend or terminate access without notice where we reasonably believe a breach has occurred.</p>
+
+    <!-- 7. Data and privacy -->
+    <h2 id="data-privacy">7. Data and privacy</h2>
+    <p>Your privacy matters to us. Our <a href="/privacy.html">Privacy Policy</a> explains in full what personal data we collect, how we use it, and what rights you have under UK GDPR. The Privacy Policy forms part of this agreement and you should read it carefully.</p>
+    <p>In summary:</p>
+    <ul>
+      <li>We collect only the personal data necessary to provide and improve the Dunlin service;</li>
+      <li>We do not sell your personal data to any third party;</li>
+      <li>Payments are handled by Stripe — we do not store card details;</li>
+      <li>Apollo.io contact data is retrieved on your instruction and is subject to Apollo's own terms;</li>
+      <li>Companies House data is publicly available and does not constitute personal data about Dunlin subscribers;</li>
+      <li>You can request deletion of your account and associated personal data at any time by emailing <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a>.</li>
+    </ul>
+    <p>Where you use Dunlin to process personal data relating to third parties (for example, business contacts retrieved via Apollo), you are acting as a data controller for that processing and are responsible for ensuring your use complies with UK GDPR and any other applicable data protection law.</p>
+
+    <!-- 8. Intellectual property -->
+    <h2 id="ip">8. Intellectual property</h2>
+
+    <h3>8.1 Dunlin's intellectual property</h3>
+    <p>All intellectual property rights in the Dunlin platform — including its software, algorithms, design, user interface, branding, and content — are and remain the exclusive property of <strong>Marvanova Ltd.</strong> or its licensors. Nothing in these Terms grants you any ownership of or rights to Dunlin's intellectual property beyond the limited right to use the service as set out in these Terms.</p>
+    <p>In particular, the <strong>Space Pressure Score™</strong> is a proprietary scoring methodology developed by Marvanova Ltd. The name "Space Pressure Score" and its associated methodology are trade marks and proprietary know-how of Marvanova Ltd. You may not reproduce, reverse-engineer, or commercially exploit this methodology without our express written consent.</p>
+
+    <h3>8.2 Your content</h3>
+    <p>You retain all intellectual property rights in any data, content, or information you upload to or create within Dunlin (your "Content"). By using Dunlin, you grant Marvanova Ltd. a limited, non-exclusive licence to process and store your Content solely to the extent necessary to provide the service to you. We will not use your Content for any other purpose.</p>
+
+    <h3>8.3 Feedback</h3>
+    <p>If you provide us with feedback, suggestions, or ideas about Dunlin, you grant us a royalty-free, perpetual, irrevocable right to use that feedback to improve our products and services without any obligation to you.</p>
+
+    <!-- 9. Disclaimers -->
+    <h2 id="disclaimers">9. Disclaimers</h2>
+
+    <h3>9.1 Lease estimates are approximations only</h3>
+    <div class="callout-warning">
+      <p><strong>Important:</strong> Lease term and space-size estimates produced by Dunlin are algorithmically generated approximations based on publicly available data from Companies House (such as registered addresses, SIC codes, and filing histories). They are indicators only — not confirmed facts, not professional property advice, and not legal advice. Do not rely on Dunlin's estimates as the sole basis for any commercial property decision.</p>
+    </div>
+    <p>Dunlin makes no representation that lease estimates are accurate, complete, or current. The underlying Companies House data is public information provided by HM Government; Marvanova Ltd. is not responsible for its accuracy or timeliness. Actual lease terms, space requirements, and market conditions may differ materially from any estimate produced by Dunlin.</p>
+
+    <h3>9.2 Apollo.io data</h3>
+    <p>Contact and company data retrieved from the Apollo.io API is sourced and maintained by Apollo.io, an independent third party. Dunlin makes no warranty as to the accuracy, completeness, or currency of Apollo data. You use such data at your own risk and subject to Apollo's terms.</p>
+
+    <h3>9.3 Service availability</h3>
+    <p>We aim to keep Dunlin available and reliable, but we do not guarantee uninterrupted, error-free access. The platform is provided on an "as is" and "as available" basis. We may carry out maintenance, updates, or emergency fixes that cause temporary interruption to the service, and we will endeavour to give reasonable advance notice where possible.</p>
+
+    <h3>9.4 No professional advice</h3>
+    <p>Nothing in Dunlin or in any communication from Marvanova Ltd. constitutes legal, financial, property, or professional advice. If you need advice of that kind, you should consult a suitably qualified professional.</p>
+
+    <!-- 10. Limitation of liability -->
+    <h2 id="liability">10. Limitation of liability</h2>
+    <div class="liability-box">
+      <p>To the fullest extent permitted by law, Marvanova Ltd. shall not be liable to you for any indirect, incidental, special, consequential, or punitive losses arising out of or in connection with your use of (or inability to use) Dunlin — including, without limitation, loss of profits, loss of revenue, loss of data, loss of goodwill, or business interruption — even if we have been advised of the possibility of such losses.</p>
+      <p>Our total aggregate liability to you for any claim arising under or in connection with these Terms or your use of Dunlin shall not exceed the greater of: (a) the total subscription fees you have paid to us in the 12 months immediately preceding the event giving rise to the claim; or (b) £100.</p>
+      <p>Nothing in these Terms excludes or limits our liability for: (i) death or personal injury caused by our negligence; (ii) fraud or fraudulent misrepresentation; or (iii) any other liability that cannot be excluded or limited under English law.</p>
+    </div>
+    <p>If you are using Dunlin as a consumer (which is unlikely given the nature of the product), you may have additional statutory rights that these Terms do not affect.</p>
+
+    <!-- 11. Termination -->
+    <h2 id="termination">11. Termination</h2>
+
+    <h3>11.1 By you</h3>
+    <p>You may cancel your Dunlin subscription at any time via your account settings or by emailing <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a>. Cancellation takes effect at the end of your current billing period. If you wish to delete your account entirely, contact us and we will process deletion within 30 days.</p>
+
+    <h3>11.2 By us</h3>
+    <p>We may suspend or terminate your access to Dunlin, with or without notice, if:</p>
+    <ul>
+      <li>You breach these Terms and fail to remedy the breach within 7 days of being notified (or immediately, for serious breaches);</li>
+      <li>We reasonably believe your use of Dunlin poses a legal, security, or reputational risk to us or to other users;</li>
+      <li>You fail to pay any subscription fees when due and do not remedy the failure within 7 days of a reminder;</li>
+      <li>We decide to discontinue the Dunlin service (in which case we will give at least 30 days' notice).</li>
+    </ul>
+    <p>On termination for your breach, no refund will be due. On termination by us without cause, we will refund a pro-rata portion of any prepaid subscription fees for the unused period.</p>
+
+    <h3>11.3 Effect of termination</h3>
+    <p>On termination of your account, your right to access Dunlin ceases immediately (or at the end of your billing period, for voluntary cancellations). We will retain your data for 30 days after termination to allow you to request an export, after which it will be deleted from our active systems. Billing records are retained for 7 years as required by UK law.</p>
+
+    <!-- 12. Changes to terms -->
+    <h2 id="changes">12. Changes to these terms</h2>
+    <p>We may update these Terms from time to time. When we make material changes, we will notify you by email at the address associated with your account at least 14 days before the changes come into effect. We will also update the "Last updated" date at the top of this page.</p>
+    <p>If you do not agree to the updated Terms, you may cancel your subscription before they take effect. Your continued use of Dunlin after the effective date of any update constitutes your acceptance of the revised Terms.</p>
+    <p>For minor changes (such as correcting typos or adding clarifications that do not affect your rights), we may update the Terms without advance notice and will update the "Last updated" date accordingly.</p>
+
+    <!-- 13. Governing law -->
+    <h2 id="governing-law">13. Governing law</h2>
+    <p>These Terms, and any dispute or claim arising out of or in connection with them or their subject matter (including non-contractual disputes or claims), shall be governed by and construed in accordance with the <strong>law of England and Wales</strong>.</p>
+    <p>Both parties agree that the courts of <strong>England and Wales</strong> shall have exclusive jurisdiction to settle any dispute or claim arising out of or in connection with these Terms or their subject matter.</p>
+    <p>If any provision of these Terms is found to be invalid, unlawful, or unenforceable, that provision shall be severed and the remainder of the Terms shall continue in full force and effect.</p>
+
+    <!-- 14. Contact -->
+    <h2 id="contact">14. Contact</h2>
+    <p>If you have any questions about these Terms, or if you need to raise a complaint or concern, please get in touch. We aim to respond to all enquiries within 5 business days.</p>
+
+    <div class="contact-box">
+      <h3>Get in touch</h3>
+      <p>Email us at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a> with the subject line "Terms" or "Legal".</p>
+      <p><strong style="color:rgba(255,255,255,0.5); font-size:12px; font-weight:400;">Legal entity:</strong><br>
+      <span style="color:rgba(255,255,255,0.8); font-size:13px;">Marvanova Ltd. · getdunlin.com · Registered in England and Wales</span></p>
+    </div>
+
+  </div><!-- /.policy-card -->
+</div><!-- /.content-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <p>© 2026 Dunlin · Marvanova Ltd. All rights reserved.</p>
+    <div class="legal">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/cookies.html">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

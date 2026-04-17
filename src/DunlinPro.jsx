@@ -727,27 +727,56 @@ export default function App({ session, onBack }){
       {/* ── Guided Tour Overlay ──────────────────────────────────────────────── */}
       {tourStep!==null&&(()=>{
         const s=TOUR_STEPS[tourStep];
-        const pad=12;
+        const pad=10;
+        const vw=window.innerWidth;
+        const vh=window.innerHeight;
+        const isMobile=vw<520;
+        const tipW=isMobile?Math.min(vw-24,340):280;
+        const tipH=230; // estimated card height
+        const margin=12;
         const hl=tourRect?{top:tourRect.top-pad,left:tourRect.left-pad,w:tourRect.w+pad*2,h:tourRect.h+pad*2}:null;
-        // Tooltip position: below the highlight or centered
-        const tipTop=hl?hl.top+hl.h+16:null;
-        const tipLeft=hl?Math.max(8,Math.min(window.innerWidth-280,hl.left+(hl.w/2)-130)):null;
+
+        // Smart vertical: prefer below → above → centered
+        let top,left,transform="";
+        if(!hl){
+          top="50%";left="50%";transform="translate(-50%,-50%)";
+        } else if(isMobile){
+          // On mobile always anchor to bottom of screen for readability
+          top=vh-tipH-margin;
+          left=Math.max(margin,(vw-tipW)/2);
+        } else {
+          const spaceBelow=vh-(hl.top+hl.h)-margin;
+          const spaceAbove=hl.top-margin;
+          if(spaceBelow>=tipH){
+            top=hl.top+hl.h+margin;
+          } else if(spaceAbove>=tipH){
+            top=hl.top-tipH-margin;
+          } else {
+            top=Math.max(margin,(vh-tipH)/2);
+          }
+          // Smart horizontal: centre on highlight, clamp to viewport
+          left=Math.round(hl.left+(hl.w/2)-(tipW/2));
+          left=Math.max(margin,Math.min(vw-tipW-margin,left));
+        }
+
         return(
           <div style={{position:"fixed",inset:0,zIndex:9999,pointerEvents:"none"}}>
             {/* Dark overlay */}
             <div style={{position:"absolute",inset:0,background:"rgba(20,40,38,0.82)",pointerEvents:"all"}} onClick={()=>completeTour()}/>
             {/* Spotlight cutout */}
             {hl&&<div style={{position:"absolute",top:hl.top,left:hl.left,width:hl.w,height:hl.h,borderRadius:10,boxShadow:"0 0 0 9999px rgba(20,40,38,0.82)",border:"2px solid #3aada0",zIndex:1,pointerEvents:"none"}}/>}
-            {/* Tooltip card */}
-            <div style={{position:"absolute",top:hl?(tipTop>window.innerHeight-180?hl.top-160:tipTop):"50%",left:hl?tipLeft:"50%",transform:hl?"":"translate(-50%,-50%)",width:260,background:"#f0ece3",borderRadius:12,padding:"18px 20px",boxShadow:"0 8px 32px rgba(0,0,0,0.25)",border:"1px solid #b8d4cf",zIndex:2,pointerEvents:"all"}}>
-              <div style={{fontSize:9,color:"#3aada0",letterSpacing:2,textTransform:"uppercase",marginBottom:6,fontWeight:600}}>{tourStep+1} of {TOUR_STEPS.length}</div>
+            {/* Tooltip card — always fully visible */}
+            <div style={{position:"absolute",top,left,transform,width:tipW,background:"#f0ece3",borderRadius:14,padding:"18px 20px 16px",boxShadow:"0 12px 40px rgba(0,0,0,0.35)",border:"1px solid #b8d4cf",zIndex:2,pointerEvents:"all"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                <div style={{fontSize:9,color:"#3aada0",letterSpacing:2,textTransform:"uppercase",fontWeight:600}}>{tourStep+1} of {TOUR_STEPS.length}</div>
+                <button onClick={()=>completeTour()} style={{background:"none",border:"none",color:"#7a9696",fontSize:16,cursor:"pointer",lineHeight:1,padding:"0 2px"}}>×</button>
+              </div>
               <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:20,fontWeight:600,color:"#1a3a3a",marginBottom:8,lineHeight:1.2}}>{s.title}</div>
-              <div style={{fontSize:13,color:"#3a6a6a",lineHeight:1.65,marginBottom:16}}>{s.body}</div>
+              <div style={{fontSize:13,color:"#3a6a6a",lineHeight:1.65,marginBottom:14}}>{s.body}</div>
               <div style={{display:"flex",gap:8,alignItems:"center"}}>
                 <button onClick={()=>{if(tourStep<TOUR_STEPS.length-1){setTourStep(tourStep+1);}else{completeTour(s.goTo);}if(s.goTo&&tourStep<TOUR_STEPS.length-1)setTab(s.goTo);}} style={{flex:1,background:"#3aada0",color:"#fff",border:"none",borderRadius:7,padding:"9px 14px",fontSize:12,fontWeight:700,cursor:"pointer",letterSpacing:.5}}>{s.cta||"Next →"}</button>
-                {s.skip&&<button onClick={()=>completeTour()} style={{background:"none",border:"none",color:"#4a8080",fontSize:11,cursor:"pointer",padding:"4px 8px"}}>Skip</button>}
+                {s.skip&&<button onClick={()=>completeTour()} style={{background:"none",border:"none",color:"#4a8080",fontSize:11,cursor:"pointer",padding:"4px 8px"}}>Skip tour</button>}
               </div>
-              {/* Progress dots */}
               <div style={{display:"flex",gap:4,justifyContent:"center",marginTop:12}}>
                 {TOUR_STEPS.map((_,i)=><div key={i} style={{width:i===tourStep?16:6,height:6,borderRadius:3,background:i===tourStep?"#3aada0":i<tourStep?"#b8d4cf":"#d4e8e4",transition:"all .2s"}}/>)}
               </div>
@@ -1029,12 +1058,12 @@ export default function App({ session, onBack }){
                         </div>
                       )}
                       <div style={{display:"flex",gap:7,flexWrap:"wrap"}}>
-                        {r.email&&r.email!=="unknown"&&<a href={`mailto:${r.email}`} style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#0f2424",border:"1px solid #1e2d4a",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>✉ Email</a>}
-                        {r.phone&&r.phone!=="unknown"&&<a href={`tel:${r.phone}`} style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a3020",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>📞 Call</a>}
-                        {r.phone&&r.phone!=="unknown"&&<a href={`https://wa.me/${r.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a5020",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>💬 WhatsApp</a>}
-                        {r.linkedin&&<a href={r.linkedin} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#b0d4cf",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
-                        {!r.linkedin&&<a href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#b0d4cf",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
-                        <button onClick={e=>{e.stopPropagation();setOutreachForm(r.id);setTab("outreach");}} style={{background:"#e8f4f0",border:"1px solid #d0c0f0",color:"#1a7a72",fontSize:11,padding:"6px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
+                        {r.email&&r.email!=="unknown"&&<a href={`mailto:${r.email}`} style={{color:"#d6f0ee",fontSize:11,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>✉ Email</a>}
+                        {r.phone&&r.phone!=="unknown"&&<a href={`tel:${r.phone}`} style={{color:"#d6f0ee",fontSize:11,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>📞 Call</a>}
+                        {r.phone&&r.phone!=="unknown"&&<a href={`https://wa.me/${r.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" style={{color:"#d6f0ee",fontSize:11,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>💬 WhatsApp</a>}
+                        {r.linkedin&&<a href={r.linkedin} target="_blank" rel="noreferrer" style={{color:"#d6f0ee",fontSize:11,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
+                        {!r.linkedin&&<a href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#d6f0ee",fontSize:11,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
+                        <button onClick={e=>{e.stopPropagation();setOutreachForm(r.id);setTab("outreach");}} style={{background:"#e8f4f0",border:"1px solid #3aada0",color:"#1a4a4a",fontSize:11,padding:"6px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
                       </div>
                       {/* Sequence enrolment */}
                       <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #c0d4d0"}}>
@@ -1164,10 +1193,10 @@ export default function App({ session, onBack }){
                           {lc&&<div style={{marginTop:4,fontSize:9,color:outcomeColor(lc.outcome)}}>◉ {outcomeLabel(lc.outcome)} · {new Date(lc.date).toLocaleDateString()}</div>}
                           {calSel===l.id&&(
                             <div style={{marginTop:9,paddingTop:9,borderTop:"1px solid #c0d4d0",display:"flex",gap:7,flexWrap:"wrap"}}>
-                              {l.email&&l.email!=="unknown"&&<a href={`mailto:${l.email}`} onClick={e=>e.stopPropagation()} style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#0f2424",border:"1px solid #1e2d4a",padding:"5px 11px",borderRadius:5}}>✉ Email</a>}
-                              {l.phone&&l.phone!=="unknown"&&<a href={`tel:${l.phone}`} onClick={e=>e.stopPropagation()} style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a3020",padding:"5px 11px",borderRadius:5}}>📞 Call</a>}
-                              {l.phone&&l.phone!=="unknown"&&<a href={`https://wa.me/${l.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a5020",padding:"5px 11px",borderRadius:5}}>💬 WA</a>}
-                              <button onClick={e=>{e.stopPropagation();setOutreachForm(l.id);setTab("outreach");}} style={{background:"#e8f4f0",border:"1px solid #d0c0f0",color:"#1a7a72",fontSize:11,padding:"5px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
+                              {l.email&&l.email!=="unknown"&&<a href={`mailto:${l.email}`} onClick={e=>e.stopPropagation()} style={{color:"#d6f0ee",fontSize:11,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"5px 11px",borderRadius:5}}>✉ Email</a>}
+                              {l.phone&&l.phone!=="unknown"&&<a href={`tel:${l.phone}`} onClick={e=>e.stopPropagation()} style={{color:"#d6f0ee",fontSize:11,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"5px 11px",borderRadius:5}}>📞 Call</a>}
+                              {l.phone&&l.phone!=="unknown"&&<a href={`https://wa.me/${l.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{color:"#d6f0ee",fontSize:11,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"5px 11px",borderRadius:5}}>💬 WA</a>}
+                              <button onClick={e=>{e.stopPropagation();setOutreachForm(l.id);setTab("outreach");}} style={{background:"#e8f4f0",border:"1px solid #3aada0",color:"#1a4a4a",fontSize:11,padding:"5px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
                             </div>
                           )}
                         </div>
@@ -1250,10 +1279,10 @@ export default function App({ session, onBack }){
                   </div>
                   {r.contract_expiry&&r.contract_expiry!=="unknown"&&<div style={{fontSize:10,color:u.color,marginBottom:6}}>📅 {r.contract_expiry}</div>}
                   <div style={{display:"flex",gap:6,marginBottom:logs.length?9:0,flexWrap:"wrap"}}>
-                    {r.email&&r.email!=="unknown"&&<a href={`mailto:${r.email}`} style={{color:"#3aada0",fontSize:10,textDecoration:"none",background:"#0f2424",border:"1px solid #1e2d4a",padding:"4px 10px",borderRadius:5}}>✉</a>}
-                    {r.phone&&r.phone!=="unknown"&&<a href={`tel:${r.phone}`} style={{color:"#22c55e",fontSize:10,textDecoration:"none",background:"#0d2010",border:"1px solid #1a3020",padding:"4px 10px",borderRadius:5}}>📞</a>}
-                    {r.phone&&r.phone!=="unknown"&&<a href={`https://wa.me/${r.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" style={{color:"#22c55e",fontSize:10,textDecoration:"none",background:"#0d2010",border:"1px solid #1a5020",padding:"4px 10px",borderRadius:5}}>💬</a>}
-                    <a href={r.linkedin||`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:10,textDecoration:"none",background:"#b0d4cf",border:"1px solid #0a2535",padding:"4px 10px",borderRadius:5}}>🔗</a>
+                    {r.email&&r.email!=="unknown"&&<a href={`mailto:${r.email}`} style={{color:"#d6f0ee",fontSize:10,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"4px 10px",borderRadius:5}}>✉</a>}
+                    {r.phone&&r.phone!=="unknown"&&<a href={`tel:${r.phone}`} style={{color:"#d6f0ee",fontSize:10,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"4px 10px",borderRadius:5}}>📞</a>}
+                    {r.phone&&r.phone!=="unknown"&&<a href={`https://wa.me/${r.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" style={{color:"#d6f0ee",fontSize:10,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"4px 10px",borderRadius:5}}>💬</a>}
+                    <a href={r.linkedin||`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#d6f0ee",fontSize:10,textDecoration:"none",background:"#1a4a4a",border:"1px solid #2a6a6a",padding:"4px 10px",borderRadius:5}}>🔗</a>
                     {lc&&<span style={{fontSize:10,color:outcomeColor(lc.outcome),padding:"4px 0",marginLeft:2}}>◉ {outcomeLabel(lc.outcome)}</span>}
                   </div>
                   {logs.length>0&&(

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cookie Policy — Dunlin</title>
+<meta name="description" content="Dunlin's Cookie Policy. What cookies we use, why we use them, and how to manage your preferences. UK GDPR / PECR compliant." />
+<meta name="author" content="Dunlin · Marvanova Ltd." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://www.getdunlin.com/cookies.html" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" href="/favicon.ico" />
+<meta name="theme-color" content="#1A4A4A" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.getdunlin.com/cookies.html" />
+<meta property="og:title" content="Cookie Policy — Dunlin" />
+<meta property="og:description" content="What cookies Dunlin uses, why we use them, and how to manage your preferences. UK GDPR / PECR compliant." />
+<meta property="og:site_name" content="Dunlin" />
+<meta property="og:locale" content="en_GB" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal-deep: #1a4a4a;
+    --teal-dark: #0f2e2e;
+    --teal-mid: #2a7a72;
+    --teal-bright: #3aada0;
+    --teal-light: #7dd4cc;
+    --teal-pale: #d6f0ee;
+    --teal-mist: #f0f9f8;
+    --sand: #f5f0e8;
+    --sand-dark: #ede8df;
+    --ink: #1c2b2b;
+    --ink-mid: #3d5252;
+    --ink-light: #7a9696;
+    --white: #ffffff;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(26,74,74,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--white);
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px; font-weight: 400;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--teal-light); }
+
+  .nav-back {
+    background: var(--teal-bright);
+    color: white !important;
+    padding: 9px 22px;
+    border-radius: 6px;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-back:hover { background: var(--teal-mid) !important; color: white !important; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--teal-deep);
+    padding: 140px 48px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,173,160,0.1) 0%, transparent 65%);
+    top: -200px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,173,160,0.07) 0%, transparent 65%);
+    bottom: -150px; left: -80px;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: 24px;
+    opacity: 0.85;
+    position: relative; z-index: 1;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 6vw, 80px);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    position: relative; z-index: 1;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.03em;
+    position: relative; z-index: 1;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  .policy-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 56px 64px;
+    box-shadow: 0 2px 24px rgba(26,74,74,0.06), 0 1px 4px rgba(26,74,74,0.04);
+  }
+
+  /* Table of contents */
+  .toc {
+    background: var(--teal-mist);
+    border: 1px solid var(--teal-pale);
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+
+  .toc h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 400;
+    color: var(--teal-deep);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .toc ol {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .toc a {
+    font-size: 13px;
+    color: var(--teal-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .toc a:hover { color: var(--teal-bright); text-decoration: underline; }
+
+  /* Headings */
+  .policy-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 400;
+    color: var(--ink);
+    margin-top: 48px;
+    margin-bottom: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--sand-dark);
+    line-height: 1.2;
+    scroll-margin-top: 100px;
+  }
+
+  .policy-card h2:first-of-type {
+    border-top: none;
+    margin-top: 0;
+  }
+
+  .policy-card h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500;
+    color: var(--ink);
+    margin-top: 28px;
+    margin-bottom: 10px;
+    letter-spacing: 0.01em;
+  }
+
+  /* Body text */
+  .policy-card p {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+
+  .policy-card p:last-child { margin-bottom: 0; }
+
+  /* Lists */
+  .policy-card ul, .policy-card ol {
+    padding-left: 22px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .policy-card li {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+
+  .policy-card li strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Info callout */
+  .callout {
+    background: var(--teal-mist);
+    border-left: 3px solid var(--teal-bright);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+
+  .callout p {
+    font-size: 13px;
+    color: var(--ink-mid);
+    margin-bottom: 0;
+  }
+
+  /* Warning callout */
+  .callout-warn {
+    background: #fdf8f0;
+    border-left: 3px solid #e8a838;
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+
+  .callout-warn p {
+    font-size: 13px;
+    color: var(--ink-mid);
+    margin-bottom: 0;
+  }
+
+  /* Cookie / processor table */
+  .cookie-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 24px;
+    font-size: 13px;
+  }
+
+  .cookie-table th {
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--sand-dark);
+    background: var(--sand);
+  }
+
+  .cookie-table td {
+    padding: 12px 12px;
+    border-bottom: 1px solid var(--sand-dark);
+    color: var(--ink-mid);
+    vertical-align: top;
+  }
+
+  .cookie-table tr:last-child td { border-bottom: none; }
+
+  .cookie-table td:first-child {
+    font-family: 'DM Sans', monospace;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
+  /* Cookie type badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .badge-essential {
+    background: rgba(26,74,74,0.08);
+    color: var(--teal-deep);
+    border: 1px solid rgba(26,74,74,0.15);
+  }
+
+  .badge-analytics {
+    background: rgba(232,168,56,0.1);
+    color: #8a5e10;
+    border: 1px solid rgba(232,168,56,0.25);
+  }
+
+  /* Cookie category blocks */
+  .cookie-category {
+    background: var(--sand);
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+
+  .cookie-category-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .cookie-category h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+
+  .cookie-category p {
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+
+  /* Contact box */
+  .contact-box {
+    background: var(--teal-deep);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-top: 24px;
+  }
+
+  .contact-box h3 {
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400;
+    margin-bottom: 10px;
+    margin-top: 0;
+  }
+
+  .contact-box p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 8px;
+  }
+
+  .contact-box a {
+    color: var(--teal-light);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .contact-box a:hover { text-decoration: underline; }
+
+  /* Inline link style */
+  .policy-card a {
+    color: var(--teal-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--teal-pale);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .policy-card a:hover { color: var(--teal-bright); border-color: var(--teal-bright); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--teal-dark);
+    padding: 40px 48px 32px;
+  }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+
+  .footer-bottom p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .footer-bottom .legal {
+    display: flex; gap: 24px;
+  }
+
+  .footer-bottom .legal a {
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-bottom .legal a:hover { color: rgba(255,255,255,0.45); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 24px 60px; }
+    .content-wrap { padding: 40px 16px 64px; }
+    .policy-card { padding: 32px 24px; }
+    footer { padding: 32px 24px 24px; }
+    .cookie-table { font-size: 12px; }
+    .cookie-table th, .cookie-table td { padding: 8px; }
+    .cookie-table td:first-child { white-space: normal; }
+  }
+
+  @media (max-width: 480px) {
+    .cookie-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="34" height="23" viewBox="0 0 120 80" fill="none">
+      <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
+      <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
+      <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="nav-wordmark">dunlin</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#features">Features</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/" class="nav-back">← Back to home</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Legal · Marvanova Ltd.</p>
+  <h1>Cookie Policy</h1>
+  <p class="hero-sub">Last updated: April 2026</p>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="content-wrap">
+  <div class="policy-card">
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#what-are-cookies">What are cookies?</a></li>
+        <li><a href="#cookies-we-use">Cookies Dunlin uses</a></li>
+        <li><a href="#cookie-table">Full cookie list</a></li>
+        <li><a href="#third-party-cookies">Third-party cookies</a></li>
+        <li><a href="#no-advertising">No advertising or tracking cookies</a></li>
+        <li><a href="#manage-cookies">How to manage or disable cookies</a></li>
+        <li><a href="#changes">Changes to this policy</a></li>
+        <li><a href="#contact">Contact us</a></li>
+      </ol>
+    </div>
+
+    <!-- Introduction -->
+    <p>This Cookie Policy explains what cookies are, which cookies Dunlin (getdunlin.com) uses, and how you can control them. We have written it in plain English — if anything is unclear, please contact us at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a>.</p>
+    <p>Dunlin is operated by <strong>Marvanova Ltd.</strong>, a company registered in England and Wales. This policy is designed to comply with the UK General Data Protection Regulation (UK GDPR) and the Privacy and Electronic Communications Regulations 2003 (PECR).</p>
+
+    <!-- 1. What are cookies -->
+    <h2 id="what-are-cookies">1. What are cookies?</h2>
+    <p>Cookies are small text files that a website places on your device (computer, phone, or tablet) when you visit. They allow the site to remember information about your visit — such as whether you are logged in — so you do not have to re-enter details every time you return.</p>
+    <p>Cookies serve a range of purposes. Some are strictly necessary for a website or app to function at all; others are used to remember your preferences; and others help website owners understand how visitors interact with their site. There are also cookies used for advertising, though Dunlin does not use these.</p>
+    <p>Under PECR, we must tell you about any cookies we place on your device, explain their purpose, and — where they are not strictly necessary — obtain your consent before setting them.</p>
+
+    <!-- 2. Cookies we use -->
+    <h2 id="cookies-we-use">2. Cookies Dunlin uses</h2>
+    <p>We keep our use of cookies to the minimum needed to run a secure, functional service. Below we describe each category of cookie we use.</p>
+
+    <div class="cookie-category">
+      <div class="cookie-category-header">
+        <h3>Essential / strictly necessary cookies</h3>
+        <span class="badge badge-essential">No consent required</span>
+      </div>
+      <p>These cookies are required for Dunlin to function. Without them you would not be able to log in, stay logged in, or use the product securely. Because they are strictly necessary, PECR does not require us to ask for your consent before setting them — but we still tell you about them here in the interest of transparency.</p>
+      <p>This category includes:</p>
+    </div>
+    <ul>
+      <li><strong>Authentication session tokens</strong> (set by Supabase) — keep you logged in during and between visits</li>
+      <li><strong>CSRF protection token</strong> — prevents cross-site request forgery attacks, a standard security measure</li>
+      <li><strong>Cookie consent preference</strong> — remembers that you have acknowledged our cookie notice so we do not show it repeatedly</li>
+    </ul>
+
+    <div class="cookie-category">
+      <div class="cookie-category-header">
+        <h3>Analytics cookies</h3>
+        <span class="badge badge-analytics">Consent required</span>
+      </div>
+      <p><strong>We do not currently run any analytics cookies.</strong> This section is a placeholder for if and when we introduce analytics in the future.</p>
+      <p>If we do add analytics, we intend to use a privacy-friendly tool such as <strong>Plausible Analytics</strong> or <strong>PostHog</strong> — both of which can be configured to avoid setting any cookies at all, or to collect only anonymised, aggregated data. We will update this policy and ask for your consent before any such cookies are set.</p>
+    </div>
+
+    <div class="callout">
+      <p>We do not use Google Analytics or any other analytics service that tracks individual users across the web. Any future analytics tool we adopt will be chosen with privacy as a primary criterion.</p>
+    </div>
+
+    <!-- 3. Cookie table -->
+    <h2 id="cookie-table">3. Full cookie list</h2>
+    <p>The table below lists every cookie currently set by Dunlin, including those set by third-party services (Stripe) when you go through a payment flow.</p>
+
+    <table class="cookie-table">
+      <thead>
+        <tr>
+          <th>Cookie name</th>
+          <th>Purpose</th>
+          <th>Type</th>
+          <th>Expires</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>sb-access-token</td>
+          <td>Supabase authentication session — keeps you logged in during a browser session</td>
+          <td><span class="badge badge-essential">Essential</span></td>
+          <td>Session</td>
+        </tr>
+        <tr>
+          <td>sb-refresh-token</td>
+          <td>Supabase session refresh — allows your login session to persist across browser restarts without requiring you to sign in again</td>
+          <td><span class="badge badge-essential">Essential</span></td>
+          <td>7 days</td>
+        </tr>
+        <tr>
+          <td>dunlin_cookie_consent</td>
+          <td>Stores your cookie preference so we do not show the consent notice on every page load</td>
+          <td><span class="badge badge-essential">Essential</span></td>
+          <td>1 year</td>
+        </tr>
+        <tr>
+          <td>__stripe_mid</td>
+          <td>Set by Stripe during the payment flow. Used for fraud prevention and to identify your device across payment sessions</td>
+          <td><span class="badge badge-essential">Essential (payment)</span></td>
+          <td>1 year</td>
+        </tr>
+        <tr>
+          <td>__stripe_sid</td>
+          <td>Set by Stripe during the payment flow. Used to identify your session while you complete a payment</td>
+          <td><span class="badge badge-essential">Essential (payment)</span></td>
+          <td>30 minutes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>We will update this table promptly if we add or remove any cookies. If you notice a discrepancy, please let us know at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a>.</p>
+
+    <!-- 4. Third-party cookies -->
+    <h2 id="third-party-cookies">4. Third-party cookies</h2>
+    <p>Some cookies are set by third-party services that we rely on to deliver Dunlin. We do not control these cookies directly, but we have listed them below and linked to the relevant third-party policies for transparency.</p>
+
+    <h3>Stripe</h3>
+    <p>When you go through our payment or subscription flow, <strong>Stripe</strong> may set cookies on your device. These are used for fraud detection and session continuity during the payment process. They are essential to completing a transaction securely — without them, Stripe cannot process your payment. Stripe's cookies are described in Stripe's own <a href="https://stripe.com/gb/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and <a href="https://stripe.com/gb/legal/cookies-policy" target="_blank" rel="noopener noreferrer">Cookie Policy</a>.</p>
+    <p>Stripe cookies are only set when you interact with a payment form. They are not set on general browsing of the Dunlin product or marketing site.</p>
+
+    <h3>Google Fonts</h3>
+    <p>Dunlin loads fonts (Cormorant Garamond and DM Sans) from <strong>Google Fonts</strong>, a free font service operated by Google LLC. When your browser requests a font file from Google's servers, Google may receive your IP address and some browser information as part of the standard HTTP request. Google states that it does not use this information to track individual users or serve advertising.</p>
+    <div class="callout-warn">
+      <p><strong>Note:</strong> Google Fonts itself does not set cookies, but the font-loading request does transmit your IP address to Google's servers in the United States. If this concerns you, you can use a browser extension that blocks Google Fonts requests, or use a browser set to "Enhanced" or "Strict" tracking protection mode. This will not affect the core functionality of Dunlin — the app will fall back to system fonts. For more detail, see <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener noreferrer">Google Fonts Privacy FAQ</a>.</p>
+    </div>
+
+    <!-- 5. No advertising -->
+    <h2 id="no-advertising">5. No advertising or tracking cookies</h2>
+    <p>We do not use advertising cookies, retargeting cookies, or any cookies that track your browsing behaviour across other websites. Specifically:</p>
+    <ul>
+      <li>We do not use Facebook Pixel or any Meta tracking tools</li>
+      <li>We do not use Google Ads or Google Analytics tracking cookies</li>
+      <li>We do not use LinkedIn Insight Tag or similar social network trackers</li>
+      <li>We do not share cookie data with data brokers or advertising networks</li>
+      <li>We do not engage in cross-site tracking of any kind</li>
+    </ul>
+    <p>If this ever changes, we will update this policy, give you clear notice, and obtain your consent before any such cookies are set.</p>
+
+    <!-- 6. Manage cookies -->
+    <h2 id="manage-cookies">6. How to manage or disable cookies</h2>
+    <p>You have several options for controlling cookies. Please note that disabling essential cookies will prevent Dunlin from functioning correctly — you will not be able to log in or use the product.</p>
+
+    <h3>Browser settings</h3>
+    <p>All modern browsers allow you to view, manage, and delete cookies. Here are links to the relevant help pages for the most common browsers:</p>
+    <ul>
+      <li><strong>Google Chrome:</strong> <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Manage cookies in Chrome</a></li>
+      <li><strong>Mozilla Firefox:</strong> <a href="https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer" target="_blank" rel="noopener noreferrer">Manage cookies in Firefox</a></li>
+      <li><strong>Apple Safari:</strong> <a href="https://support.apple.com/en-gb/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer">Manage cookies in Safari</a></li>
+      <li><strong>Microsoft Edge:</strong> <a href="https://support.microsoft.com/en-us/windows/manage-cookies-in-microsoft-edge-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank" rel="noopener noreferrer">Manage cookies in Edge</a></li>
+    </ul>
+
+    <h3>Further guidance</h3>
+    <p>For comprehensive, browser-neutral guidance on managing cookies, we recommend visiting <a href="https://www.aboutcookies.org" target="_blank" rel="noopener noreferrer">aboutcookies.org</a>, an independent resource that explains how cookies work and how to control them across all major platforms and devices.</p>
+
+    <h3>Opt-out of Stripe cookies</h3>
+    <p>Stripe's fraud-prevention cookies are set during payment flows only. If you do not initiate a payment, these cookies will not be set. You can also refer to <a href="https://stripe.com/gb/legal/cookies-policy" target="_blank" rel="noopener noreferrer">Stripe's Cookie Policy</a> for information on managing Stripe-specific cookies.</p>
+
+    <div class="callout">
+      <p><strong>Important:</strong> If you block or delete the <code>sb-access-token</code> and <code>sb-refresh-token</code> cookies, you will be logged out of Dunlin and will need to sign in again each time you visit.</p>
+    </div>
+
+    <!-- 7. Changes -->
+    <h2 id="changes">7. Changes to this policy</h2>
+    <p>We may update this Cookie Policy from time to time — for example, if we add new features that use cookies, or if the law changes. When we make material changes, we will update the "Last updated" date at the top of this page and, where appropriate, notify you by email or by displaying a notice within the Dunlin product.</p>
+    <p>We encourage you to review this policy periodically. Your continued use of Dunlin after changes are published means you have seen the updated policy.</p>
+
+    <!-- 8. Contact -->
+    <h2 id="contact">8. Contact us</h2>
+    <p>If you have any questions about this Cookie Policy, or about how Dunlin handles your data more generally, please get in touch. We aim to respond to all enquiries within 5 business days.</p>
+
+    <div class="contact-box">
+      <h3>Cookie &amp; privacy queries</h3>
+      <p>Email us at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a> with the subject line "Cookie Policy".</p>
+      <p><strong style="color:rgba(255,255,255,0.5); font-size:12px; font-weight:400;">Data Controller:</strong><br>
+      <span style="color:rgba(255,255,255,0.8); font-size:13px;">Marvanova Ltd. · getdunlin.com · United Kingdom</span></p>
+    </div>
+
+  </div><!-- /.policy-card -->
+</div><!-- /.content-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <p>© 2026 Dunlin · Marvanova Ltd. All rights reserved.</p>
+    <div class="legal">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/cookies.html">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
