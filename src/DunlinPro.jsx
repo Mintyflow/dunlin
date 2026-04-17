@@ -847,7 +847,7 @@ export default function App({ session, onBack }){
         <div style={{display:"flex",alignItems:"center",gap:14}}>
           {/* Logo — click to go home */}
           <button onClick={onBack} title="Back to home" style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:10}}>
-            <svg width="26" height="18" viewBox="0 0 120 80" fill="none">
+            <svg width="36" height="24" viewBox="0 0 120 80" fill="none">
               <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="2"/>
               <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="2"/>
               <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" fill="none"/>
@@ -856,7 +856,7 @@ export default function App({ session, onBack }){
               <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinecap="round"/>
             </svg>
             <div>
-              <span style={{fontFamily:"'Cormorant Garamond',serif",fontWeight:300,fontSize:20,color:"#ffffff",letterSpacing:"0.06em"}}>dunlin</span>
+              <span style={{fontFamily:"'Cormorant Garamond',serif",fontWeight:300,fontSize:23,color:"#ffffff",letterSpacing:"0.06em"}}>dunlin</span>
               <span style={{fontSize:10,color:"rgba(125,212,204,0.6)",letterSpacing:"0.18em",marginLeft:10,textTransform:"uppercase",fontFamily:"'DM Sans',sans-serif"}}>Lease Intelligence</span>
             </div>
           </button>
@@ -1822,7 +1822,7 @@ export default function App({ session, onBack }){
       </div>
 
       {/* Marvanova footer */}
-      <div style={{background:"#0b1622",padding:"12px 24px",textAlign:"center",borderTop:"1px solid rgba(0,153,204,0.15)",marginTop:"auto"}}>
+      <div style={{background:"#0b1622",padding:"12px 24px",textAlign:"center",marginTop:"auto"}}>
         <a href="https://marvanova.com" target="_blank" rel="noopener noreferrer" style={{display:"inline-flex",alignItems:"center",gap:8,textDecoration:"none",opacity:0.7,transition:"opacity 0.2s"}}
           onMouseOver={e=>e.currentTarget.style.opacity="1"} onMouseOut={e=>e.currentTarget.style.opacity="0.7"}>
           <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:"#6a8a9a",letterSpacing:"0.08em"}}>Built by</span>

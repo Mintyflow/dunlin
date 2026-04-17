@@ -40,6 +40,9 @@ function OpportunityTool({ session, onBack }) {
               <ellipse cx="62" cy="46" rx="28" ry="16" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" fill="none"/>
               <circle cx="88" cy="34" r="10" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" fill="none"/>
               <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+              <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+              <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.4)" strokeWidth="1.2" strokeLinecap="round"/>
+              <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.4)" strokeWidth="1.2" strokeLinecap="round"/>
             </svg>
             <span style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 22, color: C.white, letterSpacing: '0.06em' }}>dunlin</span>
           </div>
@@ -145,6 +148,9 @@ function ResetPassword({ onDone }) {
             <ellipse cx="62" cy="46" rx="28" ry="16" stroke={C.dt} strokeWidth="1.5" fill="none"/>
             <circle cx="88" cy="34" r="10" stroke={C.dt} strokeWidth="1.5" fill="none"/>
             <path d="M96 36 Q108 36 112 40" stroke={C.dt} strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+            <path d="M35 46 Q22 40 18 44" stroke={C.dt} strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+            <line x1="58" y1="60" x2="54" y2="72" stroke={C.inkl} strokeWidth="1.2" strokeLinecap="round"/>
+            <line x1="70" y1="61" x2="68" y2="72" stroke={C.inkl} strokeWidth="1.2" strokeLinecap="round"/>
           </svg>
           <span style={{ fontFamily:"'Cormorant Garamond', serif", fontWeight:300, fontSize:22, color:C.dt, letterSpacing:'0.06em' }}>dunlin</span>
         </div>
