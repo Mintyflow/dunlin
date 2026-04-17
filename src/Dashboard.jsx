@@ -199,6 +199,20 @@ export default function Dashboard({ session, onSelect }) {
           <a href="mailto:hello@getdunlin.com?subject=Tool request" style={{ color: C.bt, cursor: 'pointer', textDecoration: 'none' }}>send us a request</a>
         </p>
       </div>
+
+      {/* Marvanova footer */}
+      <div style={{ background: '#0b1622', padding: '12px 24px', textAlign: 'center' }}>
+        <a href="https://marvanova.com" target="_blank" rel="noopener noreferrer"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none', opacity: 0.7, transition: 'opacity 0.2s' }}
+          onMouseOver={e => e.currentTarget.style.opacity = '1'} onMouseOut={e => e.currentTarget.style.opacity = '0.7'}>
+          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: '#6a8a9a', letterSpacing: '0.08em' }}>Built by</span>
+          <span style={{ fontFamily: 'Arial,sans-serif', fontSize: 12, fontWeight: 700, letterSpacing: '0.12em' }}>
+            <span style={{ background: 'linear-gradient(90deg,#0066cc,#00aadd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>MARVA</span>
+            <span style={{ color: '#8a9aaa', WebkitTextFillColor: '#8a9aaa' }}>NOVA</span>
+          </span>
+          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 10, color: '#4a6a7a', letterSpacing: '0.14em', fontWeight: 500, textTransform: 'uppercase' }}>AI Agency</span>
+        </a>
+      </div>
     </div>
   )
 }
