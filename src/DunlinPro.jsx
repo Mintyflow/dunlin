@@ -690,8 +690,8 @@ export default function App({ session, onBack }){
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#d4e8e4}::-webkit-scrollbar-thumb{background:#8ab8b0;border-radius:2px}
         input,select,textarea{outline:none;-webkit-appearance:none}input[type=time],input[type=date]{color-scheme:light}
         input::placeholder,textarea::placeholder{color:#6a9a9a}
-        .nb{flex:1;background:none;border:none;cursor:pointer;padding:7px 2px;color:#4a8080;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;transition:color .15s;min-width:0}
-        .nb:hover{color:#1a3a3a}.nb.act{color:#1a7a72;border-bottom-color:#1a7a72}
+        .nb{flex:1;background:none;border:none;cursor:pointer;padding:8px 2px;color:#1a4040;font-family:'DM Sans',sans-serif;font-weight:600;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .15s;min-width:0}
+        .nb:hover{color:#0d2424}.nb.act{color:#1a7a72;border-bottom-color:#1a7a72}
         .bp{background:#3aada0;color:#fff;border:none;padding:13px;font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.08em;font-weight:700;cursor:pointer;border-radius:8px;text-transform:uppercase;width:100%}.bp:hover{background:#148a80;color:#fff}
         .bs{background:#2a7a72;color:#fff;border:none;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.04em;font-weight:600;cursor:pointer;border-radius:6px;text-transform:uppercase}.bs:hover{background:#3aada0}
         .bg{background:none;border:1px solid #b8d4cf;color:#4a8080;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px;transition:all .15s}.bg:hover{border-color:#3aada0;color:#3aada0}.bg:disabled{opacity:.3;cursor:not-allowed}
@@ -727,58 +727,82 @@ export default function App({ session, onBack }){
       {/* ── Guided Tour Overlay ──────────────────────────────────────────────── */}
       {tourStep!==null&&(()=>{
         const s=TOUR_STEPS[tourStep];
-        const pad=10;
+        const pad=8;
         const vw=window.innerWidth;
         const vh=window.innerHeight;
-        const isMobile=vw<520;
-        const tipW=isMobile?Math.min(vw-24,340):280;
-        const tipH=230; // estimated card height
-        const margin=12;
+        // Card width: 320 on desktop, full-width minus gutter on small screens
+        const tipW=Math.min(320,vw-24);
+        // Be conservative with height estimate — text wraps on narrow cards
+        const tipH=300;
+        const margin=16;
         const hl=tourRect?{top:tourRect.top-pad,left:tourRect.left-pad,w:tourRect.w+pad*2,h:tourRect.h+pad*2}:null;
 
-        // Smart vertical: prefer below → above → centered
         let top,left,transform="";
         if(!hl){
+          // No highlight: always centre
           top="50%";left="50%";transform="translate(-50%,-50%)";
-        } else if(isMobile){
-          // On mobile always anchor to bottom of screen for readability
-          top=vh-tipH-margin;
-          left=Math.max(margin,(vw-tipW)/2);
         } else {
+          // Available space above and below the highlight
           const spaceBelow=vh-(hl.top+hl.h)-margin;
           const spaceAbove=hl.top-margin;
+          // Pick side with more room; fallback to vertical centre
           if(spaceBelow>=tipH){
             top=hl.top+hl.h+margin;
           } else if(spaceAbove>=tipH){
             top=hl.top-tipH-margin;
           } else {
-            top=Math.max(margin,(vh-tipH)/2);
+            // Not enough room either side — anchor 60% down (below the nav bar, above the fold)
+            top=Math.max(margin,Math.min(vh-tipH-margin, Math.round(vh*0.35)));
           }
-          // Smart horizontal: centre on highlight, clamp to viewport
+          // Horizontal: centre on highlight, hard-clamp to stay fully on screen
           left=Math.round(hl.left+(hl.w/2)-(tipW/2));
           left=Math.max(margin,Math.min(vw-tipW-margin,left));
+          // Clamp top too (never go off bottom)
+          if(typeof top==="number") top=Math.max(margin,Math.min(vh-tipH-margin,top));
         }
 
         return(
           <div style={{position:"fixed",inset:0,zIndex:9999,pointerEvents:"none"}}>
             {/* Dark overlay */}
-            <div style={{position:"absolute",inset:0,background:"rgba(20,40,38,0.82)",pointerEvents:"all"}} onClick={()=>completeTour()}/>
-            {/* Spotlight cutout */}
-            {hl&&<div style={{position:"absolute",top:hl.top,left:hl.left,width:hl.w,height:hl.h,borderRadius:10,boxShadow:"0 0 0 9999px rgba(20,40,38,0.82)",border:"2px solid #3aada0",zIndex:1,pointerEvents:"none"}}/>}
-            {/* Tooltip card — always fully visible */}
-            <div style={{position:"absolute",top,left,transform,width:tipW,background:"#f0ece3",borderRadius:14,padding:"18px 20px 16px",boxShadow:"0 12px 40px rgba(0,0,0,0.35)",border:"1px solid #b8d4cf",zIndex:2,pointerEvents:"all"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                <div style={{fontSize:9,color:"#3aada0",letterSpacing:2,textTransform:"uppercase",fontWeight:600}}>{tourStep+1} of {TOUR_STEPS.length}</div>
-                <button onClick={()=>completeTour()} style={{background:"none",border:"none",color:"#7a9696",fontSize:16,cursor:"pointer",lineHeight:1,padding:"0 2px"}}>×</button>
+            <div style={{position:"absolute",inset:0,background:"rgba(14,30,28,0.88)",pointerEvents:"all"}} onClick={()=>completeTour()}/>
+            {/* Spotlight cutout — glowing border so content inside is clearly visible */}
+            {hl&&<div style={{
+              position:"absolute",top:hl.top,left:hl.left,width:hl.w,height:hl.h,
+              borderRadius:10,
+              boxShadow:"0 0 0 9999px rgba(14,30,28,0.88), 0 0 0 3px #3aada0, 0 0 20px 4px rgba(58,173,160,0.5)",
+              border:"2px solid #3aada0",
+              background:"transparent",
+              zIndex:1,pointerEvents:"none"
+            }}/>}
+            {/* Tooltip card */}
+            <div style={{
+              position:"absolute",top,left,transform,width:tipW,
+              background:"#f5f0e8",
+              borderRadius:14,
+              padding:"20px 22px 18px",
+              boxShadow:"0 16px 48px rgba(0,0,0,0.45)",
+              border:"1px solid #b8d4cf",
+              zIndex:2,pointerEvents:"all"
+            }}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                <div style={{fontSize:10,color:"#3aada0",letterSpacing:2,textTransform:"uppercase",fontWeight:700}}>{tourStep+1} of {TOUR_STEPS.length}</div>
+                <button onClick={()=>completeTour()} style={{background:"rgba(0,0,0,0.06)",border:"none",color:"#3a6a6a",fontSize:15,cursor:"pointer",lineHeight:1,padding:"3px 7px",borderRadius:6,fontWeight:700}}>✕</button>
               </div>
-              <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:20,fontWeight:600,color:"#1a3a3a",marginBottom:8,lineHeight:1.2}}>{s.title}</div>
-              <div style={{fontSize:13,color:"#3a6a6a",lineHeight:1.65,marginBottom:14}}>{s.body}</div>
+              <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontWeight:600,color:"#1a3030",marginBottom:10,lineHeight:1.2}}>{s.title}</div>
+              <div style={{fontSize:13,color:"#2a4a4a",lineHeight:1.7,marginBottom:16}}>{s.body}</div>
               <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                <button onClick={()=>{if(tourStep<TOUR_STEPS.length-1){setTourStep(tourStep+1);}else{completeTour(s.goTo);}if(s.goTo&&tourStep<TOUR_STEPS.length-1)setTab(s.goTo);}} style={{flex:1,background:"#3aada0",color:"#fff",border:"none",borderRadius:7,padding:"9px 14px",fontSize:12,fontWeight:700,cursor:"pointer",letterSpacing:.5}}>{s.cta||"Next →"}</button>
-                {s.skip&&<button onClick={()=>completeTour()} style={{background:"none",border:"none",color:"#4a8080",fontSize:11,cursor:"pointer",padding:"4px 8px"}}>Skip tour</button>}
+                <button
+                  onClick={()=>{
+                    if(tourStep<TOUR_STEPS.length-1){setTourStep(tourStep+1);}
+                    else{completeTour(s.goTo);}
+                    if(s.goTo&&tourStep<TOUR_STEPS.length-1)setTab(s.goTo);
+                  }}
+                  style={{flex:1,background:"#1a4a4a",color:"#fff",border:"none",borderRadius:8,padding:"11px 14px",fontSize:13,fontWeight:700,cursor:"pointer",letterSpacing:.3}}
+                >{s.cta||"Next →"}</button>
+                {s.skip&&<button onClick={()=>completeTour()} style={{background:"none",border:"none",color:"#4a8080",fontSize:12,cursor:"pointer",padding:"4px 8px"}}>Skip</button>}
               </div>
-              <div style={{display:"flex",gap:4,justifyContent:"center",marginTop:12}}>
-                {TOUR_STEPS.map((_,i)=><div key={i} style={{width:i===tourStep?16:6,height:6,borderRadius:3,background:i===tourStep?"#3aada0":i<tourStep?"#b8d4cf":"#d4e8e4",transition:"all .2s"}}/>)}
+              <div style={{display:"flex",gap:4,justifyContent:"center",marginTop:14}}>
+                {TOUR_STEPS.map((_,i)=><div key={i} style={{width:i===tourStep?18:6,height:6,borderRadius:3,background:i===tourStep?"#1a4a4a":i<tourStep?"#3aada0":"#c0d8d4",transition:"all .25s"}}/>)}
               </div>
             </div>
           </div>
@@ -839,13 +863,13 @@ export default function App({ session, onBack }){
       <div style={{borderBottom:"1px solid #c0d4d0",display:"flex",background:"#cce0dc",position:"sticky",top:followupsDueToday.length>0?81:49,zIndex:9,overflowX:"auto"}}>
         {navTabs.map(n=>(
           <button key={n.id} data-tour={n.tour||undefined} className={`nb ${tab===n.id?"act":""}`} onClick={()=>setTab(n.id)}
-            style={{padding:"7px 4px",minWidth:50,
-              ...(n.id==="help"&&tab!=="help"?{color:"#3aada0",fontWeight:600}:{})
+            style={{padding:"8px 4px",minWidth:52,
+              ...(n.id==="help"&&tab!=="help"?{color:"#1a7a72"}:{})
             }}>
-            <span style={{fontSize:13}}>{n.i}</span>
-            <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:9,whiteSpace:"nowrap"}}>{n.l}</span>
-            {n.b>0&&<span style={{background:"#c0d8d4",color:"#3aada0",fontSize:8,padding:"1px 4px",borderRadius:10}}>{n.b}</span>}
-            {n.dot&&!n.b&&<span style={{width:5,height:5,borderRadius:3,background:"#f59e0b",display:"inline-block"}} className="pulse"/>}
+            <span style={{fontSize:15}}>{n.i}</span>
+            <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,whiteSpace:"nowrap",fontWeight:600}}>{n.l}</span>
+            {n.b>0&&<span style={{background:"#1a4a4a",color:"#d6f0ee",fontSize:9,padding:"1px 5px",borderRadius:10,fontWeight:700}}>{n.b}</span>}
+            {n.dot&&!n.b&&<span style={{width:6,height:6,borderRadius:3,background:"#f59e0b",display:"inline-block"}} className="pulse"/>}
           </button>
         ))}
       </div>
