@@ -350,9 +350,9 @@ export default function Auth() {
           }
           <p style={{ textAlign: 'center', fontSize: 12, color: C.inkl, marginTop: 28, lineHeight: 1.7 }}>
             By continuing you agree to dunlin's{' '}
-            <span style={{ color: C.bt, cursor: 'pointer' }}>Terms of Service</span>
+            <a href="/terms.html" target="_blank" rel="noopener noreferrer" style={{ color: C.bt, textDecoration: 'none' }}>Terms of Service</a>
             {' '}and{' '}
-            <span style={{ color: C.bt, cursor: 'pointer' }}>Privacy Policy</span>.
+            <a href="/privacy.html" target="_blank" rel="noopener noreferrer" style={{ color: C.bt, textDecoration: 'none' }}>Privacy Policy</a>.
           </p>
         </div>
       </div>

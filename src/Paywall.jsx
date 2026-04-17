@@ -196,14 +196,11 @@ export default function Paywall({ daysLeft = 0, onPrivacy, onTerms }) {
                 {sel === p.id && <div style={{ width: 6, height: 6, borderRadius: 3, background: "#fff" }}/>}
               </div>
             </div>
-            {/* Price with strikethrough future rate */}
-            <div style={{ marginBottom: 4 }}>
-              <span style={{ textDecoration: "line-through", fontSize: 13, color: sel === p.id ? "rgba(125,212,204,0.45)" : "rgba(26,74,74,0.35)", fontWeight: 300 }}>£{p.futureMonthly}/mo after</span>
-            </div>
-            <div style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: 36, color: sel === p.id ? "#fff" : C.dt, lineHeight: 1, marginBottom: 4 }}>
+            {/* Founding price */}
+            <div style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: 36, color: sel === p.id ? "#fff" : C.dt, lineHeight: 1, marginBottom: 4, marginTop: 8 }}>
               £{billing === "annual" ? p.annual : p.monthly}<span style={{ fontSize: 13, color: sel === p.id ? "rgba(214,240,238,0.45)" : C.inkl, fontWeight: 300 }}>/mo</span>
             </div>
-            <div style={{ fontSize: 11, color: sel === p.id ? "#7dd4cc" : C.bt, marginBottom: 12, fontWeight: 500 }}>Your rate, locked forever 🔒</div>
+            <div style={{ fontSize: 11, color: sel === p.id ? "#7dd4cc" : C.bt, marginBottom: 12, fontWeight: 500 }}>Founding rate — yours to keep 🔒</div>
             {p.features.slice(0, 4).map(f => (
               <div key={f} style={{ fontSize: 12, color: sel === p.id ? "rgba(214,240,238,0.7)" : C.inkm, padding: "3px 0", display: "flex", gap: 7, lineHeight: 1.4 }}>
                 <span style={{ color: C.bt, flexShrink: 0 }}>✓</span>{f}
@@ -284,9 +281,9 @@ export default function Paywall({ daysLeft = 0, onPrivacy, onTerms }) {
       </p>
       <p style={{ marginTop: 8, fontSize: 12, color: C.inkl, textAlign: "center" }}>
         By subscribing you agree to our{" "}
-        <span onClick={onTerms} style={{ color: C.bt, cursor: "pointer" }}>Terms of Service</span>
+        <a href="/terms.html" target="_blank" rel="noopener noreferrer" style={{ color: C.bt, textDecoration: "none" }}>Terms of Service</a>
         {" "}and{" "}
-        <span onClick={onPrivacy} style={{ color: C.bt, cursor: "pointer" }}>Privacy Policy</span>.
+        <a href="/privacy.html" target="_blank" rel="noopener noreferrer" style={{ color: C.bt, textDecoration: "none" }}>Privacy Policy</a>.
       </p>
     </div>
   );
