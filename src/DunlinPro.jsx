@@ -815,11 +815,8 @@ export default function App({ session, onBack }){
       {/* Header */}
       <div style={{borderBottom:"1px solid rgba(255,255,255,0.07)",padding:"0 13px",display:"flex",justifyContent:"space-between",alignItems:"center",background:"#1a4a4a",position:"sticky",top:0,zIndex:10,height:56}}>
         <div style={{display:"flex",alignItems:"center",gap:14}}>
-          {onBack&&(
-            <button onClick={onBack} style={{background:"none",border:"none",color:"rgba(125,212,204,0.6)",cursor:"pointer",fontSize:12,padding:0,fontFamily:"'DM Sans',sans-serif",display:"flex",alignItems:"center",gap:5,letterSpacing:"0.02em"}}>← back</button>
-          )}
-          {onBack&&<div style={{width:1,height:18,background:"rgba(255,255,255,0.1)"}}/>}
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
+          {/* Logo — click to go home */}
+          <button onClick={onBack} title="Back to home" style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:10}}>
             <svg width="26" height="18" viewBox="0 0 120 80" fill="none">
               <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="2"/>
               <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="2"/>
@@ -830,9 +827,9 @@ export default function App({ session, onBack }){
             </svg>
             <div>
               <span style={{fontFamily:"'Cormorant Garamond',serif",fontWeight:300,fontSize:20,color:"#ffffff",letterSpacing:"0.06em"}}>dunlin</span>
-              <span style={{fontSize:10,color:"rgba(125,212,204,0.6)",letterSpacing:"0.18em",marginLeft:10,textTransform:"uppercase",fontFamily:"'DM Sans',sans-serif"}}>Renewal Radar</span>
+              <span style={{fontSize:10,color:"rgba(125,212,204,0.6)",letterSpacing:"0.18em",marginLeft:10,textTransform:"uppercase",fontFamily:"'DM Sans',sans-serif"}}>Lease Intelligence</span>
             </div>
-          </div>
+          </button>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           {verifying&&<span style={{fontSize:9,color:"#1a7a72",fontFamily:"'DM Sans',sans-serif"}} className="pulse">✉ DNS…</span>}

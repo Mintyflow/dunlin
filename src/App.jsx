@@ -31,8 +31,8 @@ function OpportunityTool({ session, onBack }) {
       {/* Header */}
       <div style={{ background: C.dt, padding: '0 28px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <button onClick={onBack} style={{ background: 'none', border: 'none', color: 'rgba(125,212,204,0.6)', cursor: 'pointer', fontSize: 13, padding: 0, fontFamily: "'DM Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 6 }}>
-            ← back
+          <button onClick={onBack} style={{ background: 'rgba(58,173,160,0.15)', border: '1px solid rgba(58,173,160,0.35)', color: '#7dd4cc', cursor: 'pointer', fontSize: 12, padding: '5px 12px', fontFamily: "'DM Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 6, borderRadius: 6, fontWeight: 500 }}>
+            ← Home
           </button>
           <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.1)' }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -95,8 +95,8 @@ function OpportunityTool({ session, onBack }) {
           </div>
         )}
 
-        <button onClick={onBack} style={{ background: 'none', border: 'none', color: C.inkl, fontSize: 13, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-          ← Back to tools
+        <button onClick={onBack} style={{ background: C.dt, border: 'none', color: '#fff', fontSize: 14, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", padding: '12px 28px', borderRadius: 8, fontWeight: 500 }}>
+          ← Back to home
         </button>
       </div>
     </div>
