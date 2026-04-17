@@ -235,8 +235,8 @@ export default function Dashboard({ session, onSelect }) {
             <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 14 }}>Product</div>
             {[
               { label: 'Home', href: '/' },
-              { label: 'Features', href: '/#features' },
-              { label: 'Pricing', href: '/#pricing' },
+              { label: 'Features', href: '/dunlin-landing.html#features' },
+              { label: 'Pricing', href: '/dunlin-landing.html#pricing' },
               { label: 'Product Overview', href: '/one-pager.html' },
             ].map(({ label, href }) => (
               <a key={label} href={href}

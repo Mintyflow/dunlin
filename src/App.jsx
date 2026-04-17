@@ -28,8 +28,8 @@ function AppFooter() {
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 32px 28px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
         {col('Product', [
           { label: 'Home', href: '/' },
-          { label: 'Features', href: '/#features' },
-          { label: 'Pricing', href: '/#pricing' },
+          { label: 'Features', href: '/dunlin-landing.html#features' },
+          { label: 'Pricing', href: '/dunlin-landing.html#pricing' },
           { label: 'Product Overview', href: '/one-pager.html' },
         ])}
         {col('Company', [

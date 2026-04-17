@@ -1838,8 +1838,8 @@ export default function App({ session, onBack }){
           {[
             { title:"Product", links:[
               {label:"Home",href:"/"},
-              {label:"Features",href:"/#features"},
-              {label:"Pricing",href:"/#pricing"},
+              {label:"Features",href:"/dunlin-landing.html#features"},
+              {label:"Pricing",href:"/dunlin-landing.html#pricing"},
               {label:"Product Overview",href:"/one-pager.html"},
             ]},
             { title:"Company", links:[
