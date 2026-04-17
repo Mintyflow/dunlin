@@ -542,7 +542,7 @@ export default function App({ session, onBack }){
   const verifiedCount=Object.values(emailChecks).filter(e=>e.status==="valid").length;
 
   // ── Styles ────────────────────────────────────────────────────────────────
-  const inp={width:"100%",background:"#102020",border:"1px solid #1e2535",color:"#e2e8f0",padding:"11px 13px",fontFamily:"monospace",fontSize:14,borderRadius:8,outline:"none",WebkitAppearance:"none"};
+  const inp={width:"100%",background:"#102020",border:"1px solid #1e2535",color:"#e2e8f0",padding:"11px 13px",fontFamily:"'DM Sans',sans-serif",fontSize:14,borderRadius:8,outline:"none",WebkitAppearance:"none"};
   const card={background:"#102020",border:"1px solid #1e2535",borderRadius:10,padding:14};
   const notice=w=>({background:w?"#150e00":"#0a1424",border:`1px solid ${w?"#3a2800":"#1a3a5c"}`,borderLeft:`3px solid ${w?"#f59e0b":"#3aada0"}`,padding:"11px 13px",borderRadius:8,color:w?"#c8a840":"#7dd4cc",fontSize:12,lineHeight:1.7,marginBottom:12});
 
@@ -559,11 +559,11 @@ export default function App({ session, onBack }){
     return{tier:"pending",label:"CHECKING",col:"#3a6a6a",bg:"#0a1a1a"};
   };
 
-  const confBadge=(r)=>{const{label,col,bg}=getEmailTier(r);return<span style={{background:bg,color:col,border:`1px solid ${col}40`,padding:"2px 5px",borderRadius:3,fontSize:9,fontFamily:"monospace",letterSpacing:1,whiteSpace:"nowrap"}}>{label}</span>;};
+  const confBadge=(r)=>{const{label,col,bg}=getEmailTier(r);return<span style={{background:bg,color:col,border:`1px solid ${col}40`,padding:"2px 5px",borderRadius:3,fontSize:9,fontFamily:"'DM Sans',sans-serif",letterSpacing:1,whiteSpace:"nowrap"}}>{label}</span>;};
   const emailDot=(id,r)=>{if(!r)return<span style={{width:7,height:7,borderRadius:4,background:"#2a3040",display:"inline-block",marginRight:5,flexShrink:0}}/>;const{col,tier}=getEmailTier(r);return<span style={{width:7,height:7,borderRadius:4,background:col,display:"inline-block",marginRight:5,flexShrink:0,boxShadow:tier==="pending"?undefined:`0 0 4px ${col}88`}}/>;};
 
   // ── Space Pressure Score badge ────────────────────────────────────────────
-  const scoreBadge=(score)=>{if(score==null)return null;const col=score>=70?"#22c55e":score>=40?"#f59e0b":"#ef4444";const label=score>=70?"HOT":score>=40?"WARM":"COLD";return<span title={`Space Pressure Score: ${score}/100`} style={{background:col+"18",color:col,border:`1px solid ${col}30`,padding:"2px 6px",borderRadius:3,fontSize:9,fontFamily:"monospace",letterSpacing:1,whiteSpace:"nowrap"}}>⬆ {score} {label}</span>;};
+  const scoreBadge=(score)=>{if(score==null)return null;const col=score>=70?"#22c55e":score>=40?"#f59e0b":"#ef4444";const label=score>=70?"HOT":score>=40?"WARM":"COLD";return<span title={`Space Pressure Score: ${score}/100`} style={{background:col+"18",color:col,border:`1px solid ${col}30`,padding:"2px 6px",borderRadius:3,fontSize:9,fontFamily:"'DM Sans',sans-serif",letterSpacing:1,whiteSpace:"nowrap"}}>⬆ {score} {label}</span>;};
 
 
   const navTabs=[
@@ -578,23 +578,23 @@ export default function App({ session, onBack }){
   ];
 
   return(
-    <div style={{minHeight:"100vh",background:"#0a1a1a",color:"#e2e8f0",fontFamily:"'IBM Plex Mono','Courier New',monospace",fontSize:13}}>
+    <div style={{minHeight:"100vh",background:"#0a1a1a",color:"#e2e8f0",fontFamily:"'DM Sans','Helvetica Neue',sans-serif",fontSize:14}}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@400;500;600;700&display=swap');
         *{box-sizing:border-box;margin:0;padding:0}
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0a1a1a}::-webkit-scrollbar-thumb{background:#1a3535;border-radius:2px}
         input,select,textarea{outline:none;-webkit-appearance:none}input[type=time],input[type=date]{color-scheme:dark}
         input::placeholder,textarea::placeholder{color:#3a5a5a}
-        .nb{flex:1;background:none;border:none;cursor:pointer;padding:7px 2px;color:#4a8080;font-family:'IBM Plex Mono',monospace;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;transition:color .15s;min-width:0}
+        .nb{flex:1;background:none;border:none;cursor:pointer;padding:7px 2px;color:#4a8080;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;transition:color .15s;min-width:0}
         .nb:hover{color:#e2e8f0}.nb.act{color:#3aada0;border-bottom-color:#3aada0}
-        .bp{background:#3aada0;color:#fff;border:none;padding:13px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:2px;font-weight:700;cursor:pointer;border-radius:8px;text-transform:uppercase;width:100%}.bp:hover{background:#7dd4cc;color:#0a1a1a}
-        .bs{background:#2a7a72;color:#fff;border:none;padding:9px 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;font-weight:600;cursor:pointer;border-radius:6px;text-transform:uppercase}.bs:hover{background:#3aada0}
-        .bg{background:none;border:1px solid #1a3535;color:#4a8080;padding:8px 13px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;border-radius:6px;text-transform:uppercase;transition:all .15s}.bg:hover{border-color:#3aada0;color:#3aada0}.bg:disabled{opacity:.3;cursor:not-allowed}
-        .bd{background:none;border:1px solid #3a1515;color:#ef4444;padding:8px 13px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;border-radius:6px;text-transform:uppercase}.bd:hover{background:#1a0808}.bd:disabled{opacity:.3;cursor:not-allowed}
-        .bx{background:#0a1f12;border:1px solid #1a4a2a;color:#22c55e;padding:8px 13px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;border-radius:6px;text-transform:uppercase}.bx:hover{background:#0d2e1a}
+        .bp{background:#3aada0;color:#fff;border:none;padding:13px;font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.08em;font-weight:700;cursor:pointer;border-radius:8px;text-transform:uppercase;width:100%}.bp:hover{background:#7dd4cc;color:#0a1a1a}
+        .bs{background:#2a7a72;color:#fff;border:none;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.04em;font-weight:600;cursor:pointer;border-radius:6px;text-transform:uppercase}.bs:hover{background:#3aada0}
+        .bg{background:none;border:1px solid #1a3535;color:#4a8080;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px;transition:all .15s}.bg:hover{border-color:#3aada0;color:#3aada0}.bg:disabled{opacity:.3;cursor:not-allowed}
+        .bd{background:none;border:1px solid #3a1515;color:#ef4444;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px}.bd:hover{background:#1a0808}.bd:disabled{opacity:.3;cursor:not-allowed}
+        .bx{background:#0a1f12;border:1px solid #1a4a2a;color:#22c55e;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px}.bx:hover{background:#0d2e1a}
         .rcard{background:#102020;border:1px solid #1a3535;border-radius:10px;padding:13px;margin-bottom:9px;cursor:pointer;transition:border-color .15s}.rcard:active{border-color:#3aada0}.rcard.inv{border-color:#3a1515;opacity:.8}
         .sw{position:relative;width:40px;height:22px;background:#1a3535;border-radius:11px;cursor:pointer;transition:background .2s;flex-shrink:0}.sw.on{background:#3aada0}.sk{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:8px;transition:left .2s}.sw.on .sk{left:21px}
-        .fb{background:none;border:1px solid #1a3535;color:#4a8080;padding:5px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;border-radius:20px;transition:all .15s}.fb:hover{border-color:#3aada0;color:#3aada0}.fb.act{color:#0a1a1a;border-color:transparent}
+        .fb{background:none;border:1px solid #1a3535;color:#4a8080;padding:5px 10px;font-family:'DM Sans',sans-serif;font-size:10px;cursor:pointer;border-radius:20px;transition:all .15s}.fb:hover{border-color:#3aada0;color:#3aada0}.fb.act{color:#0a1a1a;border-color:transparent}
         .pipe-col{background:#081818;border:1px solid #1a3535;border-radius:10px;padding:10px;min-height:200px;transition:border-color .2s}.pipe-col.dragover{border-color:#3aada0;background:#071e1e}
         .pipe-card{background:#102020;border:1px solid #1a3535;border-radius:7px;padding:10px;margin-bottom:7px;cursor:grab;transition:all .15s;user-select:none}.pipe-card:active{cursor:grabbing;opacity:.7}
         .tg{display:inline-block;background:#0f2222;border:1px solid #1e3838;color:#3aada0;padding:2px 7px;border-radius:4px;font-size:10px}
@@ -604,7 +604,7 @@ export default function App({ session, onBack }){
         .ocard{background:#102020;border:1px solid #1a3535;border-radius:10px;padding:13px;margin-bottom:9px}
         .seq-card{background:#102020;border:1px solid #1a3535;border-radius:10px;padding:13px;margin-bottom:9px;cursor:pointer;transition:border-color .15s}.seq-card:hover{border-color:#3aada0}
         .seq-step{background:#080c10;border:1px solid #111827;border-radius:7px;padding:10px 12px;margin-bottom:7px}
-        .copy-btn{background:#0a2020;border:1px solid #1a3535;color:#3aada0;padding:5px 10px;border-radius:5px;font-size:10px;cursor:pointer;font-family:monospace;letter-spacing:1px;transition:all .15s}.copy-btn:hover{background:#3aada0;color:#0a1a1a}
+        .copy-btn{background:#0a2020;border:1px solid #1a3535;color:#3aada0;padding:5px 10px;border-radius:5px;font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.5px;transition:all .15s}.copy-btn:hover{background:#3aada0;color:#0a1a1a}
         @media(max-width:600px){
           div[style*="padding:14px 13px"]{padding:10px 10px!important}
           div[style*="maxWidth:700px"]{max-width:100vw!important}
@@ -642,17 +642,17 @@ export default function App({ session, onBack }){
           </div>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
-          {verifying&&<span style={{fontSize:9,color:"#7dd4cc",fontFamily:"'IBM Plex Mono',monospace"}} className="pulse">✉ DNS…</span>}
-          {leads.length>0&&<span style={{fontSize:9,color:"#22c55e",fontFamily:"'IBM Plex Mono',monospace"}}>🟢 {leads.filter(r=>r.emailStatus==="verified").length}/{leads.filter(r=>r.email).length}</span>}
+          {verifying&&<span style={{fontSize:9,color:"#7dd4cc",fontFamily:"'DM Sans',sans-serif"}} className="pulse">✉ DNS…</span>}
+          {leads.length>0&&<span style={{fontSize:9,color:"#22c55e",fontFamily:"'DM Sans',sans-serif"}}>🟢 {leads.filter(r=>r.emailStatus==="verified").length}/{leads.filter(r=>r.email).length}</span>}
           <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
           {apolloKey
-            ? <span style={{fontSize:9,color:"#22c55e",letterSpacing:1,fontFamily:"'IBM Plex Mono',monospace"}}>⬡ APOLLO</span>
-            : <span style={{fontSize:9,color:"#f59e0b",letterSpacing:1,cursor:"pointer",fontFamily:"'IBM Plex Mono',monospace"}} onClick={()=>setTab("settings")}>⚙ ADD KEY</span>
+            ? <span style={{fontSize:9,color:"#22c55e",letterSpacing:1,fontFamily:"'DM Sans',sans-serif"}}>⬡ APOLLO</span>
+            : <span style={{fontSize:9,color:"#f59e0b",letterSpacing:1,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}} onClick={()=>setTab("settings")}>⚙ ADD KEY</span>
           }
           <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
-          <span style={{fontSize:9,color:"rgba(125,212,204,0.4)",fontFamily:"'IBM Plex Mono',monospace"}}>DEMO</span>
+          <span style={{fontSize:9,color:"rgba(125,212,204,0.4)",fontFamily:"'DM Sans',sans-serif"}}>DEMO</span>
           <div className={`sw ${demo?"on":""}`} onClick={()=>setDemo(!demo)}><div className="sk"/></div>
-          <span style={{fontSize:9,color:demo?"#7dd4cc":"rgba(125,212,204,0.3)",minWidth:18,fontFamily:"'IBM Plex Mono',monospace"}}>{demo?"ON":"OFF"}</span>
+          <span style={{fontSize:9,color:demo?"#7dd4cc":"rgba(125,212,204,0.3)",minWidth:18,fontFamily:"'DM Sans',sans-serif"}}>{demo?"ON":"OFF"}</span>
         </div>
       </div>
 
@@ -671,7 +671,7 @@ export default function App({ session, onBack }){
         {navTabs.map(n=>(
           <button key={n.id} className={`nb ${tab===n.id?"act":""}`} onClick={()=>setTab(n.id)} style={{padding:"7px 4px",minWidth:50}}>
             <span style={{fontSize:13}}>{n.i}</span>
-            <span style={{fontFamily:"'IBM Plex Sans',sans-serif",fontSize:9,whiteSpace:"nowrap"}}>{n.l}</span>
+            <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:9,whiteSpace:"nowrap"}}>{n.l}</span>
             {n.b>0&&<span style={{background:"#1e3838",color:"#3aada0",fontSize:8,padding:"1px 4px",borderRadius:10}}>{n.b}</span>}
             {n.dot&&!n.b&&<span style={{width:5,height:5,borderRadius:3,background:"#f59e0b",display:"inline-block"}} className="pulse"/>}
           </button>
@@ -687,7 +687,7 @@ export default function App({ session, onBack }){
               {[["Leads",leads.length,"◈"],["Last Run",history[0]?new Date(history[0].date).toLocaleDateString():"Never","◎"],["Follow-ups",followupsDueToday.length,"◉"]].map(([l,v,i])=>(
                 <div style={card} key={l}>
                   <div style={{fontSize:13,color:"#3aada0",marginBottom:3}}>{i}</div>
-                  <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontSize:15,fontWeight:600,lineHeight:1}}>{v}</div>
+                  <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:15,fontWeight:600,lineHeight:1}}>{v}</div>
                   <div style={{fontSize:9,color:"#2a5555",letterSpacing:1,marginTop:3,textTransform:"uppercase"}}>{l}</div>
                 </div>
               ))}
@@ -747,7 +747,7 @@ export default function App({ session, onBack }){
             <div style={{...card,marginBottom:12}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:showAddForm?12:0}}>
                 <div>
-                  <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:500,fontSize:13}}>Add contact manually</div>
+                  <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:500,fontSize:13}}>Add contact manually</div>
                   {!showAddForm&&<div style={{fontSize:11,color:"#3a6a6a",marginTop:2}}>From LinkedIn, a business card, or a referral</div>}
                 </div>
                 <button className="bg" onClick={()=>{setShowAddForm(!showAddForm);setAddError("");}}>
@@ -772,7 +772,7 @@ export default function App({ session, onBack }){
             <div style={{...card}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <div>
-                  <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:500,fontSize:13}}>Import from CSV</div>
+                  <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:500,fontSize:13}}>Import from CSV</div>
                   <div style={{fontSize:11,color:"#3a6a6a",marginTop:2}}>Paste in an existing spreadsheet</div>
                 </div>
                 <button className="bg" onClick={()=>csvRef.current?.click()}>↑ Import</button>
@@ -815,12 +815,12 @@ export default function App({ session, onBack }){
                 <div key={r.id} className={`rcard ${tier.tier==="red"&&!r.email?"inv":""}`} onClick={()=>setExpanded(expanded===r.id?null:r.id)}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
                     <div style={{minWidth:0,flex:1}}>
-                      <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name||"—"}</div>
+                      <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name||"—"}</div>
                       <div style={{fontSize:10,color:"#3a6a6a",marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{[r.title,r.company].filter(Boolean).join(" · ")}</div>
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0,marginLeft:8}}>
                       {r.spacePressureScore!=null&&scoreBadge(r.spacePressureScore)}
-                      <span style={{fontSize:9,color:stageInfo?.color,border:`1px solid ${stageInfo?.color}40`,padding:"2px 5px",borderRadius:3,fontFamily:"monospace",letterSpacing:1}}>{stage.toUpperCase()}</span>
+                      <span style={{fontSize:9,color:stageInfo?.color,border:`1px solid ${stageInfo?.color}40`,padding:"2px 5px",borderRadius:3,fontFamily:"'DM Sans',sans-serif",letterSpacing:1}}>{stage.toUpperCase()}</span>
                       {confBadge(r)}
                       <span style={{color:"#2a5555",fontSize:10}}>{expanded===r.id?"▲":"▼"}</span>
                     </div>
@@ -830,7 +830,7 @@ export default function App({ session, onBack }){
                     <div style={{background:"#0d1f0a",border:"1px solid #1e4a1a",borderRadius:5,padding:"5px 9px",marginBottom:5,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <span style={{fontSize:9,color:"#4a7a40",letterSpacing:1,textTransform:"uppercase"}}>{r.contract_expiry.startsWith("Est.")?"Lease renewal est.":"Contract due"}</span>
                       <div style={{textAlign:"right"}}>
-                        <span style={{fontSize:11,color:"#22c55e",fontWeight:600,fontFamily:"'IBM Plex Sans',sans-serif"}}>{r.contract_expiry}</span>
+                        <span style={{fontSize:11,color:"#22c55e",fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>{r.contract_expiry}</span>
                         {r.leaseConfidence&&<span style={{fontSize:9,color:"#4a7a40",marginLeft:8}}>({r.leaseConfidence} confidence)</span>}
                       </div>
                     </div>
@@ -847,7 +847,7 @@ export default function App({ session, onBack }){
                         <label className="lbl">Pipeline Stage</label>
                         <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                           {PIPELINE_STAGES.map(s=>(
-                            <button key={s.id} onClick={e=>{e.stopPropagation();moveStage(r.id,s.id);}} style={{background:stage===s.id?s.color+"22":"transparent",border:`1px solid ${stage===s.id?s.color:"#1a3535"}`,color:stage===s.id?s.color:"#3a6a6a",padding:"4px 10px",borderRadius:5,fontSize:10,cursor:"pointer",fontFamily:"monospace",letterSpacing:1,transition:"all .15s"}}>{s.label}</button>
+                            <button key={s.id} onClick={e=>{e.stopPropagation();moveStage(r.id,s.id);}} style={{background:stage===s.id?s.color+"22":"transparent",border:`1px solid ${stage===s.id?s.color:"#1a3535"}`,color:stage===s.id?s.color:"#3a6a6a",padding:"4px 10px",borderRadius:5,fontSize:10,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",letterSpacing:1,transition:"all .15s"}}>{s.label}</button>
                           ))}
                         </div>
                       </div>
@@ -855,7 +855,7 @@ export default function App({ session, onBack }){
                       <div style={{background:tier.bg,border:`1px solid ${tier.col}30`,borderRadius:6,padding:"7px 11px",marginBottom:11,display:"flex",alignItems:"center",gap:8}}>
                         <span style={{fontSize:16}}>{tier.tier==="green"?"🟢":tier.tier==="amber"?"🟡":"🔴"}</span>
                         <div>
-                          <div style={{fontSize:10,color:tier.col,fontFamily:"monospace",letterSpacing:1,fontWeight:600}}>{tier.label}</div>
+                          <div style={{fontSize:10,color:tier.col,fontFamily:"'DM Sans',sans-serif",letterSpacing:1,fontWeight:600}}>{tier.label}</div>
                           <div style={{fontSize:10,color:"#3a6a6a",marginTop:1}}>{r.emailStatus==="verified"?"SMTP-verified by Apollo — safe to send":r.emailStatus==="likely to engage"?"Apollo confidence: likely to engage — flag when sending":r.email?"No Apollo verification — proceed with caution":"No email found for this contact"}</div>
                         </div>
                       </div>
@@ -887,7 +887,7 @@ export default function App({ session, onBack }){
                         <div style={{marginBottom:8}}>
                           <div style={{fontSize:9,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:5}}>Tech Stack</div>
                           <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-                            {r.techStack.map(t=><span key={t} style={{fontSize:9,background:"#0a2020",border:"1px solid #1a3535",color:"#3aada0",padding:"2px 7px",borderRadius:4,fontFamily:"monospace"}}>{t}</span>)}
+                            {r.techStack.map(t=><span key={t} style={{fontSize:9,background:"#0a2020",border:"1px solid #1a3535",color:"#3aada0",padding:"2px 7px",borderRadius:4,fontFamily:"'DM Sans',sans-serif"}}>{t}</span>)}
                           </div>
                         </div>
                       )}
@@ -897,7 +897,7 @@ export default function App({ session, onBack }){
                         {r.phone&&r.phone!=="unknown"&&<a href={`https://wa.me/${r.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a5020",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>💬 WhatsApp</a>}
                         {r.linkedin&&<a href={r.linkedin} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#071e1e",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
                         {!r.linkedin&&<a href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#071e1e",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
-                        <button onClick={e=>{e.stopPropagation();setOutreachForm(r.id);setTab("outreach");}} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:11,padding:"6px 11px",borderRadius:5,cursor:"pointer",fontFamily:"monospace"}}>◉ Log</button>
+                        <button onClick={e=>{e.stopPropagation();setOutreachForm(r.id);setTab("outreach");}} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:11,padding:"6px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
                       </div>
                       {/* Sequence enrolment */}
                       <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #111827"}}>
@@ -943,14 +943,14 @@ export default function App({ session, onBack }){
                     onDrop={e=>{e.preventDefault();if(dragId!==null)moveStage(dragId,stage.id);setDragId(null);setDragOver(null);}}
                     onDragLeave={()=>setDragOver(null)}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:9}}>
-                      <div style={{fontSize:10,color:stage.color,letterSpacing:1,textTransform:"uppercase",fontFamily:"monospace"}}>{stage.label}</div>
+                      <div style={{fontSize:10,color:stage.color,letterSpacing:1,textTransform:"uppercase",fontFamily:"'DM Sans',sans-serif"}}>{stage.label}</div>
                       <span className="tg">{stageLeads.length}</span>
                     </div>
                     {stageLeads.map(l=>{
                       const u=urgency(enriched.find(e=>e.id===l.id)?.days??999);
                       return(
                         <div key={l.id} className="pipe-card" draggable onDragStart={()=>setDragId(l.id)} style={{borderLeft:`3px solid ${u.color}`}}>
-                          <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}</div>
+                          <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}</div>
                           <div style={{fontSize:10,color:"#3a6a6a",marginTop:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.company}</div>
                           {l.contract_expiry&&l.contract_expiry!=="unknown"&&<div style={{fontSize:9,color:u.color,marginTop:4}}>📅 {l.contract_expiry}</div>}
                           {lastContact(l.id)&&<div style={{fontSize:9,color:outcomeColor(lastContact(l.id).outcome),marginTop:3}}>◉ {outcomeLabel(lastContact(l.id).outcome)}</div>}
@@ -979,7 +979,7 @@ export default function App({ session, onBack }){
             <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:7,marginBottom:12}}>
               {[["Overdue",calStats.overdue,"#ef4444","30"],["Month",calStats.d30,"#ef4444","30"],["60d",calStats.d60,"#f59e0b","60"],["90d",calStats.d90,"#fbbf24","90"]].map(([l,v,c,f])=>(
                 <div key={l} onClick={()=>setCalFilter(calFilter===f?"all":f)} style={{...card,cursor:"pointer",borderColor:calFilter===f?c:"#1a3535",transition:"border-color .2s"}}>
-                  <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontSize:18,fontWeight:700,color:c,lineHeight:1}}>{v}</div>
+                  <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:18,fontWeight:700,color:c,lineHeight:1}}>{v}</div>
                   <div style={{fontSize:9,color:"#2a5555",letterSpacing:1,marginTop:3,textTransform:"uppercase"}}>{l}</div>
                 </div>
               ))}
@@ -1005,7 +1005,7 @@ export default function App({ session, onBack }){
                 : byMonth.map(group=>(
                   <div key={`${group.year}-${group.month}`} style={{marginBottom:20}}>
                     <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-                      <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13}}>{MONTHS_FULL[group.month]} {group.year}</div>
+                      <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13}}>{MONTHS_FULL[group.month]} {group.year}</div>
                       <div style={{flex:1,height:1,background:"#1a3535"}}/>
                       <span style={{fontSize:10,color:"#2a5555"}}>{group.leads.length}</span>
                     </div>
@@ -1015,11 +1015,11 @@ export default function App({ session, onBack }){
                         <div key={l.id} onClick={()=>setCalSel(calSel===l.id?null:l.id)} style={{background:calSel===l.id?"#0d2222":u.bg,border:`1px solid ${calSel===l.id?u.color:u.border}`,borderLeft:`3px solid ${u.color}`,borderRadius:8,padding:"10px 12px",marginBottom:6,cursor:"pointer",transition:"all .15s"}}>
                           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}}>
                             <div style={{minWidth:0,flex:1}}>
-                              <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}</div>
+                              <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}</div>
                               <div style={{fontSize:10,color:"#3a6a6a",marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.title} · {l.company}</div>
                             </div>
                             <div style={{flexShrink:0,marginLeft:10,textAlign:"right"}}>
-                              <div style={{fontSize:11,color:u.color,fontWeight:600,fontFamily:"'IBM Plex Sans',sans-serif"}}>{l.days===null?"—":l.days<0?`${Math.abs(l.days)}d ago`:l.days===0?"Today":`${l.days}d`}</div>
+                              <div style={{fontSize:11,color:u.color,fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>{l.days===null?"—":l.days<0?`${Math.abs(l.days)}d ago`:l.days===0?"Today":`${l.days}d`}</div>
                               <div style={{fontSize:9,color:u.color,opacity:.7}}>{u.label}</div>
                             </div>
                           </div>
@@ -1030,7 +1030,7 @@ export default function App({ session, onBack }){
                               {l.email&&l.email!=="unknown"&&<a href={`mailto:${l.email}`} onClick={e=>e.stopPropagation()} style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#0f2424",border:"1px solid #1e2d4a",padding:"5px 11px",borderRadius:5}}>✉ Email</a>}
                               {l.phone&&l.phone!=="unknown"&&<a href={`tel:${l.phone}`} onClick={e=>e.stopPropagation()} style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a3020",padding:"5px 11px",borderRadius:5}}>📞 Call</a>}
                               {l.phone&&l.phone!=="unknown"&&<a href={`https://wa.me/${l.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a5020",padding:"5px 11px",borderRadius:5}}>💬 WA</a>}
-                              <button onClick={e=>{e.stopPropagation();setOutreachForm(l.id);setTab("outreach");}} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:11,padding:"5px 11px",borderRadius:5,cursor:"pointer",fontFamily:"monospace"}}>◉ Log</button>
+                              <button onClick={e=>{e.stopPropagation();setOutreachForm(l.id);setTab("outreach");}} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:11,padding:"5px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
                             </div>
                           )}
                         </div>
@@ -1047,7 +1047,7 @@ export default function App({ session, onBack }){
                 {calFiltered.length===0&&<div style={{textAlign:"center",padding:"30px 0",color:"#2a5555",fontSize:11,letterSpacing:2}}>NO RENEWALS MATCH</div>}
                 {calFiltered.map(l=>{const u=urgency(l.days??999);return(
                   <div key={l.id} style={{display:"grid",gridTemplateColumns:"2fr 2fr 80px",padding:"10px 12px",borderBottom:"1px solid #111827",gap:8,cursor:"pointer",background:calSel===l.id?"#0d2222":"transparent"}} onClick={()=>setCalSel(calSel===l.id?null:l.id)}>
-                    <div style={{minWidth:0}}><div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontSize:12,fontWeight:500,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}</div><div style={{fontSize:10,color:"#3a6a6a",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.title}</div></div>
+                    <div style={{minWidth:0}}><div style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,fontWeight:500,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}</div><div style={{fontSize:10,color:"#3a6a6a",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.title}</div></div>
                     <div style={{minWidth:0}}><div style={{fontSize:11,color:"#b0d8d4",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.company}</div><div style={{fontSize:10,color:"#3a6a6a",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.building}</div></div>
                     <div style={{textAlign:"right"}}><div style={{fontSize:11,color:u.color,fontWeight:600}}>{l.contract_expiry?.split(" ").slice(-1)[0]}</div><div style={{fontSize:9,color:u.color,opacity:.7}}>{l.days!==null?(l.days<0?`${Math.abs(l.days)}d ago`:`${l.days}d`):"—"}</div></div>
                   </div>
@@ -1073,7 +1073,7 @@ export default function App({ session, onBack }){
               return(
                 <div style={{...card,marginBottom:12,border:"1px solid #3a2060"}}>
                   <div style={{fontSize:9,letterSpacing:2,color:"#7dd4cc",textTransform:"uppercase",marginBottom:8}}>Logging contact</div>
-                  <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13,marginBottom:1}}>{lead.name}</div>
+                  <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13,marginBottom:1}}>{lead.name}</div>
                   <div style={{fontSize:11,color:"#3a6a6a",marginBottom:12}}>{lead.company}</div>
                   <div className="fg"><label className="lbl">Type</label>
                     <select style={{...inp,cursor:"pointer"}} value={newLog.type} onChange={e=>setNewLog(p=>({...p,type:e.target.value}))}>
@@ -1106,10 +1106,10 @@ export default function App({ session, onBack }){
                 <div key={r.id} className="ocard">
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:7}}>
                     <div style={{minWidth:0,flex:1}}>
-                      <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name}</div>
+                      <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name}</div>
                       <div style={{fontSize:10,color:"#3a6a6a",marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.title} · {r.company}</div>
                     </div>
-                    <button onClick={()=>setOutreachForm(r.id)} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:10,padding:"4px 9px",borderRadius:5,cursor:"pointer",fontFamily:"monospace",flexShrink:0,marginLeft:8}}>+ Log</button>
+                    <button onClick={()=>setOutreachForm(r.id)} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:10,padding:"4px 9px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",flexShrink:0,marginLeft:8}}>+ Log</button>
                   </div>
                   {r.contract_expiry&&r.contract_expiry!=="unknown"&&<div style={{fontSize:10,color:u.color,marginBottom:6}}>📅 {r.contract_expiry}</div>}
                   <div style={{display:"flex",gap:6,marginBottom:logs.length?9:0,flexWrap:"wrap"}}>
@@ -1162,7 +1162,7 @@ export default function App({ session, onBack }){
             ):history.map((h,i)=>(
               <div key={i} style={{...card,marginBottom:9}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
-                  <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontSize:13,fontWeight:500}}>{h.loc||"UK"} · {h.bType==="any"?"All types":h.bType}</div>
+                  <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:500}}>{h.loc||"UK"} · {h.bType==="any"?"All types":h.bType}</div>
                   <span className="tg">{h.count} leads</span>
                 </div>
                 <div style={{display:"flex",gap:12,fontSize:10,color:"#3a6a6a"}}>
@@ -1198,12 +1198,12 @@ export default function App({ session, onBack }){
                 <div key={i} className="seq-card" onClick={()=>setSeqPreview(isOpen?null:{seqId:seq.id,stepIdx,lead})}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
                     <div>
-                      <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13}}>{lead.name}</div>
+                      <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13}}>{lead.name}</div>
                       <div style={{fontSize:10,color:"#3a6a6a",marginTop:2}}>{[lead.title,lead.company].filter(Boolean).join(" · ")}</div>
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:6,flexShrink:0}}>
-                      <span style={{fontSize:9,color:"#7dd4cc",border:"1px solid #1a3535",borderRadius:3,padding:"2px 6px",fontFamily:"monospace"}}>STEP {stepIdx+1}/{seq.steps.length}</span>
-                      <span style={{fontSize:9,color:"#3aada0",border:"1px solid #3aada040",borderRadius:3,padding:"2px 6px",fontFamily:"monospace"}}>{seq.name.split(" ").slice(0,2).join(" ")}</span>
+                      <span style={{fontSize:9,color:"#7dd4cc",border:"1px solid #1a3535",borderRadius:3,padding:"2px 6px",fontFamily:"'DM Sans',sans-serif"}}>STEP {stepIdx+1}/{seq.steps.length}</span>
+                      <span style={{fontSize:9,color:"#3aada0",border:"1px solid #3aada040",borderRadius:3,padding:"2px 6px",fontFamily:"'DM Sans',sans-serif"}}>{seq.name.split(" ").slice(0,2).join(" ")}</span>
                     </div>
                   </div>
                   <div style={{fontSize:11,color:"#e2e8f0",marginBottom:isOpen?10:0,fontStyle:"italic"}}>"{personalised.subject}"</div>
@@ -1213,10 +1213,10 @@ export default function App({ session, onBack }){
                         <div style={{fontSize:10,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>Subject</div>
                         <div style={{fontSize:12,color:"#e2e8f0",marginBottom:12,fontWeight:600}}>{personalised.subject}</div>
                         <div style={{fontSize:10,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>Body</div>
-                        <pre style={{fontSize:12,color:"#94a3b8",whiteSpace:"pre-wrap",lineHeight:1.8,fontFamily:"'IBM Plex Sans',sans-serif",margin:0}}>{personalised.body}</pre>
+                        <pre style={{fontSize:12,color:"#94a3b8",whiteSpace:"pre-wrap",lineHeight:1.8,fontFamily:"'DM Sans',sans-serif",margin:0}}>{personalised.body}</pre>
                       </div>
                       <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                        {lead.email&&<a href={`mailto:${lead.email}?subject=${encodeURIComponent(personalised.subject)}&body=${encodeURIComponent(personalised.body+"\n\n— [Your name]\n[Your company]\n[Phone]")}`} style={{background:"#3aada0",color:"#0a1a1a",fontSize:11,textDecoration:"none",padding:"8px 14px",borderRadius:6,fontFamily:"monospace",fontWeight:700,letterSpacing:1}} onClick={()=>advanceStep(lead.id)}>✉ OPEN IN EMAIL CLIENT</a>}
+                        {lead.email&&<a href={`mailto:${lead.email}?subject=${encodeURIComponent(personalised.subject)}&body=${encodeURIComponent(personalised.body+"\n\n— [Your name]\n[Your company]\n[Phone]")}`} style={{background:"#3aada0",color:"#0a1a1a",fontSize:11,textDecoration:"none",padding:"8px 14px",borderRadius:6,fontFamily:"'DM Sans',sans-serif",fontWeight:700,letterSpacing:1}} onClick={()=>advanceStep(lead.id)}>✉ OPEN IN EMAIL CLIENT</a>}
                         <button className="copy-btn" style={{padding:"8px 14px"}} onClick={()=>{navigator.clipboard.writeText(`Subject: ${personalised.subject}\n\n${personalised.body}`);advanceStep(lead.id);}}>⧉ COPY &amp; MARK SENT</button>
                         <button className="bd" style={{fontSize:10,padding:"8px 12px"}} onClick={()=>unenrollLead(lead.id)}>✕ Remove</button>
                       </div>
@@ -1244,7 +1244,7 @@ export default function App({ session, onBack }){
                     <div key={leadId} className="ocard">
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                         <div>
-                          <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13}}>{lead.name}</div>
+                          <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13}}>{lead.name}</div>
                           <div style={{fontSize:10,color:"#3a6a6a",marginTop:2}}>{[lead.title,lead.company].filter(Boolean).join(" · ")}</div>
                           <div style={{fontSize:10,color:"#7dd4cc",marginTop:4}}>{seq.name} · Step {Math.min(e.step+1,seq.steps.length)} of {seq.steps.length}{e.done&&" ✓ Complete"}</div>
                         </div>
@@ -1267,15 +1267,15 @@ export default function App({ session, onBack }){
                   <div key={seq.id} style={{...card,marginBottom:12}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
                       <div>
-                        <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:14,color:"#e2e8f0"}}>{seq.name}</div>
+                        <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:14,color:"#e2e8f0"}}>{seq.name}</div>
                         <div style={{fontSize:11,color:"#3a6a6a",marginTop:3}}>{seq.description}</div>
                       </div>
-                      <span style={{fontSize:9,color:"#3aada0",border:"1px solid #3aada040",borderRadius:3,padding:"3px 8px",fontFamily:"monospace",whiteSpace:"nowrap"}}>{seq.steps.length} STEPS</span>
+                      <span style={{fontSize:9,color:"#3aada0",border:"1px solid #3aada040",borderRadius:3,padding:"3px 8px",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>{seq.steps.length} STEPS</span>
                     </div>
                     {seq.steps.map((step,i)=>(
                       <div key={i} className="seq-step">
                         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
-                          <span style={{fontSize:9,color:"#3aada0",fontFamily:"monospace",border:"1px solid #1a3535",padding:"1px 6px",borderRadius:3,whiteSpace:"nowrap"}}>Day {step.day}</span>
+                          <span style={{fontSize:9,color:"#3aada0",fontFamily:"'DM Sans',sans-serif",border:"1px solid #1a3535",padding:"1px 6px",borderRadius:3,whiteSpace:"nowrap"}}>Day {step.day}</span>
                           <span style={{fontSize:11,color:"#e2e8f0",fontWeight:600,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{step.subject}</span>
                         </div>
                         <div style={{fontSize:11,color:"#3a6a6a",lineHeight:1.6,whiteSpace:"pre-wrap"}}>{step.body.split("\n").slice(0,2).join(" ").trim()}…</div>
@@ -1297,7 +1297,7 @@ export default function App({ session, onBack }){
             {/* Apollo API Key */}
             <div style={{...card,marginBottom:12}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
-                <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13}}>Apollo.io API Key</div>
+                <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13}}>Apollo.io API Key</div>
                 {apolloKey&&(
                   <span style={{background:apolloKeyStatus==="valid"?"#0d2e1a":"#0f2424",color:apolloKeyStatus==="valid"?"#22c55e":"#3aada0",border:`1px solid ${apolloKeyStatus==="valid"?"#22c55e40":"#38bdf840"}`,padding:"2px 8px",borderRadius:20,fontSize:9,letterSpacing:1}}>
                     {apolloKeyStatus==="valid"?"✓ VERIFIED":"CONNECTED"}
@@ -1320,11 +1320,11 @@ export default function App({ session, onBack }){
                     value={apolloKeyInput}
                     onChange={e=>{setApolloKeyInput(e.target.value);setApolloKeyStatus("idle");setApolloKeyMessage("");}}
                     placeholder="Paste your Apollo API key here"
-                    style={{...inp,flex:1,border:"none",borderRadius:0,fontFamily:"monospace",background:"transparent"}}
+                    style={{...inp,flex:1,border:"none",borderRadius:0,fontFamily:"'DM Sans',sans-serif",background:"transparent"}}
                     autoComplete="off"
                     spellCheck={false}
                   />
-                  <button onClick={()=>setShowApolloKey(s=>!s)} style={{background:"none",border:"none",borderLeft:"1px solid #1e2535",padding:"0 13px",color:"#3a6a6a",fontSize:11,cursor:"pointer",fontFamily:"monospace",whiteSpace:"nowrap"}}>
+                  <button onClick={()=>setShowApolloKey(s=>!s)} style={{background:"none",border:"none",borderLeft:"1px solid #1e2535",padding:"0 13px",color:"#3a6a6a",fontSize:11,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>
                     {showApolloKey?"Hide":"Show"}
                   </button>
                 </div>
@@ -1363,7 +1363,7 @@ export default function App({ session, onBack }){
             {/* HubSpot */}
             <div style={{...card,marginBottom:12}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
-                <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13}}>HubSpot CRM</div>
+                <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13}}>HubSpot CRM</div>
                 {hubspotKey&&<span style={{background:"#0d2e1a",color:"#22c55e",border:"1px solid #22c55e40",padding:"2px 8px",borderRadius:20,fontSize:9,letterSpacing:1}}>CONNECTED</span>}
               </div>
               <div style={{fontSize:12,color:"#3a6a6a",marginBottom:12,lineHeight:1.7}}>
@@ -1376,7 +1376,7 @@ export default function App({ session, onBack }){
                   value={hubspotKeyInput}
                   onChange={e=>{setHubspotKeyInput(e.target.value);setHubspotStatus("idle");setHubspotMsg("");}}
                   placeholder="Paste your HubSpot Private App token"
-                  style={{...inp,flex:1,fontFamily:"monospace"}}
+                  style={{...inp,flex:1,fontFamily:"'DM Sans',sans-serif"}}
                   autoComplete="off"
                   spellCheck={false}
                 />
