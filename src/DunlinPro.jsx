@@ -219,6 +219,9 @@ export default function App({ session, onBack }){
   const [hubspotStatus,setHubspotStatus]=useState("idle");
   const [hubspotMsg,setHubspotMsg]=useState("");
 
+  // ── My Account dropdown ────────────────────────────────────────────────────
+  const [showAccount,setShowAccount]=useState(false);
+
   // ── Pipeline ──────────────────────────────────────────────────────────────
   const [pipeline,setPipeline]=useState({});
   const [dragId,setDragId]=useState(null);
@@ -818,12 +821,12 @@ export default function App({ session, onBack }){
           {onBack&&<div style={{width:1,height:18,background:"rgba(255,255,255,0.1)"}}/>}
           <div style={{display:"flex",alignItems:"center",gap:10}}>
             <svg width="26" height="18" viewBox="0 0 120 80" fill="none">
-              <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
-              <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
-              <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-              <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-              <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
-              <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
+              <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="2"/>
+              <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" strokeWidth="2"/>
+              <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" fill="none"/>
+              <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" fill="none"/>
+              <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinecap="round"/>
+              <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinecap="round"/>
             </svg>
             <div>
               <span style={{fontFamily:"'Cormorant Garamond',serif",fontWeight:300,fontSize:20,color:"#ffffff",letterSpacing:"0.06em"}}>dunlin</span>
@@ -844,6 +847,64 @@ export default function App({ session, onBack }){
           <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
           <button title="Take the guided tour again" onClick={()=>{localStorage.removeItem(`dunlin_tour_${userId}`);setTourStep(0);}} style={{background:"rgba(58,173,160,0.18)",border:"1px solid rgba(58,173,160,0.35)",color:"#7dd4cc",borderRadius:5,padding:"3px 8px",fontSize:9,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",letterSpacing:1,fontWeight:600}}>▶ TOUR</button>
           <button title="Help & how-to guide" onClick={()=>setTab("help")} style={{background:"rgba(58,173,160,0.18)",border:"1px solid rgba(58,173,160,0.35)",color:"#7dd4cc",borderRadius:5,width:22,height:22,fontSize:12,cursor:"pointer",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>?</button>
+          {/* My Account button + dropdown */}
+          <div style={{position:"relative"}}>
+            <button
+              title="My Account"
+              onClick={()=>setShowAccount(s=>!s)}
+              style={{background:showAccount?"rgba(255,255,255,0.15)":"rgba(58,173,160,0.18)",border:"1px solid rgba(58,173,160,0.35)",color:"#d6f0ee",borderRadius:5,padding:"3px 8px",fontSize:9,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",letterSpacing:1,fontWeight:700,display:"flex",alignItems:"center",gap:5}}
+            >
+              <span style={{width:16,height:16,borderRadius:8,background:"#3aada0",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:700,color:"#fff",flexShrink:0}}>
+                {(session?.user?.email||"?")[0].toUpperCase()}
+              </span>
+              ACCOUNT
+            </button>
+            {showAccount&&(
+              <div
+                style={{
+                  position:"absolute",top:"calc(100% + 8px)",right:0,
+                  background:"#f5f0e8",
+                  border:"1px solid rgba(26,74,74,0.12)",
+                  borderRadius:10,
+                  boxShadow:"0 8px 32px rgba(0,0,0,0.18)",
+                  padding:"14px 16px",
+                  minWidth:220,
+                  zIndex:99
+                }}
+              >
+                {/* Avatar + email */}
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14,paddingBottom:14,borderBottom:"1px solid rgba(26,74,74,0.1)"}}>
+                  <div style={{width:36,height:36,borderRadius:18,background:"#1a4a4a",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:700,color:"#d6f0ee",flexShrink:0}}>
+                    {(session?.user?.email||"?")[0].toUpperCase()}
+                  </div>
+                  <div>
+                    <div style={{fontSize:12,fontWeight:600,color:"#1a3a3a",wordBreak:"break-all",lineHeight:1.3}}>{session?.user?.email}</div>
+                    <div style={{fontSize:10,color:"#3aada0",marginTop:2,fontWeight:500}}>✓ Active account</div>
+                  </div>
+                </div>
+                {/* Actions */}
+                <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                  <button
+                    onClick={()=>{setShowAccount(false);setTab("settings");}}
+                    style={{background:"#e8f4f0",border:"1px solid #b0d4cc",color:"#1a4a4a",borderRadius:7,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left"}}
+                  >⚙ Account Settings</button>
+                  <a
+                    href="https://billing.stripe.com/p/login/dunlin"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={()=>setShowAccount(false)}
+                    style={{background:"#e8f4f0",border:"1px solid #b0d4cc",color:"#1a4a4a",borderRadius:7,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textDecoration:"none",display:"block"}}
+                  >💳 Manage Subscription</a>
+                  <button
+                    onClick={()=>{setShowAccount(false);supabase.auth.signOut();}}
+                    style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.2)",color:"#dc2626",borderRadius:7,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",marginTop:4}}
+                  >→ Sign Out</button>
+                </div>
+              </div>
+            )}
+            {/* Click-outside to close */}
+            {showAccount&&<div style={{position:"fixed",inset:0,zIndex:98}} onClick={()=>setShowAccount(false)}/>}
+          </div>
           <div className={`sw ${demo?"on":""}`} onClick={()=>setDemo(!demo)}><div className="sk"/></div>
           <span style={{fontSize:9,color:demo?"#1a7a72":"rgba(125,212,204,0.3)",minWidth:18,fontFamily:"'DM Sans',sans-serif"}}>{demo?"ON":"OFF"}</span>
         </div>

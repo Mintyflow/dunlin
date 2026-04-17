@@ -1249,10 +1249,12 @@
 <nav>
   <a href="#" class="nav-logo">
     <svg width="34" height="23" viewBox="0 0 120 80" fill="none">
-      <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
-      <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
-      <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round" fill="none"/>
-      <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+      <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+      <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
     </svg>
     <span class="nav-wordmark">dunlin</span>
   </a>
@@ -1729,68 +1731,108 @@
 <div class="pricing-wrap" id="pricing">
   <div class="section">
     <div class="section-label">Pricing</div>
-    <h2 class="section-headline">Simple, transparent pricing</h2>
-    <p class="section-sub">Built for independent UK operators — not enterprise software prices. All plans include a 14-day free trial.</p>
+
+    <!-- Founding Member Banner -->
+    <div style="background:var(--teal-deep); border-radius:16px; padding:24px 28px; max-width:600px; margin:0 auto 36px; text-align:center; border:1px solid rgba(58,173,160,0.25);">
+      <div style="font-size:10px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:#7dd4cc; margin-bottom:8px;">🔒 Founding Member Pricing</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(22px,3vw,30px); color:#fff; line-height:1.2; margin-bottom:8px;">Lock in your rate. <em style="font-style:italic; color:#7dd4cc;">Forever.</em></div>
+      <p style="font-size:14px; color:rgba(214,240,238,0.75); font-weight:300; line-height:1.6; margin:0 0 16px;">These prices are reserved for founding members only. Once this window closes, new subscribers pay our full rates — but your price is locked in permanently, no matter what.</p>
+      <!-- Spots counter -->
+      <div style="display:inline-flex; align-items:center; gap:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(125,212,204,0.3); border-radius:40px; padding:8px 20px;">
+        <div style="width:8px; height:8px; border-radius:50%; background:#e05a2b; box-shadow:0 0 8px rgba(224,90,43,0.7); flex-shrink:0;"></div>
+        <span id="spotsText" style="font-size:13px; color:#d6f0ee; font-weight:500;">Only <strong id="spotsCount" style="color:#7dd4cc;">27</strong> of 100 founding spots remaining</span>
+      </div>
+    </div>
+
+    <h2 class="section-headline">Choose your founding plan.</h2>
+    <p class="section-sub" style="margin-bottom:40px;">No price increases. No lock-in. Cancel any time. Your founding rate stays the same forever.</p>
+
     <div class="pricing-grid">
 
-      <div class="pricing-card">
+      <!-- STARTER -->
+      <div class="pricing-card" style="position:relative; padding-top:30px;">
+        <div class="pricing-badge" style="background:var(--teal-deep);">🔒 FOUNDING MEMBER</div>
         <div class="plan-name">Starter</div>
-        <div class="plan-price"><sup>£</sup>149</div>
-        <div class="plan-period">per month</div>
-        <p class="plan-desc">Solo operators getting organised. One admin, one location, everything you need to get running.</p>
+        <div style="font-size:12px; color:var(--ink-light); text-decoration:line-through; margin-bottom:2px;">£199/mo after founding period</div>
+        <div class="plan-price"><sup>£</sup>99</div>
+        <div class="plan-period">per month · your rate, locked forever</div>
+        <p class="plan-desc">Solo operators who want to find tenants faster — without cold-calling directories.</p>
         <ul class="plan-features">
-          <li>1 admin · 1 location · up to 50 members</li>
-          <li>Space & booking management</li>
-          <li>Member profiles & portal</li>
-          <li>Manual invoicing</li>
-          <li>Stripe + GoCardless</li>
-          <li>Basic analytics dashboard</li>
-          <li>Standard Marketplace listing</li>
+          <li>1 user · solo operator</li>
+          <li>25 lead searches per month</li>
+          <li>Space Pressure Score™ on every lead</li>
+          <li>Renewal Radar — 30/60/90 day calendar</li>
+          <li>Dual-layer email verification</li>
+          <li>Built-in outreach sequences</li>
+          <li>Lead Pipeline (Kanban board)</li>
+          <li>Companies House integration</li>
+          <li>Demo mode — explore risk-free</li>
         </ul>
-        <a href="#" class="plan-btn outline">Start free trial</a>
+        <a href="https://buy.stripe.com/6oU6oHgEbbZPf3A3qSaAw0j" class="plan-btn outline">Claim founding rate →</a>
       </div>
 
-      <div class="pricing-card featured">
-        <div class="pricing-badge">Most popular</div>
+      <!-- GROWTH -->
+      <div class="pricing-card featured" style="position:relative; padding-top:30px;">
+        <div class="pricing-badge">🔒 FOUNDING MEMBER</div>
         <div class="plan-name">Growth</div>
-        <div class="plan-price"><sup>£</sup>299</div>
-        <div class="plan-period">per month</div>
-        <p class="plan-desc">For growing operators with a team. Automation, AI, and the tools that save hours every week.</p>
+        <div style="font-size:12px; color:rgba(214,240,238,0.45); text-decoration:line-through; margin-bottom:2px;">£379/mo after founding period</div>
+        <div class="plan-price"><sup>£</sup>179</div>
+        <div class="plan-period">per month · your rate, locked forever</div>
+        <p class="plan-desc">Small teams who need more searches, CRM sync, and the full outreach toolkit.</p>
         <ul class="plan-features">
-          <li>3 admins · 2 locations · up to 200 members</li>
-          <li>AI lead search with lease expiry dates</li>
-          <li>AI enquiry drafting & summaries</li>
-          <li>Automated recurring invoices</li>
-          <li>White-label member portal</li>
-          <li>Enquiry pipeline & lead CRM</li>
-          <li>Xero integration</li>
-          <li>Featured Marketplace listing</li>
+          <li>Up to 3 users · small team</li>
+          <li>100 searches per month</li>
+          <li>Everything in Starter</li>
+          <li>HubSpot CRM one-click sync</li>
+          <li>CSV &amp; Excel export</li>
+          <li>Outreach history &amp; logging</li>
+          <li>Priority email support</li>
+          <li>Early access to new features</li>
         </ul>
-        <a href="#" class="plan-btn solid">Start free trial</a>
+        <a href="https://buy.stripe.com/9B63cvdrZ2pfdZwf9AaAw0l" class="plan-btn solid">Claim founding rate →</a>
       </div>
 
-      <div class="pricing-card">
+      <!-- PRO -->
+      <div class="pricing-card" style="position:relative; padding-top:30px;">
+        <div class="pricing-badge" style="background:var(--teal-deep);">🔒 FOUNDING MEMBER</div>
         <div class="plan-name">Pro</div>
-        <div class="plan-price"><sup>£</sup>599</div>
-        <div class="plan-period">per month</div>
-        <p class="plan-desc">Multi-location operators who need the full platform, a full team, and advanced integrations.</p>
+        <div style="font-size:12px; color:var(--ink-light); text-decoration:line-through; margin-bottom:2px;">£699/mo after founding period</div>
+        <div class="plan-price"><sup>£</sup>349</div>
+        <div class="plan-period">per month · your rate, locked forever</div>
+        <p class="plan-desc">Whole-team access, unlimited searches, and first in line for Land Registry when it goes live.</p>
         <ul class="plan-features">
-          <li>10 admins · Unlimited locations · up to 500 members</li>
-          <li>AI smart pricing suggestions</li>
-          <li>Advanced analytics & custom reports</li>
-          <li>SMS notifications</li>
-          <li>Zapier + Open API</li>
-          <li>QuickBooks integration</li>
-          <li>Priority Marketplace listing</li>
-          <li>Priority support + SLA</li>
+          <li>Unlimited users · whole team</li>
+          <li>Unlimited searches</li>
+          <li>Everything in Growth</li>
+          <li>HM Land Registry integration (coming soon)</li>
+          <li>API access</li>
+          <li>Dedicated onboarding support</li>
+          <li>Custom outreach templates</li>
         </ul>
-        <a href="#" class="plan-btn outline">Start free trial</a>
+        <a href="https://buy.stripe.com/fZu8wPew34xnf3A9PgaAw0n" class="plan-btn outline">Claim founding rate →</a>
       </div>
 
     </div>
-    <p class="pricing-note">Annual billing saves you 2 months. <strong>Need something bigger?</strong> <a href="#" style="color:var(--teal-mid); text-decoration:none;">Talk to us about Enterprise →</a></p>
+
+    <!-- Spots counter repeat + reassurance -->
+    <div style="text-align:center; margin-top:40px;">
+      <div style="display:inline-flex; align-items:center; gap:10px; background:rgba(26,74,74,0.06); border:1px solid rgba(26,74,74,0.12); border-radius:40px; padding:8px 20px; margin-bottom:16px;">
+        <div style="width:8px; height:8px; border-radius:50%; background:#e05a2b; box-shadow:0 0 8px rgba(224,90,43,0.5); flex-shrink:0;"></div>
+        <span style="font-size:13px; color:var(--ink-mid); font-weight:500;">Only <strong id="spotsCount2" style="color:var(--teal-deep);">27</strong> of 100 founding spots remaining</span>
+      </div>
+      <p class="pricing-note" style="margin-top:0;">🔒 Price locked in the moment you subscribe. &nbsp;<strong>No contracts. No surprises.</strong>&nbsp; Cancel any time.</p>
+    </div>
   </div>
 </div>
+
+<script>
+// Founding spots counter — you can update this number manually as spots fill
+(function() {
+  var spots = 27;
+  document.getElementById('spotsCount').textContent = spots;
+  document.getElementById('spotsCount2').textContent = spots;
+})();
+</script>
 
 <!-- SOCIAL PROOF -->
 <div class="testimonials-wrap">

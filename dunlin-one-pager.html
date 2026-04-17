@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dunlin — One Pager</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --teal-deep:   #1a4a4a;
+    --teal-dark:   #0f2e2e;
+    --teal-mid:    #2a7a72;
+    --teal-bright: #3aada0;
+    --teal-light:  #7dd4cc;
+    --teal-pale:   #d6f0ee;
+    --teal-mist:   #f0f9f8;
+    --sand:        #f5f0e8;
+    --ink:         #1c2b2b;
+    --ink-mid:     #3d5252;
+    --white:       #ffffff;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #e8e4dc;
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  /* ── A4 PAGE SHELL ── */
+  .page {
+    width: 794px;
+    min-height: 1123px;
+    background: var(--sand);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.18);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--teal-deep);
+    padding: 36px 48px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,173,160,0.15) 0%, transparent 60%);
+    top: -280px; right: -100px;
+    pointer-events: none;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .logo-row {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300;
+    letter-spacing: 0.12em;
+    color: #fff;
+  }
+  .badge {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--teal-light);
+    border: 1px solid rgba(125,212,204,0.35);
+    padding: 4px 10px; border-radius: 20px;
+  }
+  .header-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 300;
+    color: #fff; line-height: 1.15;
+    letter-spacing: -0.01em;
+    max-width: 560px;
+    margin-bottom: 16px;
+  }
+  .header-tagline em { font-style: italic; color: var(--teal-light); }
+  .header-sub {
+    font-size: 13px; color: rgba(255,255,255,0.65);
+    line-height: 1.65; font-weight: 300;
+    max-width: 520px;
+  }
+  .header-stats {
+    display: flex; gap: 32px; margin-top: 24px;
+  }
+  .stat { text-align: left; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 600;
+    color: var(--teal-light);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .stat-label {
+    font-size: 10px; color: rgba(255,255,255,0.5);
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+
+  /* ── BODY ── */
+  .body {
+    flex: 1;
+    padding: 28px 48px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal-mid);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to right, rgba(42,122,114,0.3), transparent);
+  }
+
+  /* ── FEATURE CARDS ── */
+  .feature-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 18px;
+    border: 1px solid rgba(26,74,74,0.08);
+    box-shadow: 0 2px 12px rgba(26,74,74,0.06);
+  }
+  .feature-icon {
+    font-size: 20px; margin-bottom: 8px;
+    display: block;
+  }
+  .feature-title {
+    font-weight: 700; font-size: 13px;
+    color: var(--teal-deep); margin-bottom: 5px;
+  }
+  .feature-title span {
+    font-size: 9px; font-weight: 600;
+    color: var(--teal-bright);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    background: var(--teal-pale); border-radius: 4px;
+    padding: 2px 6px; margin-left: 6px;
+    vertical-align: middle;
+  }
+  .feature-desc {
+    font-size: 11.5px; color: var(--ink-mid);
+    line-height: 1.65; font-weight: 300;
+  }
+
+  /* ── FULL-WIDTH CARD ── */
+  .full-card {
+    grid-column: 1 / -1;
+  }
+
+  /* ── SCORE CARD ── */
+  .score-card {
+    background: var(--teal-deep);
+    color: #fff;
+  }
+  .score-card .feature-title { color: var(--teal-light); }
+  .score-card .feature-desc { color: rgba(255,255,255,0.7); }
+  .score-pills {
+    display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; font-weight: 700;
+    padding: 5px 10px; border-radius: 20px;
+    letter-spacing: 0.06em;
+  }
+  .pill.hot { background: rgba(239,68,68,0.18); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+  .pill.warm { background: rgba(245,158,11,0.18); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+  .pill.cold { background: rgba(125,212,204,0.15); color: var(--teal-light); border: 1px solid rgba(125,212,204,0.25); }
+  .score-bar {
+    margin-top: 12px;
+    height: 6px; border-radius: 3px;
+    background: rgba(255,255,255,0.1);
+    position: relative; overflow: hidden;
+  }
+  .score-bar-fill {
+    position: absolute; left: 0; top: 0; height: 100%;
+    background: linear-gradient(to right, var(--teal-light), #f87171);
+    border-radius: 3px;
+    width: 100%;
+  }
+  .score-bar-labels {
+    display: flex; justify-content: space-between;
+    margin-top: 4px;
+    font-size: 8.5px; color: rgba(255,255,255,0.4); letter-spacing: 0.08em;
+  }
+
+  /* ── COMING SOON ── */
+  .coming-soon-card {
+    background: linear-gradient(135deg, #0f2e2e 0%, #1a4a4a 100%);
+    border: 1px solid rgba(58,173,160,0.3);
+    position: relative; overflow: hidden;
+  }
+  .coming-soon-card::before {
+    content: '';
+    position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,173,160,0.2) 0%, transparent 70%);
+  }
+  .coming-tag {
+    display: inline-block;
+    background: rgba(58,173,160,0.2);
+    border: 1px solid rgba(58,173,160,0.5);
+    color: var(--teal-light);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .coming-soon-card .feature-title { color: var(--teal-light); font-size: 14px; }
+  .coming-soon-card .feature-desc { color: rgba(255,255,255,0.65); font-size: 11.5px; }
+
+  /* ── COMPARISON ROW ── */
+  .compare-card {
+    grid-column: 1 / -1;
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 18px;
+    border: 1px solid rgba(26,74,74,0.08);
+    box-shadow: 0 2px 12px rgba(26,74,74,0.06);
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 0;
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(26,74,74,0.1);
+    font-size: 11px;
+  }
+  .cg-head {
+    background: var(--teal-deep); color: #fff;
+    padding: 7px 10px; font-weight: 600; font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+  .cg-head.dunlin { background: var(--teal-bright); }
+  .cg-row { display: contents; }
+  .cg-cell {
+    padding: 7px 10px;
+    border-top: 1px solid rgba(26,74,74,0.07);
+    color: var(--ink-mid); font-size: 10.5px;
+  }
+  .cg-cell.dunlin {
+    background: rgba(58,173,160,0.06);
+    color: var(--teal-mid); font-weight: 600;
+  }
+  .cg-cell.label { color: var(--ink); font-weight: 500; }
+  .check { color: #22c55e; }
+  .cross { color: #ef4444; }
+
+  /* ── PRICING ── */
+  .pricing-row {
+    grid-column: 1 / -1;
+    display: flex; gap: 10px;
+  }
+  .price-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid rgba(26,74,74,0.08);
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(26,74,74,0.05);
+  }
+  .price-card.featured {
+    background: var(--teal-deep);
+    border-color: var(--teal-bright);
+    box-shadow: 0 6px 20px rgba(26,74,74,0.2);
+  }
+  .price-name {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--teal-mid); margin-bottom: 6px;
+  }
+  .price-card.featured .price-name { color: var(--teal-light); }
+  .price-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px; font-weight: 600;
+    color: var(--teal-deep); line-height: 1;
+    margin-bottom: 2px;
+  }
+  .price-card.featured .price-num { color: #fff; }
+  .price-per { font-size: 10px; color: #7a9696; margin-bottom: 8px; }
+  .price-card.featured .price-per { color: rgba(255,255,255,0.5); }
+  .price-feature {
+    font-size: 10px; color: var(--ink-mid);
+    line-height: 1.55;
+  }
+  .price-card.featured .price-feature { color: rgba(255,255,255,0.7); }
+  .trial-note {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 11px; color: var(--teal-mid);
+    font-weight: 500; letter-spacing: 0.02em;
+    margin-top: -6px;
+    padding: 8px;
+    background: var(--teal-mist);
+    border-radius: 8px;
+    border: 1px solid rgba(58,173,160,0.2);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--teal-dark);
+    padding: 14px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left {
+    font-size: 10px; color: rgba(255,255,255,0.4);
+    letter-spacing: 0.08em;
+  }
+  .footer-url {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-weight: 400;
+    color: var(--teal-light); letter-spacing: 0.06em;
+  }
+  .footer-tag {
+    font-size: 10px; color: rgba(255,255,255,0.35);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: none; padding: 0; }
+    .page {
+      width: 210mm; min-height: 297mm;
+      box-shadow: none;
+      page-break-after: avoid;
+    }
+    @page { size: A4; margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-row">
+        <svg width="32" height="22" viewBox="0 0 120 80" fill="none">
+          <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+          <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+          <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <span class="wordmark">dunlin</span>
+      </div>
+      <div class="badge">UK Lease Intelligence</div>
+    </div>
+
+    <div class="header-tagline">
+      Know <em>exactly</em> who needs<br>new office space — before<br>they start looking.
+    </div>
+    <div class="header-sub">
+      Dunlin finds UK companies approaching lease renewal, scores them by urgency, and hands you verified contact details for the person who signs the deal. Built exclusively for flex space operators and serviced office brokers.
+    </div>
+
+    <div class="header-stats">
+      <div class="stat">
+        <div class="stat-num">270M+</div>
+        <div class="stat-label">Contacts in database</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0–100</div>
+        <div class="stat-label">Space Pressure Score</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">30/60/90</div>
+        <div class="stat-label">Day renewal radar</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">£99/mo</div>
+        <div class="stat-label">Starting price</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- SPACE PRESSURE SCORE — full width -->
+    <div class="feature-card full-card score-card">
+      <div class="section-label" style="color:rgba(125,212,204,0.6);">The Engine</div>
+      <span class="feature-icon">⬆</span>
+      <div class="feature-title" style="font-size:14px;">Space Pressure Score™ — your unfair advantage</div>
+      <div class="feature-desc" style="max-width:560px;">Every contact gets a 0–100 urgency score. We combine four intelligence signals: <strong style="color:rgba(255,255,255,0.9);">estimated lease expiry</strong> (how close are they to renewal?), <strong style="color:rgba(255,255,255,0.9);">headcount growth</strong> (are they expanding?), <strong style="color:rgba(255,255,255,0.9);">recent funding</strong> (do they have budget to move?), and <strong style="color:rgba(255,255,255,0.9);">decision-maker seniority</strong> (are you talking to the right person?). Stop guessing who to call first.</div>
+      <div class="score-pills">
+        <div class="pill hot">🔴 HOT 70–100 · Call today</div>
+        <div class="pill warm">🟡 WARM 40–69 · Nurture now</div>
+        <div class="pill cold">🔵 COLD 0–39 · Watch this space</div>
+      </div>
+      <div class="score-bar"><div class="score-bar-fill"></div></div>
+      <div class="score-bar-labels"><span>Not urgent</span><span>Warm</span><span>HOT — call now</span></div>
+    </div>
+
+    <!-- RENEWAL RADAR -->
+    <div class="feature-card">
+      <div class="section-label">Features</div>
+      <span class="feature-icon">📅</span>
+      <div class="feature-title">Renewal Radar Calendar</div>
+      <div class="feature-desc">See every company in your lead list plotted on a 30, 60, or 90-day timeline by estimated lease expiry. Your daily hit list — sorted by urgency automatically. No other tool gives you this view.</div>
+    </div>
+
+    <!-- TRAFFIC LIGHT EMAIL -->
+    <div class="feature-card">
+      <div class="section-label">Features</div>
+      <span class="feature-icon">✉</span>
+      <div class="feature-title">Traffic Light Email Verification</div>
+      <div class="feature-desc"><strong style="color:#22c55e;">Green (VERIFIED)</strong> — safe to send. <strong style="color:#f59e0b;">Amber (LIKELY / DNS OK)</strong> — warm approach recommended. <strong style="color:#ef4444;">Red (NO EMAIL)</strong> — use LinkedIn instead. Dual-layer check: Apollo + DNS/MX lookup. No more bounces.</div>
+    </div>
+
+    <!-- OUTREACH SEQUENCES -->
+    <div class="feature-card">
+      <span class="feature-icon">◎</span>
+      <div class="feature-title">Built-in Outreach Sequences</div>
+      <div class="feature-desc">Pre-written, multi-step email cadences for lease renewal scenarios. Personalised with the contact's name, company, and location. One click opens your email client, ready to send. No copy-pasting, no forgetting to follow up.</div>
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="feature-card">
+      <span class="feature-icon">⬦</span>
+      <div class="feature-title">Pipeline &amp; CRM Sync</div>
+      <div class="feature-desc">Drag-and-drop Kanban board: New → Contacted → Interested → Converted. One-click HubSpot sync — contacts, company data, and outreach history all mapped automatically. Your pipeline, your way.</div>
+    </div>
+
+    <!-- COMPANIES HOUSE -->
+    <div class="feature-card">
+      <span class="feature-icon">🇬🇧</span>
+      <div class="feature-title">UK Companies House Integration<span>UK-Native</span></div>
+      <div class="feature-desc">Cross-referenced with Apollo to estimate lease expiry based on incorporation date, address history, and company size. Built for UK companies — not a US tool with UK data bolted on.</div>
+    </div>
+
+    <!-- COMING SOON — LAND REGISTRY -->
+    <div class="feature-card coming-soon-card">
+      <div class="coming-tag">Coming Soon</div>
+      <span class="feature-icon">🏛</span>
+      <div class="feature-title">HM Land Registry Integration</div>
+      <div class="feature-desc">We're connecting directly to HM Land Registry's Registered Leases dataset — giving you <strong style="color:rgba(255,255,255,0.85);">exact, confirmed lease start dates and terms</strong> for leases over 7 years. No more estimates. Actual data. Free under the Open Government Licence. When this goes live, Dunlin will be the only tool in the world surfacing confirmed UK lease renewal windows at contact level.</div>
+    </div>
+
+    <!-- COMPARISON TABLE -->
+    <div class="compare-card">
+      <div class="section-label">How We Compare</div>
+      <div class="compare-grid">
+        <div class="cg-head">Feature</div>
+        <div class="cg-head dunlin">✦ Dunlin</div>
+        <div class="cg-head">Apollo.io Org</div>
+        <div class="cg-head">VTS / CoStar</div>
+
+        <div class="cg-row">
+          <div class="cg-cell label">Space Pressure Score</div>
+          <div class="cg-cell dunlin"><span class="check">✓</span> Proprietary</div>
+          <div class="cg-cell"><span class="cross">✗</span></div>
+          <div class="cg-cell"><span class="cross">✗</span></div>
+        </div>
+        <div class="cg-row">
+          <div class="cg-cell label">Lease expiry intelligence</div>
+          <div class="cg-cell dunlin"><span class="check">✓</span> UK-specific</div>
+          <div class="cg-cell"><span class="cross">✗</span></div>
+          <div class="cg-cell">Portfolio only</div>
+        </div>
+        <div class="cg-row">
+          <div class="cg-cell label">UK Companies House data</div>
+          <div class="cg-cell dunlin"><span class="check">✓</span></div>
+          <div class="cg-cell"><span class="cross">✗</span></div>
+          <div class="cg-cell"><span class="cross">✗</span></div>
+        </div>
+        <div class="cg-row">
+          <div class="cg-cell label">Built for flex space outbound BD</div>
+          <div class="cg-cell dunlin"><span class="check">✓</span> Purpose-built</div>
+          <div class="cg-cell"><span class="cross">✗</span></div>
+          <div class="cg-cell"><span class="cross">✗</span></div>
+        </div>
+        <div class="cg-row">
+          <div class="cg-cell label">Single-user plan available</div>
+          <div class="cg-cell dunlin"><span class="check">✓</span> From £99/mo</div>
+          <div class="cg-cell">Min. 3 users (~£280/mo)</div>
+          <div class="cg-cell">£10k–40k/yr</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRICING -->
+    <div class="pricing-row">
+      <div class="price-card">
+        <div class="price-name">Starter</div>
+        <div class="price-num">£99</div>
+        <div class="price-per">per month · 1 user</div>
+        <div class="price-feature">25 searches/mo · Leads list · Renewal Radar · Email verification</div>
+      </div>
+      <div class="price-card featured">
+        <div class="price-name">Growth</div>
+        <div class="price-num">£179</div>
+        <div class="price-per">per month · small team</div>
+        <div class="price-feature">100 searches/mo · Sequences · Pipeline · HubSpot sync</div>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Pro</div>
+        <div class="price-num">£349</div>
+        <div class="price-per">per month · unlimited users</div>
+        <div class="price-feature">Unlimited searches · Full team access · Priority support</div>
+      </div>
+    </div>
+    <div class="trial-note">
+      ✦ &nbsp;14-day free trial · No credit card required · Cancel any time · Annual billing saves 20%
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">© 2026 Dunlin · Marvanova Ltd.</div>
+    <div class="footer-url">getdunlin.com</div>
+    <div class="footer-tag">Built for UK flex space operators</div>
+  </div>
+
+</div>
+
+</body>
+</html>

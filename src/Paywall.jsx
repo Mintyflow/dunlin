@@ -19,60 +19,65 @@ const PROMO_CODES = {
   "LOKATEOFFICES": { discount: 0.50, label: "Lokate Offices — 50% partner rate" },
 };
 
+// Founding Member pricing — locked forever for early subscribers
+// Future full pricing: Starter £199, Growth £379, Pro £699
 const PLANS = [
   {
     id: "starter",
     name: "Starter",
-    monthly: 149,
-    annual: 119,
-    seats: "1 admin · 1 location · up to 50 members",
+    monthly: 99,
+    annual: 79,
+    futureMonthly: 199,
+    seats: "1 user · solo operator",
+    tagline: "Everything you need to start finding leads.",
     features: [
-      "All 6 core modules",
-      "Space & booking management",
-      "Member profiles & portal",
-      "Manual invoicing",
-      "Stripe + GoCardless",
-      "Basic analytics dashboard",
-      "Standard Marketplace listing",
+      "25 searches per month",
+      "Space Pressure Score™ on every lead",
+      "Renewal Radar — 30/60/90 day calendar",
+      "Dual-layer email verification",
+      "Built-in outreach sequences",
+      "Lead Pipeline (Kanban board)",
+      "Companies House integration",
+      "Demo mode — explore risk-free",
     ],
-    missing: ["AI features", "Automated invoicing", "White-label portal", "Team access"],
+    missing: ["HubSpot CRM sync", "CSV export", "Unlimited users", "Land Registry (coming)"],
   },
   {
     id: "growth",
     name: "Growth",
-    monthly: 299,
-    annual: 239,
-    seats: "3 admins · 2 locations · up to 200 members",
+    monthly: 179,
+    annual: 143,
+    futureMonthly: 379,
+    seats: "Up to 3 users · small team",
     featured: true,
+    tagline: "For operators serious about outbound BD.",
     features: [
+      "100 searches per month",
       "Everything in Starter",
-      "3 admin seats",
-      "AI lead search with lease expiry dates",
-      "AI enquiry drafting & summaries",
-      "Automated recurring invoices",
-      "White-label member portal",
-      "Enquiry pipeline & lead CRM",
-      "Xero integration",
-      "Featured Marketplace listing",
+      "HubSpot CRM one-click sync",
+      "CSV & Excel export",
+      "Outreach history & logging",
+      "Priority email support",
+      "Early access to new features",
     ],
-    missing: ["SMS notifications", "Zapier + Open API", "AI smart pricing"],
+    missing: ["Unlimited users", "Unlimited searches", "Land Registry (coming)"],
   },
   {
     id: "pro",
     name: "Pro",
-    monthly: 599,
-    annual: 479,
-    seats: "10 admins · Unlimited locations · up to 500 members",
+    monthly: 349,
+    annual: 279,
+    futureMonthly: 699,
+    seats: "Unlimited users · whole team",
+    tagline: "The full platform. No limits.",
     features: [
+      "Unlimited searches",
       "Everything in Growth",
-      "10 admin seats",
-      "AI smart pricing suggestions",
-      "Advanced analytics & reports",
-      "SMS notifications",
-      "Zapier + Open API",
-      "QuickBooks integration",
-      "Priority Marketplace listing",
-      "Priority support + SLA",
+      "Unlimited team members",
+      "HM Land Registry integration (when live)",
+      "API access",
+      "Dedicated onboarding support",
+      "Custom outreach templates",
     ],
     missing: [],
   },
@@ -151,12 +156,19 @@ export default function Paywall({ daysLeft = 0, onPrivacy, onTerms }) {
         </div>
       )}
 
+      {/* Founding Member banner */}
+      <div style={{ background: C.dt, borderRadius: 12, padding: "18px 24px", marginBottom: 28, textAlign: "center", maxWidth: 520, width: "100%", border: "1px solid rgba(58,173,160,0.3)" }}>
+        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#7dd4cc", marginBottom: 6 }}>🔒 Founding Member Pricing</div>
+        <div style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: 22, color: "#fff", lineHeight: 1.2, marginBottom: 6 }}>Lock in your rate. <em style={{ fontStyle: "italic", color: "#7dd4cc" }}>Forever.</em></div>
+        <div style={{ fontSize: 13, color: "rgba(214,240,238,0.7)", fontWeight: 300, lineHeight: 1.5 }}>These prices are for founding members only. Once this window closes, new subscribers pay significantly more — but your rate is locked in permanently, no matter what.</div>
+      </div>
+
       {/* Header */}
-      <div style={{ textAlign: "center", marginBottom: 32, maxWidth: 480, width: "100%" }}>
-        <h1 style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: "clamp(30px,5vw,42px)", color: C.dt, marginBottom: 10, lineHeight: 1.1 }}>
-          Choose your plan.
+      <div style={{ textAlign: "center", marginBottom: 28, maxWidth: 520, width: "100%" }}>
+        <h1 style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: "clamp(28px,5vw,38px)", color: C.dt, marginBottom: 8, lineHeight: 1.1 }}>
+          Choose your founding plan.
         </h1>
-        <p style={{ fontSize: 15, color: C.inkl, fontWeight: 300 }}>Cancel any time. No hidden fees.</p>
+        <p style={{ fontSize: 14, color: C.inkl, fontWeight: 300 }}>Cancel any time. No hidden fees. Your rate never increases.</p>
       </div>
 
       {/* Billing toggle */}
@@ -172,7 +184,8 @@ export default function Paywall({ daysLeft = 0, onPrivacy, onTerms }) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 12, width: "100%", maxWidth: 800, marginBottom: 24 }}>
         {PLANS.map(p => (
           <div key={p.id} onClick={() => setSel(p.id)} style={{ background: sel === p.id ? C.dt : "#fff", border: "2px solid " + (sel === p.id ? C.dt : "rgba(26,74,74,0.1)"), borderRadius: 12, padding: "22px", cursor: "pointer", transition: "all .2s", position: "relative", boxShadow: sel === p.id ? "0 8px 28px rgba(26,74,74,0.15)" : "0 1px 6px rgba(26,74,74,0.06)" }}>
-            {p.featured && <div style={{ position: "absolute", top: -11, left: "50%", transform: "translateX(-50%)", background: C.bt, color: "#fff", fontFamily: "'DM Sans',sans-serif", fontSize: 9, letterSpacing: 2, padding: "3px 12px", borderRadius: 10, whiteSpace: "nowrap", fontWeight: 500 }}>MOST POPULAR</div>}
+            {/* Founding Member badge — on every card */}
+            <div style={{ position: "absolute", top: -11, left: "50%", transform: "translateX(-50%)", background: sel === p.id ? "#7dd4cc" : C.dt, color: sel === p.id ? C.dt : "#fff", fontFamily: "'DM Sans',sans-serif", fontSize: 9, letterSpacing: 2, padding: "3px 12px", borderRadius: 10, whiteSpace: "nowrap", fontWeight: 700 }}>🔒 FOUNDING MEMBER</div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
               <div>
                 <div style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: 22, color: sel === p.id ? C.sand : C.dt, marginBottom: 2 }}>{p.name}</div>
@@ -182,9 +195,14 @@ export default function Paywall({ daysLeft = 0, onPrivacy, onTerms }) {
                 {sel === p.id && <div style={{ width: 6, height: 6, borderRadius: 3, background: "#fff" }}/>}
               </div>
             </div>
-            <div style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: 36, color: sel === p.id ? "#fff" : C.dt, lineHeight: 1, marginBottom: 14 }}>
+            {/* Price with strikethrough future rate */}
+            <div style={{ marginBottom: 4 }}>
+              <span style={{ textDecoration: "line-through", fontSize: 13, color: sel === p.id ? "rgba(125,212,204,0.45)" : "rgba(26,74,74,0.35)", fontWeight: 300 }}>£{p.futureMonthly}/mo after</span>
+            </div>
+            <div style={{ fontFamily: "'Cormorant Garamond',serif", fontWeight: 300, fontSize: 36, color: sel === p.id ? "#fff" : C.dt, lineHeight: 1, marginBottom: 4 }}>
               £{billing === "annual" ? p.annual : p.monthly}<span style={{ fontSize: 13, color: sel === p.id ? "rgba(214,240,238,0.45)" : C.inkl, fontWeight: 300 }}>/mo</span>
             </div>
+            <div style={{ fontSize: 11, color: sel === p.id ? "#7dd4cc" : C.bt, marginBottom: 12, fontWeight: 500 }}>Your rate, locked forever 🔒</div>
             {p.features.slice(0, 4).map(f => (
               <div key={f} style={{ fontSize: 12, color: sel === p.id ? "rgba(214,240,238,0.7)" : C.inkm, padding: "3px 0", display: "flex", gap: 7, lineHeight: 1.4 }}>
                 <span style={{ color: C.bt, flexShrink: 0 }}>✓</span>{f}
