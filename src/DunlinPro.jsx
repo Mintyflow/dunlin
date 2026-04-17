@@ -13,14 +13,14 @@ const MONTHS_FULL=["January","February","March","April","May","June","July","Aug
 function parseExpiry(str){if(!str||str==="unknown")return null;// Handle "Est. 2026" format
 if(str.startsWith("Est. ")){const yr=parseInt(str.replace("Est. ",""));if(!isNaN(yr))return new Date(yr,5,1);}const d=new Date(`1 ${str}`);return isNaN(d.getTime())?null:d;}
 function daysBetween(a,b){return Math.round((b-a)/(1000*60*60*24));}
-function urgency(days){if(days<0)return{label:"Overdue",color:"#ef4444",bg:"#1a0808",border:"#3a1515"};if(days<=30)return{label:"This month",color:"#ef4444",bg:"#1a0808",border:"#3a1515"};if(days<=60)return{label:"60 days",color:"#f59e0b",bg:"#1a1000",border:"#3a2800"};if(days<=90)return{label:"90 days",color:"#fbbf24",bg:"#141000",border:"#2a2000"};if(days<=180)return{label:"6 months",color:"#3aada0",bg:"#071e1e",border:"#0a2828"};return{label:"6m+",color:"#3a6a6a",bg:"#102020",border:"#1a3535"};}
+function urgency(days){if(days<0)return{label:"Overdue",color:"#ef4444",bg:"#fff0f0",border:"#f0c0c0"};if(days<=30)return{label:"This month",color:"#ef4444",bg:"#fff0f0",border:"#f0c0c0"};if(days<=60)return{label:"60 days",color:"#f59e0b",bg:"#fff8e0",border:"#c8980a"};if(days<=90)return{label:"90 days",color:"#fbbf24",bg:"#141000",border:"#2a2000"};if(days<=180)return{label:"6 months",color:"#3aada0",bg:"#b0d4cf",border:"#0a2828"};return{label:"6m+",color:"#3a6a6a",bg:"#f0ece3",border:"#b8d4cf"};}
 const newId=()=>Date.now()+Math.floor(Math.random()*1000);
 
 const PIPELINE_STAGES=[
   {id:"new",      label:"New",       color:"#3a6a6a"},
   {id:"contacted",label:"Contacted", color:"#3aada0"},
   {id:"interested",label:"Interested",color:"#22c55e"},
-  {id:"converted",label:"Converted", color:"#7dd4cc"},
+  {id:"converted",label:"Converted", color:"#1a7a72"},
 ];
 
 // ─── SAMPLE DATA ──────────────────────────────────────────────────────────────
@@ -118,6 +118,74 @@ function applyTokens(text, lead) {
     .replace(/\{industry\}/g, lead.companyIndustry || "your sector");
 }
 
+// ─── GUIDED TOUR STEPS ────────────────────────────────────────────────────────
+const TOUR_STEPS = [
+  {
+    target: null,
+    title: "Welcome to Dunlin Renewal Radar 👋",
+    body: "The only tool that tells you which companies need new office space right now — not just who they are, but how urgently they need to move. Let's take a 60-second tour.",
+    cta: "Show me around →",
+    skip: "Skip tour",
+  },
+  {
+    target: "[data-tour='search']",
+    title: "Search by location",
+    body: "Type any UK city, postcode, or area. Dunlin searches Apollo's database of 270M+ contacts to find Office Managers, Facilities Directors, and Operations leads near you.",
+    cta: "Next →",
+    tip: "below",
+  },
+  {
+    target: "[data-tour='renewal']",
+    title: "Renewal Radar calendar 📅",
+    body: "Your daily hit list. See exactly which companies' leases expire in 30, 60, or 90 days — sorted by urgency. Nobody else shows you this. This is your unfair advantage.",
+    cta: "Next →",
+    tip: "below",
+  },
+  {
+    target: "[data-tour='leads']",
+    title: "Space Pressure Score™",
+    body: "Every contact gets a 0–100 score combining lease urgency + headcount growth + recent funding + seniority. HOT (70+) = they likely need space right now. Stop guessing who to call first.",
+    cta: "Next →",
+    tip: "below",
+  },
+  {
+    target: "[data-tour='sequences']",
+    title: "Built-in outreach sequences ✉",
+    body: "Pre-written email cadences for lease renewals and flex operator pitches. Personalised with the contact's name, company and location. One click opens your email client, ready to send.",
+    cta: "Next →",
+    tip: "below",
+  },
+  {
+    target: "[data-tour='settings']",
+    title: "One key to unlock everything ⚙",
+    body: "Add your Apollo.io Organisation plan API key in Settings to run live searches. Without it you're in demo mode — the data is real once connected.",
+    cta: "Go to Settings →",
+    tip: "below",
+    goTo: "settings",
+  },
+  {
+    target: null,
+    title: "You're all set 🎉",
+    body: "Start with a location search, check the Renewal Radar for urgent leads, and use the Space Pressure Score to prioritise who to call first. Questions? Hit the ? tab anytime.",
+    cta: "Start searching",
+    goTo: "search",
+  },
+];
+
+// ─── FAQ DATA ─────────────────────────────────────────────────────────────────
+const FAQ = [
+  { q: "What is the Space Pressure Score?", a: "A proprietary 0–100 score we calculate for every contact, combining four signals: estimated lease urgency (how close their company is to renewal), headcount growth (are they expanding?), recent funding (do they have budget to move?), and seniority (are they the decision-maker?). A score of 70+ means HOT — they likely need new space right now." },
+  { q: "How does lease expiry estimation work?", a: "Dunlin cross-references Apollo contact data with UK Companies House filings to estimate when a company's lease is likely to expire. We look at incorporation date, address history, and company size to generate an estimated renewal year. It's an intelligence signal, not a guarantee — but it's significantly better than guessing." },
+  { q: "What does the traffic light email system mean?", a: "Green (VERIFIED) = Apollo has confirmed this email is valid. Amber (LIKELY) = Apollo rates it as likely to engage, or our DNS check confirms the mail server exists. Red (NO EMAIL / INVALID) = we couldn't find or confirm a valid email. Always start with green, warm up amber, skip red." },
+  { q: "Do I need an Apollo API key?", a: "Yes, for live searches. Dunlin uses Apollo.io's database of 270M+ contacts. You'll need an Apollo Organisation plan — the free tier won't work. Without a key you can still explore the tool in demo mode. Add your key under Settings." },
+  { q: "What's the difference between demo mode and live mode?", a: "Demo mode shows you a set of sample contacts across UK cities so you can explore all the features without an API key. Live mode runs real searches against Apollo's database and returns actual contacts, verified emails, and real company data." },
+  { q: "Can I push contacts to my CRM?", a: "Yes — Dunlin has a built-in HubSpot integration. Add your HubSpot private app API key in Settings, then push individual leads or your full lead list to HubSpot with one click. Contacts are created with all key fields mapped." },
+  { q: "What are email sequences?", a: "Pre-written, multi-step email campaigns specific to lease renewal scenarios. Dunlin includes two templates out of the box: a 5-step Lease Renewal Outreach cadence and a 3-step Flex Operator Warm Pitch. Each step is personalised with the contact's name, company, and location. When you're ready to send, one click opens your email client with the message pre-filled." },
+  { q: "How do I use the Pipeline?", a: "The Pipeline tab gives you a Kanban board to track contacts through your sales stages: New → Contacted → Interested → Converted. Drag and drop contacts between columns. Changes sync to your account so your pipeline is always up to date." },
+  { q: "Is my data private?", a: "Yes. Each Dunlin account is completely isolated — your leads, pipeline, and API keys are visible only to you. We use Supabase with row-level security, meaning database queries are scoped to your user ID at the database level." },
+  { q: "How is Dunlin different from VTS, CoStar or Leasecake?", a: "VTS and CoStar are enterprise landlord tools costing £10k–£40k/year, built for managing existing portfolios — not for finding new clients. Leasecake is a tenant-side lease management tool. Dunlin is purpose-built for the flex space operator doing outbound BD: find who needs space, score them by urgency, and contact them before your competitors do." },
+];
+
 export default function App({ session, onBack }){
   const userId = session?.user?.id;
 
@@ -177,6 +245,39 @@ export default function App({ session, onBack }){
   // ── CSV import ────────────────────────────────────────────────────────────
   const csvRef=useRef(null);
   const abortRef=useRef(null);
+
+  // ── Guided tour ───────────────────────────────────────────────────────────
+  const [tourStep,setTourStep]=useState(null);
+  const [tourRect,setTourRect]=useState(null);
+  const [faqOpen,setFaqOpen]=useState(null);
+
+  // Start tour on first login
+  useEffect(()=>{
+    if(userId&&!dbLoading){
+      if(!localStorage.getItem(`dunlin_tour_${userId}`)){
+        setTimeout(()=>setTourStep(0),600);
+      }
+    }
+  },[userId,dbLoading]);
+
+  // Spotlight: measure target element whenever step changes
+  useEffect(()=>{
+    if(tourStep===null){setTourRect(null);return;}
+    const t=TOUR_STEPS[tourStep]?.target;
+    if(!t){setTourRect(null);return;}
+    const measure=()=>{
+      const el=document.querySelector(t);
+      if(el){const r=el.getBoundingClientRect();setTourRect({top:r.top,left:r.left,w:r.width,h:r.height});}
+    };
+    const timer=setTimeout(measure,120);
+    return()=>clearTimeout(timer);
+  },[tourStep]);
+
+  const completeTour=(goTo)=>{
+    setTourStep(null);setTourRect(null);
+    if(userId)localStorage.setItem(`dunlin_tour_${userId}`,"1");
+    if(goTo)setTab(goTo);
+  };
 
   // ── Load data from Supabase on mount ──────────────────────────────────────
   useEffect(()=>{
@@ -315,7 +416,10 @@ export default function App({ session, onBack }){
     try{
       const res=await fetch("/.netlify/functions/search",{
         method:"POST",
-        headers:{"Content-Type":"application/json"},
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":`Bearer ${session?.access_token||""}`,
+        },
         signal:controller.signal,
         body:JSON.stringify({
           query:loc.trim(),
@@ -447,7 +551,7 @@ export default function App({ session, onBack }){
 
   const lastContact=(id)=>(outreach[id]||[])[0]||null;
   const outcomeLabel=(o)=>({no_reply:"No reply",interested:"Interested",not_now:"Not now",converted:"Converted",do_not_call:"Do not call"}[o]||o);
-  const outcomeColor=(o)=>({no_reply:"#3a6a6a",interested:"#22c55e",not_now:"#f59e0b",converted:"#7dd4cc",do_not_call:"#ef4444"}[o]||"#3a6a6a");
+  const outcomeColor=(o)=>({no_reply:"#3a6a6a",interested:"#22c55e",not_now:"#f59e0b",converted:"#1a7a72",do_not_call:"#ef4444"}[o]||"#3a6a6a");
 
   // ── Sequence helpers ───────────────────────────────────────────────────────
   const enrollLead=(leadId,seqId)=>setEnrollments(p=>({...p,[leadId]:{seqId,enrolledAt:new Date().toISOString(),step:0,done:false}}));
@@ -542,21 +646,21 @@ export default function App({ session, onBack }){
   const verifiedCount=Object.values(emailChecks).filter(e=>e.status==="valid").length;
 
   // ── Styles ────────────────────────────────────────────────────────────────
-  const inp={width:"100%",background:"#102020",border:"1px solid #1e2535",color:"#e2e8f0",padding:"11px 13px",fontFamily:"'DM Sans',sans-serif",fontSize:14,borderRadius:8,outline:"none",WebkitAppearance:"none"};
-  const card={background:"#102020",border:"1px solid #1e2535",borderRadius:10,padding:14};
-  const notice=w=>({background:w?"#150e00":"#0a1424",border:`1px solid ${w?"#3a2800":"#1a3a5c"}`,borderLeft:`3px solid ${w?"#f59e0b":"#3aada0"}`,padding:"11px 13px",borderRadius:8,color:w?"#c8a840":"#7dd4cc",fontSize:12,lineHeight:1.7,marginBottom:12});
+  const inp={width:"100%",background:"#f0ece3",border:"1px solid #c0d4d0",color:"#1a3a3a",padding:"11px 13px",fontFamily:"'DM Sans',sans-serif",fontSize:14,borderRadius:8,outline:"none",WebkitAppearance:"none"};
+  const card={background:"#f0ece3",border:"1px solid #c0d4d0",borderRadius:10,padding:14};
+  const notice=w=>({background:w?"#fef8ec":"#e8f4f0",border:`1px solid ${w?"#c8980a":"#90b8d8"}`,borderLeft:`3px solid ${w?"#f59e0b":"#3aada0"}`,padding:"11px 13px",borderRadius:8,color:w?"#8a6800":"#1a7a72",fontSize:12,lineHeight:1.7,marginBottom:12});
 
   // ── Traffic light: Apollo status is ground truth; DNS check is secondary ──
   const getEmailTier=(r)=>{
     const apollo=r.emailStatus;
     const dns=emailChecks[r.id];
-    if(apollo==="verified")return{tier:"green",label:"VERIFIED",col:"#22c55e",bg:"#0a2015"};
-    if(apollo==="likely to engage")return{tier:"amber",label:"LIKELY",col:"#f59e0b",bg:"#1a1000"};
-    if(dns?.status==="valid")return{tier:"amber",label:"DNS OK",col:"#f59e0b",bg:"#1a1000"};
+    if(apollo==="verified")return{tier:"green",label:"VERIFIED",col:"#22c55e",bg:"#e8fff4"};
+    if(apollo==="likely to engage")return{tier:"amber",label:"LIKELY",col:"#f59e0b",bg:"#fff8e0"};
+    if(dns?.status==="valid")return{tier:"amber",label:"DNS OK",col:"#f59e0b",bg:"#fff8e0"};
     if(dns?.status==="risky")return{tier:"amber",label:"RISKY",col:"#e08a00",bg:"#1a0d00"};
-    if(dns?.status==="invalid")return{tier:"red",label:"INVALID",col:"#ef4444",bg:"#1a0808"};
-    if(apollo==="unavailable"||!r.email||r.email==="unknown")return{tier:"red",label:"NO EMAIL",col:"#ef4444",bg:"#1a0808"};
-    return{tier:"pending",label:"CHECKING",col:"#3a6a6a",bg:"#0a1a1a"};
+    if(dns?.status==="invalid")return{tier:"red",label:"INVALID",col:"#ef4444",bg:"#fff0f0"};
+    if(apollo==="unavailable"||!r.email||r.email==="unknown")return{tier:"red",label:"NO EMAIL",col:"#ef4444",bg:"#fff0f0"};
+    return{tier:"pending",label:"CHECKING",col:"#3a6a6a",bg:"#e0eeec"};
   };
 
   const confBadge=(r)=>{const{label,col,bg}=getEmailTier(r);return<span style={{background:bg,color:col,border:`1px solid ${col}40`,padding:"2px 5px",borderRadius:3,fontSize:9,fontFamily:"'DM Sans',sans-serif",letterSpacing:1,whiteSpace:"nowrap"}}>{label}</span>;};
@@ -567,44 +671,45 @@ export default function App({ session, onBack }){
 
 
   const navTabs=[
-    {id:"search",    l:"Search",    i:"⌖"},
-    {id:"results",   l:"Leads",     i:"◈", b:leads.length},
-    {id:"pipeline",  l:"Pipeline",  i:"⬦", b:leads.filter(l=>getStage(l.id)==="interested").length||undefined},
-    {id:"calendar",  l:"Renewal",   i:"📅",dot:calStats.d30>0||calStats.overdue>0},
-    {id:"sequences", l:"Sequences", i:"✉", b:seqTasksDue.length||undefined, dot:seqTasksDue.length>0},
-    {id:"outreach",  l:"Outreach",  i:"◉", b:followupsDueToday.length||undefined},
-    {id:"history",   l:"History",   i:"◎", b:history.length||undefined},
-    {id:"settings",  l:"Settings",  i:"⚙", dot:!apolloKey&&!dbLoading},
+    {id:"search",    l:"Search",    i:"⌖",  tour:"search"},
+    {id:"results",   l:"Leads",     i:"◈",  b:leads.length, tour:"leads"},
+    {id:"pipeline",  l:"Pipeline",  i:"⬦",  b:leads.filter(l=>getStage(l.id)==="interested").length||undefined},
+    {id:"calendar",  l:"Renewal",   i:"📅", dot:calStats.d30>0||calStats.overdue>0, tour:"renewal"},
+    {id:"sequences", l:"Sequences", i:"✉",  b:seqTasksDue.length||undefined, dot:seqTasksDue.length>0, tour:"sequences"},
+    {id:"outreach",  l:"Outreach",  i:"◉",  b:followupsDueToday.length||undefined},
+    {id:"history",   l:"History",   i:"◎",  b:history.length||undefined},
+    {id:"settings",  l:"Settings",  i:"⚙",  dot:!apolloKey&&!dbLoading, tour:"settings"},
+    {id:"help",      l:"Help",      i:"?"},
   ];
 
   return(
-    <div style={{minHeight:"100vh",background:"#0a1a1a",color:"#e2e8f0",fontFamily:"'DM Sans','Helvetica Neue',sans-serif",fontSize:14}}>
+    <div style={{minHeight:"100vh",background:"#d4e8e4",color:"#1a3a3a",fontFamily:"'DM Sans','Helvetica Neue',sans-serif",fontSize:14}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@400;500;600;700&display=swap');
         *{box-sizing:border-box;margin:0;padding:0}
-        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0a1a1a}::-webkit-scrollbar-thumb{background:#1a3535;border-radius:2px}
-        input,select,textarea{outline:none;-webkit-appearance:none}input[type=time],input[type=date]{color-scheme:dark}
-        input::placeholder,textarea::placeholder{color:#3a5a5a}
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#d4e8e4}::-webkit-scrollbar-thumb{background:#8ab8b0;border-radius:2px}
+        input,select,textarea{outline:none;-webkit-appearance:none}input[type=time],input[type=date]{color-scheme:light}
+        input::placeholder,textarea::placeholder{color:#6a9a9a}
         .nb{flex:1;background:none;border:none;cursor:pointer;padding:7px 2px;color:#4a8080;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;transition:color .15s;min-width:0}
-        .nb:hover{color:#e2e8f0}.nb.act{color:#3aada0;border-bottom-color:#3aada0}
-        .bp{background:#3aada0;color:#fff;border:none;padding:13px;font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.08em;font-weight:700;cursor:pointer;border-radius:8px;text-transform:uppercase;width:100%}.bp:hover{background:#7dd4cc;color:#0a1a1a}
+        .nb:hover{color:#1a3a3a}.nb.act{color:#1a7a72;border-bottom-color:#1a7a72}
+        .bp{background:#3aada0;color:#fff;border:none;padding:13px;font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.08em;font-weight:700;cursor:pointer;border-radius:8px;text-transform:uppercase;width:100%}.bp:hover{background:#148a80;color:#fff}
         .bs{background:#2a7a72;color:#fff;border:none;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.04em;font-weight:600;cursor:pointer;border-radius:6px;text-transform:uppercase}.bs:hover{background:#3aada0}
-        .bg{background:none;border:1px solid #1a3535;color:#4a8080;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px;transition:all .15s}.bg:hover{border-color:#3aada0;color:#3aada0}.bg:disabled{opacity:.3;cursor:not-allowed}
-        .bd{background:none;border:1px solid #3a1515;color:#ef4444;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px}.bd:hover{background:#1a0808}.bd:disabled{opacity:.3;cursor:not-allowed}
-        .bx{background:#0a1f12;border:1px solid #1a4a2a;color:#22c55e;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px}.bx:hover{background:#0d2e1a}
-        .rcard{background:#102020;border:1px solid #1a3535;border-radius:10px;padding:13px;margin-bottom:9px;cursor:pointer;transition:border-color .15s}.rcard:active{border-color:#3aada0}.rcard.inv{border-color:#3a1515;opacity:.8}
-        .sw{position:relative;width:40px;height:22px;background:#1a3535;border-radius:11px;cursor:pointer;transition:background .2s;flex-shrink:0}.sw.on{background:#3aada0}.sk{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:8px;transition:left .2s}.sw.on .sk{left:21px}
-        .fb{background:none;border:1px solid #1a3535;color:#4a8080;padding:5px 10px;font-family:'DM Sans',sans-serif;font-size:10px;cursor:pointer;border-radius:20px;transition:all .15s}.fb:hover{border-color:#3aada0;color:#3aada0}.fb.act{color:#0a1a1a;border-color:transparent}
-        .pipe-col{background:#081818;border:1px solid #1a3535;border-radius:10px;padding:10px;min-height:200px;transition:border-color .2s}.pipe-col.dragover{border-color:#3aada0;background:#071e1e}
-        .pipe-card{background:#102020;border:1px solid #1a3535;border-radius:7px;padding:10px;margin-bottom:7px;cursor:grab;transition:all .15s;user-select:none}.pipe-card:active{cursor:grabbing;opacity:.7}
-        .tg{display:inline-block;background:#0f2222;border:1px solid #1e3838;color:#3aada0;padding:2px 7px;border-radius:4px;font-size:10px}
+        .bg{background:none;border:1px solid #b8d4cf;color:#4a8080;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px;transition:all .15s}.bg:hover{border-color:#3aada0;color:#3aada0}.bg:disabled{opacity:.3;cursor:not-allowed}
+        .bd{background:none;border:1px solid #f0c0c0;color:#ef4444;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px}.bd:hover{background:#fff0f0}.bd:disabled{opacity:.3;cursor:not-allowed}
+        .bx{background:#e8f8ee;border:1px solid #90c4a4;color:#22c55e;padding:8px 13px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.02em;font-weight:500;cursor:pointer;border-radius:6px}.bx:hover{background:#0d2e1a}
+        .rcard{background:#f0ece3;border:1px solid #b8d4cf;border-radius:10px;padding:13px;margin-bottom:9px;cursor:pointer;transition:border-color .15s}.rcard:active{border-color:#3aada0}.rcard.inv{border-color:#f0c0c0;opacity:.8}
+        .sw{position:relative;width:40px;height:22px;background:#b8d4cf;border-radius:11px;cursor:pointer;transition:background .2s;flex-shrink:0}.sw.on{background:#3aada0}.sk{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:8px;transition:left .2s}.sw.on .sk{left:21px}
+        .fb{background:none;border:1px solid #b8d4cf;color:#4a8080;padding:5px 10px;font-family:'DM Sans',sans-serif;font-size:10px;cursor:pointer;border-radius:20px;transition:all .15s}.fb:hover{border-color:#3aada0;color:#3aada0}.fb.act{color:#0a1a1a;border-color:transparent}
+        .pipe-col{background:#c0dcd8;border:1px solid #b8d4cf;border-radius:10px;padding:10px;min-height:200px;transition:border-color .2s}.pipe-col.dragover{border-color:#3aada0;background:#b0d4cf}
+        .pipe-card{background:#f0ece3;border:1px solid #b8d4cf;border-radius:7px;padding:10px;margin-bottom:7px;cursor:grab;transition:all .15s;user-select:none}.pipe-card:active{cursor:grabbing;opacity:.7}
+        .tg{display:inline-block;background:#daf0ec;border:1px solid #c0d8d4;color:#3aada0;padding:2px 7px;border-radius:4px;font-size:10px}
         .lbl{font-size:10px;letter-spacing:2px;color:#3a6060;margin-bottom:6px;text-transform:uppercase;display:block}
         .fg{margin-bottom:12px}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}.pulse{animation:pulse 1.6s ease-in-out infinite}
-        .ocard{background:#102020;border:1px solid #1a3535;border-radius:10px;padding:13px;margin-bottom:9px}
-        .seq-card{background:#102020;border:1px solid #1a3535;border-radius:10px;padding:13px;margin-bottom:9px;cursor:pointer;transition:border-color .15s}.seq-card:hover{border-color:#3aada0}
-        .seq-step{background:#080c10;border:1px solid #111827;border-radius:7px;padding:10px 12px;margin-bottom:7px}
-        .copy-btn{background:#0a2020;border:1px solid #1a3535;color:#3aada0;padding:5px 10px;border-radius:5px;font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.5px;transition:all .15s}.copy-btn:hover{background:#3aada0;color:#0a1a1a}
+        .ocard{background:#f0ece3;border:1px solid #b8d4cf;border-radius:10px;padding:13px;margin-bottom:9px}
+        .seq-card{background:#f0ece3;border:1px solid #b8d4cf;border-radius:10px;padding:13px;margin-bottom:9px;cursor:pointer;transition:border-color .15s}.seq-card:hover{border-color:#3aada0}
+        .seq-step{background:#e8f4f1;border:1px solid #c0d4d0;border-radius:7px;padding:10px 12px;margin-bottom:7px}
+        .copy-btn{background:#f0ece3;border:1px solid #b8d4cf;color:#3aada0;padding:5px 10px;border-radius:5px;font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.5px;transition:all .15s}.copy-btn:hover{background:#3aada0;color:#0a1a1a}
         @media(max-width:600px){
           div[style*="padding:14px 13px"]{padding:10px 10px!important}
           div[style*="maxWidth:700px"]{max-width:100vw!important}
@@ -618,6 +723,38 @@ export default function App({ session, onBack }){
           .nb span:first-child{font-size:15px!important}
         }
       `}</style>
+
+      {/* ── Guided Tour Overlay ──────────────────────────────────────────────── */}
+      {tourStep!==null&&(()=>{
+        const s=TOUR_STEPS[tourStep];
+        const pad=12;
+        const hl=tourRect?{top:tourRect.top-pad,left:tourRect.left-pad,w:tourRect.w+pad*2,h:tourRect.h+pad*2}:null;
+        // Tooltip position: below the highlight or centered
+        const tipTop=hl?hl.top+hl.h+16:null;
+        const tipLeft=hl?Math.max(8,Math.min(window.innerWidth-280,hl.left+(hl.w/2)-130)):null;
+        return(
+          <div style={{position:"fixed",inset:0,zIndex:9999,pointerEvents:"none"}}>
+            {/* Dark overlay */}
+            <div style={{position:"absolute",inset:0,background:"rgba(20,40,38,0.82)",pointerEvents:"all"}} onClick={()=>completeTour()}/>
+            {/* Spotlight cutout */}
+            {hl&&<div style={{position:"absolute",top:hl.top,left:hl.left,width:hl.w,height:hl.h,borderRadius:10,boxShadow:"0 0 0 9999px rgba(20,40,38,0.82)",border:"2px solid #3aada0",zIndex:1,pointerEvents:"none"}}/>}
+            {/* Tooltip card */}
+            <div style={{position:"absolute",top:hl?(tipTop>window.innerHeight-180?hl.top-160:tipTop):"50%",left:hl?tipLeft:"50%",transform:hl?"":"translate(-50%,-50%)",width:260,background:"#f0ece3",borderRadius:12,padding:"18px 20px",boxShadow:"0 8px 32px rgba(0,0,0,0.25)",border:"1px solid #b8d4cf",zIndex:2,pointerEvents:"all"}}>
+              <div style={{fontSize:9,color:"#3aada0",letterSpacing:2,textTransform:"uppercase",marginBottom:6,fontWeight:600}}>{tourStep+1} of {TOUR_STEPS.length}</div>
+              <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:20,fontWeight:600,color:"#1a3a3a",marginBottom:8,lineHeight:1.2}}>{s.title}</div>
+              <div style={{fontSize:13,color:"#3a6a6a",lineHeight:1.65,marginBottom:16}}>{s.body}</div>
+              <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                <button onClick={()=>{if(tourStep<TOUR_STEPS.length-1){setTourStep(tourStep+1);}else{completeTour(s.goTo);}if(s.goTo&&tourStep<TOUR_STEPS.length-1)setTab(s.goTo);}} style={{flex:1,background:"#3aada0",color:"#fff",border:"none",borderRadius:7,padding:"9px 14px",fontSize:12,fontWeight:700,cursor:"pointer",letterSpacing:.5}}>{s.cta||"Next →"}</button>
+                {s.skip&&<button onClick={()=>completeTour()} style={{background:"none",border:"none",color:"#4a8080",fontSize:11,cursor:"pointer",padding:"4px 8px"}}>Skip</button>}
+              </div>
+              {/* Progress dots */}
+              <div style={{display:"flex",gap:4,justifyContent:"center",marginTop:12}}>
+                {TOUR_STEPS.map((_,i)=><div key={i} style={{width:i===tourStep?16:6,height:6,borderRadius:3,background:i===tourStep?"#3aada0":i<tourStep?"#b8d4cf":"#d4e8e4",transition:"all .2s"}}/>)}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Header */}
       <div style={{borderBottom:"1px solid rgba(255,255,255,0.07)",padding:"0 13px",display:"flex",justifyContent:"space-between",alignItems:"center",background:"#1a4a4a",position:"sticky",top:0,zIndex:10,height:56}}>
@@ -642,7 +779,7 @@ export default function App({ session, onBack }){
           </div>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
-          {verifying&&<span style={{fontSize:9,color:"#7dd4cc",fontFamily:"'DM Sans',sans-serif"}} className="pulse">✉ DNS…</span>}
+          {verifying&&<span style={{fontSize:9,color:"#1a7a72",fontFamily:"'DM Sans',sans-serif"}} className="pulse">✉ DNS…</span>}
           {leads.length>0&&<span style={{fontSize:9,color:"#22c55e",fontFamily:"'DM Sans',sans-serif"}}>🟢 {leads.filter(r=>r.emailStatus==="verified").length}/{leads.filter(r=>r.email).length}</span>}
           <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
           {apolloKey
@@ -652,14 +789,14 @@ export default function App({ session, onBack }){
           <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
           <span style={{fontSize:9,color:"rgba(125,212,204,0.4)",fontFamily:"'DM Sans',sans-serif"}}>DEMO</span>
           <div className={`sw ${demo?"on":""}`} onClick={()=>setDemo(!demo)}><div className="sk"/></div>
-          <span style={{fontSize:9,color:demo?"#7dd4cc":"rgba(125,212,204,0.3)",minWidth:18,fontFamily:"'DM Sans',sans-serif"}}>{demo?"ON":"OFF"}</span>
+          <span style={{fontSize:9,color:demo?"#1a7a72":"rgba(125,212,204,0.3)",minWidth:18,fontFamily:"'DM Sans',sans-serif"}}>{demo?"ON":"OFF"}</span>
         </div>
       </div>
 
       {/* Follow-up banner */}
       {followupsDueToday.length>0&&(
-        <div style={{background:"#0e2424",borderBottom:"1px solid #3a2060",padding:"8px 14px",display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
-          <span style={{fontSize:10,color:"#7dd4cc",letterSpacing:1,textTransform:"uppercase"}}>◉ Follow-ups due today</span>
+        <div style={{background:"#e8f4f0",borderBottom:"1px solid #d0c0f0",padding:"8px 14px",display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+          <span style={{fontSize:10,color:"#1a7a72",letterSpacing:1,textTransform:"uppercase"}}>◉ Follow-ups due today</span>
           {followupsDueToday.map(({lead},i)=>(
             <span key={i} style={{fontSize:11,color:"#b0a0f0",cursor:"pointer",textDecoration:"underline"}} onClick={()=>{setTab("outreach");setOutreachForm(lead.id);}}>{lead.name}</span>
           ))}
@@ -667,12 +804,12 @@ export default function App({ session, onBack }){
       )}
 
       {/* Nav */}
-      <div style={{borderBottom:"1px solid #111827",display:"flex",background:"#070a0e",position:"sticky",top:followupsDueToday.length>0?81:49,zIndex:9,overflowX:"auto"}}>
+      <div style={{borderBottom:"1px solid #c0d4d0",display:"flex",background:"#cce0dc",position:"sticky",top:followupsDueToday.length>0?81:49,zIndex:9,overflowX:"auto"}}>
         {navTabs.map(n=>(
-          <button key={n.id} className={`nb ${tab===n.id?"act":""}`} onClick={()=>setTab(n.id)} style={{padding:"7px 4px",minWidth:50}}>
+          <button key={n.id} data-tour={n.tour||undefined} className={`nb ${tab===n.id?"act":""}`} onClick={()=>setTab(n.id)} style={{padding:"7px 4px",minWidth:50}}>
             <span style={{fontSize:13}}>{n.i}</span>
             <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:9,whiteSpace:"nowrap"}}>{n.l}</span>
-            {n.b>0&&<span style={{background:"#1e3838",color:"#3aada0",fontSize:8,padding:"1px 4px",borderRadius:10}}>{n.b}</span>}
+            {n.b>0&&<span style={{background:"#c0d8d4",color:"#3aada0",fontSize:8,padding:"1px 4px",borderRadius:10}}>{n.b}</span>}
             {n.dot&&!n.b&&<span style={{width:5,height:5,borderRadius:3,background:"#f59e0b",display:"inline-block"}} className="pulse"/>}
           </button>
         ))}
@@ -696,7 +833,7 @@ export default function App({ session, onBack }){
             {/* Mode banners */}
             {demo&&<div style={notice(true)}><strong style={{color:"#f59e0b"}}>Demo Mode ON</strong> — shows sample contacts. Toggle off for live Apollo results.</div>}
             {!demo&&!apolloKey&&(
-              <div style={{background:"#120d00",border:"1px solid #3a2800",borderLeft:"3px solid #f59e0b",borderRadius:8,padding:"12px 14px",marginBottom:12}}>
+              <div style={{background:"#120d00",border:"1px solid #c8980a",borderLeft:"3px solid #f59e0b",borderRadius:8,padding:"12px 14px",marginBottom:12}}>
                 <div style={{fontSize:11,color:"#f59e0b",fontWeight:600,marginBottom:5,letterSpacing:1}}>⚙ Apollo API key required for live search</div>
                 <div style={{fontSize:12,color:"#7a6a3a",marginBottom:10,lineHeight:1.6}}>
                   Add your Apollo Organisation plan key to find real contacts with verified emails, phone numbers, and company data.
@@ -711,7 +848,7 @@ export default function App({ session, onBack }){
             <div style={{...card,marginBottom:12}}>
               <div className="fg">
                 <label className="lbl">Location <span style={{color:"#3aada0"}}>*</span></label>
-                <input style={{...inp,border:error&&!loc?"1px solid #ef4444":"1px solid #1e2535"}} placeholder="e.g. Manchester, Leeds, London EC2, Birmingham..." value={loc} onChange={e=>{setLoc(e.target.value);setError(null);}} onKeyDown={e=>e.key==="Enter"&&!loading&&run()}/>
+                <input style={{...inp,border:error&&!loc?"1px solid #ef4444":"1px solid #c0d4d0"}} placeholder="e.g. Manchester, Leeds, London EC2, Birmingham..." value={loc} onChange={e=>{setLoc(e.target.value);setError(null);}} onKeyDown={e=>e.key==="Enter"&&!loading&&run()}/>
               </div>
               <div className="fg">
                 <label className="lbl">Office Type <span style={{color:"#2a5555",fontWeight:400,fontSize:9}}>(optional)</span></label>
@@ -733,13 +870,13 @@ export default function App({ session, onBack }){
               )}
               {/* Error states */}
               {error==="no_apollo_key"?(
-                <div style={{marginTop:10,background:"#120d00",border:"1px solid #3a2800",borderRadius:6,padding:12}}>
+                <div style={{marginTop:10,background:"#120d00",border:"1px solid #c8980a",borderRadius:6,padding:12}}>
                   <div style={{fontSize:11,color:"#f59e0b",marginBottom:6,fontWeight:600}}>⚙ No Apollo key found</div>
                   <div style={{fontSize:12,color:"#7a6a3a",marginBottom:10,lineHeight:1.6}}>Add your Apollo Organisation plan key in Settings to unlock live contact search.</div>
                   <button className="bg" style={{borderColor:"#f59e0b",color:"#f59e0b"}} onClick={()=>setTab("settings")}>Go to Settings →</button>
                 </div>
               ):error?(
-                <div style={{marginTop:10,background:"#1a0808",border:"1px solid #3a1515",borderRadius:6,padding:10,color:"#ef4444",fontSize:12,lineHeight:1.6}}>⚠ {error}</div>
+                <div style={{marginTop:10,background:"#fff0f0",border:"1px solid #f0c0c0",borderRadius:6,padding:10,color:"#ef4444",fontSize:12,lineHeight:1.6}}>⚠ {error}</div>
               ):null}
             </div>
 
@@ -787,7 +924,7 @@ export default function App({ session, onBack }){
         {tab==="results"&&(
           <div>
             {leads.length>0&&(
-              <div style={{background:"#080c14",border:"1px solid #1a2535",borderRadius:8,padding:"8px 13px",marginBottom:10,display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
+              <div style={{background:"#f0ece3",border:"1px solid #c0d4d0",borderRadius:8,padding:"8px 13px",marginBottom:10,display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
                 <span style={{fontSize:9,color:"#2a5555",letterSpacing:2,textTransform:"uppercase"}}>Email</span>
                 <span style={{fontSize:11,color:"#22c55e"}}>🟢 {leads.filter(l=>l.emailStatus==="verified").length} verified</span>
                 <span style={{fontSize:11,color:"#f59e0b"}}>🟡 {leads.filter(l=>l.emailStatus==="likely to engage").length} likely</span>
@@ -825,7 +962,7 @@ export default function App({ session, onBack }){
                       <span style={{color:"#2a5555",fontSize:10}}>{expanded===r.id?"▲":"▼"}</span>
                     </div>
                   </div>
-                  <div style={{fontSize:11,color:"#7dd4cc",marginBottom:5,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {[r.building,r.location].filter(v=>v&&v!=="unknown").join(" — ")||"—"}</div>
+                  <div style={{fontSize:11,color:"#1a7a72",marginBottom:5,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {[r.building,r.location].filter(v=>v&&v!=="unknown").join(" — ")||"—"}</div>
                   {r.contract_expiry&&r.contract_expiry!=="unknown"&&(
                     <div style={{background:"#0d1f0a",border:"1px solid #1e4a1a",borderRadius:5,padding:"5px 9px",marginBottom:5,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <span style={{fontSize:9,color:"#4a7a40",letterSpacing:1,textTransform:"uppercase"}}>{r.contract_expiry.startsWith("Est.")?"Lease renewal est.":"Contract due"}</span>
@@ -839,15 +976,15 @@ export default function App({ session, onBack }){
                     <div style={{fontSize:10,display:"flex",alignItems:"center",overflow:"hidden"}}>{emailDot(r.id,r)}<span style={{color:tier.col,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.email||"—"}</span></div>
                     <div style={{fontSize:10,color:"#94a3b8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📞 {r.phone||"—"}</div>
                   </div>
-                  {lc&&<div style={{marginTop:6,fontSize:10,color:outcomeColor(lc.outcome),display:"flex",alignItems:"center",gap:4}}>◉ {outcomeLabel(lc.outcome)} · {new Date(lc.date).toLocaleDateString()}{lc.followup&&<span style={{color:"#7dd4cc",marginLeft:6}}>↻ {lc.followup}</span>}</div>}
+                  {lc&&<div style={{marginTop:6,fontSize:10,color:outcomeColor(lc.outcome),display:"flex",alignItems:"center",gap:4}}>◉ {outcomeLabel(lc.outcome)} · {new Date(lc.date).toLocaleDateString()}{lc.followup&&<span style={{color:"#1a7a72",marginLeft:6}}>↻ {lc.followup}</span>}</div>}
                   {expanded===r.id&&(
-                    <div style={{marginTop:11,paddingTop:11,borderTop:"1px solid #1e2535"}}>
+                    <div style={{marginTop:11,paddingTop:11,borderTop:"1px solid #c0d4d0"}}>
                       {/* Pipeline stage selector */}
                       <div style={{marginBottom:11}}>
                         <label className="lbl">Pipeline Stage</label>
                         <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                           {PIPELINE_STAGES.map(s=>(
-                            <button key={s.id} onClick={e=>{e.stopPropagation();moveStage(r.id,s.id);}} style={{background:stage===s.id?s.color+"22":"transparent",border:`1px solid ${stage===s.id?s.color:"#1a3535"}`,color:stage===s.id?s.color:"#3a6a6a",padding:"4px 10px",borderRadius:5,fontSize:10,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",letterSpacing:1,transition:"all .15s"}}>{s.label}</button>
+                            <button key={s.id} onClick={e=>{e.stopPropagation();moveStage(r.id,s.id);}} style={{background:stage===s.id?s.color+"22":"transparent",border:`1px solid ${stage===s.id?s.color:"#b8d4cf"}`,color:stage===s.id?s.color:"#3a6a6a",padding:"4px 10px",borderRadius:5,fontSize:10,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",letterSpacing:1,transition:"all .15s"}}>{s.label}</button>
                           ))}
                         </div>
                       </div>
@@ -861,22 +998,22 @@ export default function App({ session, onBack }){
                       </div>
                       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9,marginBottom:11}}>
                         {[["Company",r.company],["Building / Address",r.building],["Location",r.location],["Tenure",r.tenure],["Contract Due",r.contract_expiry],["Lease Confidence",r.leaseConfidence||null],["Company Size",r.companySize||null],["Industry",r.companyIndustry||null],["Funding Stage",r.funding?.stage||null],["Total Funding",r.funding?.totalPrinted||null],["Headcount (30d Δ)",r.headcountGrowth?.change30d!=null?`${r.headcountGrowth.change30d>0?"+":""}${r.headcountGrowth.change30d} employees`:null],["Source",r.source]].map(([l,v])=>v!=null?(
-                          <div key={l}><div style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase",marginBottom:2}}>{l}</div><div style={{fontSize:11,wordBreak:"break-word",color:"#e2e8f0"}}>{v}</div></div>
+                          <div key={l}><div style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase",marginBottom:2}}>{l}</div><div style={{fontSize:11,wordBreak:"break-word",color:"#1a3a3a"}}>{v}</div></div>
                         ):null)}
                       </div>
                       {r.leaseBasis&&(
-                        <div style={{fontSize:10,color:"#2a5555",marginBottom:8,padding:"7px 10px",background:"#080c10",borderRadius:5,border:"1px solid #111827",lineHeight:1.5}}>
+                        <div style={{fontSize:10,color:"#2a5555",marginBottom:8,padding:"7px 10px",background:"#e8f4f1",borderRadius:5,border:"1px solid #c0d4d0",lineHeight:1.5}}>
                           📊 {r.leaseBasis}
                         </div>
                       )}
                       {/* Space Pressure Score breakdown */}
                       {r.spacePressureScore!=null&&(
-                        <div style={{marginBottom:8,padding:"8px 11px",background:"#070f0f",border:"1px solid #0f2020",borderRadius:6}}>
+                        <div style={{marginBottom:8,padding:"8px 11px",background:"#e8f4f0",border:"1px solid #c0d8d4",borderRadius:6}}>
                           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
                             <span style={{fontSize:9,color:"#2a5555",letterSpacing:2,textTransform:"uppercase"}}>Space Pressure Score</span>
                             {scoreBadge(r.spacePressureScore)}
                           </div>
-                          <div style={{height:4,background:"#0f2020",borderRadius:2,overflow:"hidden"}}>
+                          <div style={{height:4,background:"#c0d8d4",borderRadius:2,overflow:"hidden"}}>
                             <div style={{height:"100%",width:`${r.spacePressureScore}%`,background:r.spacePressureScore>=70?"#22c55e":r.spacePressureScore>=40?"#f59e0b":"#ef4444",borderRadius:2,transition:"width .3s"}}/>
                           </div>
                           <div style={{fontSize:9,color:"#2a5555",marginTop:4,lineHeight:1.5}}>Combines lease urgency · headcount growth · funding · seniority</div>
@@ -887,7 +1024,7 @@ export default function App({ session, onBack }){
                         <div style={{marginBottom:8}}>
                           <div style={{fontSize:9,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:5}}>Tech Stack</div>
                           <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-                            {r.techStack.map(t=><span key={t} style={{fontSize:9,background:"#0a2020",border:"1px solid #1a3535",color:"#3aada0",padding:"2px 7px",borderRadius:4,fontFamily:"'DM Sans',sans-serif"}}>{t}</span>)}
+                            {r.techStack.map(t=><span key={t} style={{fontSize:9,background:"#f0ece3",border:"1px solid #b8d4cf",color:"#3aada0",padding:"2px 7px",borderRadius:4,fontFamily:"'DM Sans',sans-serif"}}>{t}</span>)}
                           </div>
                         </div>
                       )}
@@ -895,24 +1032,24 @@ export default function App({ session, onBack }){
                         {r.email&&r.email!=="unknown"&&<a href={`mailto:${r.email}`} style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#0f2424",border:"1px solid #1e2d4a",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>✉ Email</a>}
                         {r.phone&&r.phone!=="unknown"&&<a href={`tel:${r.phone}`} style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a3020",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>📞 Call</a>}
                         {r.phone&&r.phone!=="unknown"&&<a href={`https://wa.me/${r.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a5020",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>💬 WhatsApp</a>}
-                        {r.linkedin&&<a href={r.linkedin} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#071e1e",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
-                        {!r.linkedin&&<a href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#071e1e",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
-                        <button onClick={e=>{e.stopPropagation();setOutreachForm(r.id);setTab("outreach");}} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:11,padding:"6px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
+                        {r.linkedin&&<a href={r.linkedin} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#b0d4cf",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
+                        {!r.linkedin&&<a href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#b0d4cf",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
+                        <button onClick={e=>{e.stopPropagation();setOutreachForm(r.id);setTab("outreach");}} style={{background:"#e8f4f0",border:"1px solid #d0c0f0",color:"#1a7a72",fontSize:11,padding:"6px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
                       </div>
                       {/* Sequence enrolment */}
-                      <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #111827"}}>
+                      <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #c0d4d0"}}>
                         <div style={{fontSize:9,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:7}}>Email Sequence</div>
                         {enrollments[r.id]&&!enrollments[r.id].done?(()=>{
                           const e=enrollments[r.id];const seq=DEFAULT_SEQUENCES.find(s=>s.id===e.seqId);
-                          return<div style={{background:"#070f0f",border:"1px solid #0f2020",borderRadius:6,padding:"8px 11px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:6}}>
-                            <div><div style={{fontSize:11,color:"#3aada0",fontWeight:600}}>{seq?.name}</div><div style={{fontSize:10,color:"#3a6a6a",marginTop:2}}>Step {e.step+1} of {seq?.steps?.length} · <span style={{color:"#7dd4cc",cursor:"pointer",textDecoration:"underline"}} onClick={ev=>{ev.stopPropagation();setSeqPreview({seqId:e.seqId,stepIdx:e.step,lead:r});setTab("sequences");}}>Preview email</span></div></div>
+                          return<div style={{background:"#e8f4f0",border:"1px solid #c0d8d4",borderRadius:6,padding:"8px 11px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:6}}>
+                            <div><div style={{fontSize:11,color:"#3aada0",fontWeight:600}}>{seq?.name}</div><div style={{fontSize:10,color:"#3a6a6a",marginTop:2}}>Step {e.step+1} of {seq?.steps?.length} · <span style={{color:"#1a7a72",cursor:"pointer",textDecoration:"underline"}} onClick={ev=>{ev.stopPropagation();setSeqPreview({seqId:e.seqId,stepIdx:e.step,lead:r});setTab("sequences");}}>Preview email</span></div></div>
                             <div style={{display:"flex",gap:6}}>
                               <button className="bs" onClick={ev=>{ev.stopPropagation();advanceStep(r.id);}} style={{fontSize:10,padding:"4px 10px"}}>✓ Mark Sent</button>
                               <button className="bd" onClick={ev=>{ev.stopPropagation();unenrollLead(r.id);}} style={{fontSize:10,padding:"4px 8px"}}>✕</button>
                             </div>
                           </div>;
                         })():enrollments[r.id]?.done?(
-                          <div style={{fontSize:11,color:"#22c55e",background:"#0a2015",border:"1px solid #1a4a2a",borderRadius:6,padding:"7px 11px"}}>✓ Sequence complete</div>
+                          <div style={{fontSize:11,color:"#22c55e",background:"#e8fff4",border:"1px solid #90c4a4",borderRadius:6,padding:"7px 11px"}}>✓ Sequence complete</div>
                         ):(
                           <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
                             {DEFAULT_SEQUENCES.map(s=>(
@@ -969,7 +1106,7 @@ export default function App({ session, onBack }){
         {tab==="calendar"&&(
           <div>
             {(calStats.overdue>0||calStats.d30>0)&&(
-              <div style={{background:"#1a0808",border:"1px solid #3a1515",borderLeft:"3px solid #ef4444",borderRadius:8,padding:"8px 12px",marginBottom:10,display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
+              <div style={{background:"#fff0f0",border:"1px solid #f0c0c0",borderLeft:"3px solid #ef4444",borderRadius:8,padding:"8px 12px",marginBottom:10,display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
                 <span style={{fontSize:9,color:"#ef4444",letterSpacing:2,textTransform:"uppercase"}}>⚠ Urgent</span>
                 {calStats.overdue>0&&<span style={{fontSize:11,color:"#ef4444"}}><strong>{calStats.overdue}</strong> overdue</span>}
                 {calStats.d30>0&&<span style={{fontSize:11,color:"#f59e0b"}}><strong>{calStats.d30}</strong> this month</span>}
@@ -978,7 +1115,7 @@ export default function App({ session, onBack }){
             {leads.length===0&&<div style={notice(false)}>No leads yet — run a search and renewal dates appear here automatically.</div>}
             <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:7,marginBottom:12}}>
               {[["Overdue",calStats.overdue,"#ef4444","30"],["Month",calStats.d30,"#ef4444","30"],["60d",calStats.d60,"#f59e0b","60"],["90d",calStats.d90,"#fbbf24","90"]].map(([l,v,c,f])=>(
-                <div key={l} onClick={()=>setCalFilter(calFilter===f?"all":f)} style={{...card,cursor:"pointer",borderColor:calFilter===f?c:"#1a3535",transition:"border-color .2s"}}>
+                <div key={l} onClick={()=>setCalFilter(calFilter===f?"all":f)} style={{...card,cursor:"pointer",borderColor:calFilter===f?c:"#b8d4cf",transition:"border-color .2s"}}>
                   <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:18,fontWeight:700,color:c,lineHeight:1}}>{v}</div>
                   <div style={{fontSize:9,color:"#2a5555",letterSpacing:1,marginTop:3,textTransform:"uppercase"}}>{l}</div>
                 </div>
@@ -993,8 +1130,8 @@ export default function App({ session, onBack }){
               <input style={{flex:1,minWidth:100,...inp,padding:"7px 11px",fontSize:12}} placeholder="Search..." value={calSearch} onChange={e=>setCalSearch(e.target.value)}/>
             </div>
             {expiredLeads.length>0&&(
-              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10,padding:"7px 11px",background:"#102020",border:"1px solid #1e2535",borderRadius:7}}>
-                <div className={`sw ${showExpired?"on":""}`} style={{background:showExpired?"#3a6a6a":"#1a3535"}} onClick={()=>setShowExpired(!showExpired)}><div className="sk"/></div>
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10,padding:"7px 11px",background:"#f0ece3",border:"1px solid #c0d4d0",borderRadius:7}}>
+                <div className={`sw ${showExpired?"on":""}`} style={{background:showExpired?"#3a6a6a":"#b8d4cf"}} onClick={()=>setShowExpired(!showExpired)}><div className="sk"/></div>
                 <span style={{fontSize:11,color:"#3a6a6a"}}>Show {expiredLeads.length} expired contract{expiredLeads.length!==1?"s":""}</span>
                 {showExpired&&<span style={{fontSize:10,color:"#3a4460",marginLeft:"auto"}}>Windows already passed</span>}
               </div>
@@ -1006,7 +1143,7 @@ export default function App({ session, onBack }){
                   <div key={`${group.year}-${group.month}`} style={{marginBottom:20}}>
                     <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
                       <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13}}>{MONTHS_FULL[group.month]} {group.year}</div>
-                      <div style={{flex:1,height:1,background:"#1a3535"}}/>
+                      <div style={{flex:1,height:1,background:"#b8d4cf"}}/>
                       <span style={{fontSize:10,color:"#2a5555"}}>{group.leads.length}</span>
                     </div>
                     {group.leads.map(l=>{
@@ -1023,14 +1160,14 @@ export default function App({ session, onBack }){
                               <div style={{fontSize:9,color:u.color,opacity:.7}}>{u.label}</div>
                             </div>
                           </div>
-                          <div style={{fontSize:10,color:"#7dd4cc",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {l.building} — {l.location}</div>
+                          <div style={{fontSize:10,color:"#1a7a72",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {l.building} — {l.location}</div>
                           {lc&&<div style={{marginTop:4,fontSize:9,color:outcomeColor(lc.outcome)}}>◉ {outcomeLabel(lc.outcome)} · {new Date(lc.date).toLocaleDateString()}</div>}
                           {calSel===l.id&&(
-                            <div style={{marginTop:9,paddingTop:9,borderTop:"1px solid #1e2535",display:"flex",gap:7,flexWrap:"wrap"}}>
+                            <div style={{marginTop:9,paddingTop:9,borderTop:"1px solid #c0d4d0",display:"flex",gap:7,flexWrap:"wrap"}}>
                               {l.email&&l.email!=="unknown"&&<a href={`mailto:${l.email}`} onClick={e=>e.stopPropagation()} style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#0f2424",border:"1px solid #1e2d4a",padding:"5px 11px",borderRadius:5}}>✉ Email</a>}
                               {l.phone&&l.phone!=="unknown"&&<a href={`tel:${l.phone}`} onClick={e=>e.stopPropagation()} style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a3020",padding:"5px 11px",borderRadius:5}}>📞 Call</a>}
                               {l.phone&&l.phone!=="unknown"&&<a href={`https://wa.me/${l.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{color:"#22c55e",fontSize:11,textDecoration:"none",background:"#0d2010",border:"1px solid #1a5020",padding:"5px 11px",borderRadius:5}}>💬 WA</a>}
-                              <button onClick={e=>{e.stopPropagation();setOutreachForm(l.id);setTab("outreach");}} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:11,padding:"5px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
+                              <button onClick={e=>{e.stopPropagation();setOutreachForm(l.id);setTab("outreach");}} style={{background:"#e8f4f0",border:"1px solid #d0c0f0",color:"#1a7a72",fontSize:11,padding:"5px 11px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>◉ Log</button>
                             </div>
                           )}
                         </div>
@@ -1040,13 +1177,13 @@ export default function App({ session, onBack }){
                 ))
             )}
             {calView==="list"&&(
-              <div style={{background:"#102020",border:"1px solid #1e2535",borderRadius:10,overflow:"hidden"}}>
-                <div style={{display:"grid",gridTemplateColumns:"2fr 2fr 80px",padding:"7px 12px",borderBottom:"1px solid #1e2535",background:"#081818",gap:8}}>
+              <div style={{background:"#f0ece3",border:"1px solid #c0d4d0",borderRadius:10,overflow:"hidden"}}>
+                <div style={{display:"grid",gridTemplateColumns:"2fr 2fr 80px",padding:"7px 12px",borderBottom:"1px solid #c0d4d0",background:"#c0dcd8",gap:8}}>
                   {["Contact","Company","Due"].map(h=><div key={h} style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase"}}>{h}</div>)}
                 </div>
                 {calFiltered.length===0&&<div style={{textAlign:"center",padding:"30px 0",color:"#2a5555",fontSize:11,letterSpacing:2}}>NO RENEWALS MATCH</div>}
                 {calFiltered.map(l=>{const u=urgency(l.days??999);return(
-                  <div key={l.id} style={{display:"grid",gridTemplateColumns:"2fr 2fr 80px",padding:"10px 12px",borderBottom:"1px solid #111827",gap:8,cursor:"pointer",background:calSel===l.id?"#0d2222":"transparent"}} onClick={()=>setCalSel(calSel===l.id?null:l.id)}>
+                  <div key={l.id} style={{display:"grid",gridTemplateColumns:"2fr 2fr 80px",padding:"10px 12px",borderBottom:"1px solid #c0d4d0",gap:8,cursor:"pointer",background:calSel===l.id?"#0d2222":"transparent"}} onClick={()=>setCalSel(calSel===l.id?null:l.id)}>
                     <div style={{minWidth:0}}><div style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,fontWeight:500,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}</div><div style={{fontSize:10,color:"#3a6a6a",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.title}</div></div>
                     <div style={{minWidth:0}}><div style={{fontSize:11,color:"#b0d8d4",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.company}</div><div style={{fontSize:10,color:"#3a6a6a",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.building}</div></div>
                     <div style={{textAlign:"right"}}><div style={{fontSize:11,color:u.color,fontWeight:600}}>{l.contract_expiry?.split(" ").slice(-1)[0]}</div><div style={{fontSize:9,color:u.color,opacity:.7}}>{l.days!==null?(l.days<0?`${Math.abs(l.days)}d ago`:`${l.days}d`):"—"}</div></div>
@@ -1061,8 +1198,8 @@ export default function App({ session, onBack }){
         {tab==="outreach"&&(
           <div>
             {followupsDueToday.length>0&&(
-              <div style={{background:"#0e2424",border:"1px solid #3a2060",borderLeft:"3px solid #818cf8",borderRadius:8,padding:"10px 13px",marginBottom:12}}>
-                <div style={{fontSize:9,color:"#7dd4cc",letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>◉ {followupsDueToday.length} follow-up{followupsDueToday.length!==1?"s":""} due today</div>
+              <div style={{background:"#e8f4f0",border:"1px solid #d0c0f0",borderLeft:"3px solid #818cf8",borderRadius:8,padding:"10px 13px",marginBottom:12}}>
+                <div style={{fontSize:9,color:"#1a7a72",letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>◉ {followupsDueToday.length} follow-up{followupsDueToday.length!==1?"s":""} due today</div>
                 {followupsDueToday.map(({lead},i)=>(
                   <div key={i} style={{fontSize:12,color:"#b0a0f0",marginBottom:3,cursor:"pointer"}} onClick={()=>setOutreachForm(lead.id)}>→ {lead.name} · {lead.company}</div>
                 ))}
@@ -1071,8 +1208,8 @@ export default function App({ session, onBack }){
             {outreachForm&&(()=>{
               const lead=leads.find(r=>r.id===outreachForm);if(!lead)return null;
               return(
-                <div style={{...card,marginBottom:12,border:"1px solid #3a2060"}}>
-                  <div style={{fontSize:9,letterSpacing:2,color:"#7dd4cc",textTransform:"uppercase",marginBottom:8}}>Logging contact</div>
+                <div style={{...card,marginBottom:12,border:"1px solid #d0c0f0"}}>
+                  <div style={{fontSize:9,letterSpacing:2,color:"#1a7a72",textTransform:"uppercase",marginBottom:8}}>Logging contact</div>
                   <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13,marginBottom:1}}>{lead.name}</div>
                   <div style={{fontSize:11,color:"#3a6a6a",marginBottom:12}}>{lead.company}</div>
                   <div className="fg"><label className="lbl">Type</label>
@@ -1109,27 +1246,27 @@ export default function App({ session, onBack }){
                       <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name}</div>
                       <div style={{fontSize:10,color:"#3a6a6a",marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.title} · {r.company}</div>
                     </div>
-                    <button onClick={()=>setOutreachForm(r.id)} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:10,padding:"4px 9px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",flexShrink:0,marginLeft:8}}>+ Log</button>
+                    <button onClick={()=>setOutreachForm(r.id)} style={{background:"#e8f4f0",border:"1px solid #d0c0f0",color:"#1a7a72",fontSize:10,padding:"4px 9px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",flexShrink:0,marginLeft:8}}>+ Log</button>
                   </div>
                   {r.contract_expiry&&r.contract_expiry!=="unknown"&&<div style={{fontSize:10,color:u.color,marginBottom:6}}>📅 {r.contract_expiry}</div>}
                   <div style={{display:"flex",gap:6,marginBottom:logs.length?9:0,flexWrap:"wrap"}}>
                     {r.email&&r.email!=="unknown"&&<a href={`mailto:${r.email}`} style={{color:"#3aada0",fontSize:10,textDecoration:"none",background:"#0f2424",border:"1px solid #1e2d4a",padding:"4px 10px",borderRadius:5}}>✉</a>}
                     {r.phone&&r.phone!=="unknown"&&<a href={`tel:${r.phone}`} style={{color:"#22c55e",fontSize:10,textDecoration:"none",background:"#0d2010",border:"1px solid #1a3020",padding:"4px 10px",borderRadius:5}}>📞</a>}
                     {r.phone&&r.phone!=="unknown"&&<a href={`https://wa.me/${r.phone.replace(/\s+/g,"").replace(/^\+/,"")}`} target="_blank" rel="noreferrer" style={{color:"#22c55e",fontSize:10,textDecoration:"none",background:"#0d2010",border:"1px solid #1a5020",padding:"4px 10px",borderRadius:5}}>💬</a>}
-                    <a href={r.linkedin||`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:10,textDecoration:"none",background:"#071e1e",border:"1px solid #0a2535",padding:"4px 10px",borderRadius:5}}>🔗</a>
+                    <a href={r.linkedin||`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:10,textDecoration:"none",background:"#b0d4cf",border:"1px solid #0a2535",padding:"4px 10px",borderRadius:5}}>🔗</a>
                     {lc&&<span style={{fontSize:10,color:outcomeColor(lc.outcome),padding:"4px 0",marginLeft:2}}>◉ {outcomeLabel(lc.outcome)}</span>}
                   </div>
                   {logs.length>0&&(
-                    <div style={{borderTop:"1px solid #111827",paddingTop:7}}>
+                    <div style={{borderTop:"1px solid #c0d4d0",paddingTop:7}}>
                       <div style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase",marginBottom:5}}>History ({logs.length})</div>
                       {logs.slice(0,3).map((log,i)=>(
-                        <div key={i} style={{display:"flex",gap:7,marginBottom:4,padding:"6px 8px",background:"#070b12",borderRadius:5,border:"1px solid #111827"}}>
+                        <div key={i} style={{display:"flex",gap:7,marginBottom:4,padding:"6px 8px",background:"#e8f4f0",borderRadius:5,border:"1px solid #c0d4d0"}}>
                           <span style={{fontSize:10,color:outcomeColor(log.outcome),flexShrink:0}}>◉</span>
                           <div style={{flex:1,minWidth:0}}>
                             <div style={{display:"flex",justifyContent:"space-between",marginBottom:log.note?2:0}}>
                               <span style={{fontSize:10,color:outcomeColor(log.outcome),fontWeight:500}}>{outcomeLabel(log.outcome)}</span>
                               <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                                {log.followup&&<span style={{fontSize:9,color:"#7dd4cc"}}>↻ {log.followup}</span>}
+                                {log.followup&&<span style={{fontSize:9,color:"#1a7a72"}}>↻ {log.followup}</span>}
                                 <span style={{fontSize:9,color:"#2a5555"}}>{new Date(log.date).toLocaleDateString()}</span>
                               </div>
                             </div>
@@ -1167,7 +1304,7 @@ export default function App({ session, onBack }){
                 </div>
                 <div style={{display:"flex",gap:12,fontSize:10,color:"#3a6a6a"}}>
                   <span>📅 {new Date(h.date).toLocaleDateString()}</span>
-                  <span style={{color:h.mode==="Apollo"?"#22c55e":h.mode==="Demo"?"#7dd4cc":"#3aada0"}}>{h.mode}</span>
+                  <span style={{color:h.mode==="Apollo"?"#22c55e":h.mode==="Demo"?"#1a7a72":"#3aada0"}}>{h.mode}</span>
                 </div>
               </div>
             ))}
@@ -1202,16 +1339,16 @@ export default function App({ session, onBack }){
                       <div style={{fontSize:10,color:"#3a6a6a",marginTop:2}}>{[lead.title,lead.company].filter(Boolean).join(" · ")}</div>
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:6,flexShrink:0}}>
-                      <span style={{fontSize:9,color:"#7dd4cc",border:"1px solid #1a3535",borderRadius:3,padding:"2px 6px",fontFamily:"'DM Sans',sans-serif"}}>STEP {stepIdx+1}/{seq.steps.length}</span>
+                      <span style={{fontSize:9,color:"#1a7a72",border:"1px solid #b8d4cf",borderRadius:3,padding:"2px 6px",fontFamily:"'DM Sans',sans-serif"}}>STEP {stepIdx+1}/{seq.steps.length}</span>
                       <span style={{fontSize:9,color:"#3aada0",border:"1px solid #3aada040",borderRadius:3,padding:"2px 6px",fontFamily:"'DM Sans',sans-serif"}}>{seq.name.split(" ").slice(0,2).join(" ")}</span>
                     </div>
                   </div>
-                  <div style={{fontSize:11,color:"#e2e8f0",marginBottom:isOpen?10:0,fontStyle:"italic"}}>"{personalised.subject}"</div>
+                  <div style={{fontSize:11,color:"#1a3a3a",marginBottom:isOpen?10:0,fontStyle:"italic"}}>"{personalised.subject}"</div>
                   {isOpen&&(
                     <div onClick={e=>e.stopPropagation()}>
-                      <div style={{background:"#080c10",border:"1px solid #111827",borderRadius:7,padding:"12px 14px",marginBottom:10}}>
+                      <div style={{background:"#e8f4f1",border:"1px solid #c0d4d0",borderRadius:7,padding:"12px 14px",marginBottom:10}}>
                         <div style={{fontSize:10,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>Subject</div>
-                        <div style={{fontSize:12,color:"#e2e8f0",marginBottom:12,fontWeight:600}}>{personalised.subject}</div>
+                        <div style={{fontSize:12,color:"#1a3a3a",marginBottom:12,fontWeight:600}}>{personalised.subject}</div>
                         <div style={{fontSize:10,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>Body</div>
                         <pre style={{fontSize:12,color:"#94a3b8",whiteSpace:"pre-wrap",lineHeight:1.8,fontFamily:"'DM Sans',sans-serif",margin:0}}>{personalised.body}</pre>
                       </div>
@@ -1246,11 +1383,11 @@ export default function App({ session, onBack }){
                         <div>
                           <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:13}}>{lead.name}</div>
                           <div style={{fontSize:10,color:"#3a6a6a",marginTop:2}}>{[lead.title,lead.company].filter(Boolean).join(" · ")}</div>
-                          <div style={{fontSize:10,color:"#7dd4cc",marginTop:4}}>{seq.name} · Step {Math.min(e.step+1,seq.steps.length)} of {seq.steps.length}{e.done&&" ✓ Complete"}</div>
+                          <div style={{fontSize:10,color:"#1a7a72",marginTop:4}}>{seq.name} · Step {Math.min(e.step+1,seq.steps.length)} of {seq.steps.length}{e.done&&" ✓ Complete"}</div>
                         </div>
                         <button className="bd" onClick={()=>unenrollLead(leadId)} style={{fontSize:10,padding:"4px 9px"}}>✕</button>
                       </div>
-                      <div style={{marginTop:8,height:4,background:"#0f2020",borderRadius:2,overflow:"hidden"}}>
+                      <div style={{marginTop:8,height:4,background:"#c0d8d4",borderRadius:2,overflow:"hidden"}}>
                         <div style={{height:"100%",width:`${e.done?100:pct}%`,background:e.done?"#22c55e":"#3aada0",borderRadius:2,transition:"width .3s"}}/>
                       </div>
                     </div>
@@ -1267,7 +1404,7 @@ export default function App({ session, onBack }){
                   <div key={seq.id} style={{...card,marginBottom:12}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
                       <div>
-                        <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:14,color:"#e2e8f0"}}>{seq.name}</div>
+                        <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:14,color:"#1a3a3a"}}>{seq.name}</div>
                         <div style={{fontSize:11,color:"#3a6a6a",marginTop:3}}>{seq.description}</div>
                       </div>
                       <span style={{fontSize:9,color:"#3aada0",border:"1px solid #3aada040",borderRadius:3,padding:"3px 8px",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>{seq.steps.length} STEPS</span>
@@ -1275,8 +1412,8 @@ export default function App({ session, onBack }){
                     {seq.steps.map((step,i)=>(
                       <div key={i} className="seq-step">
                         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
-                          <span style={{fontSize:9,color:"#3aada0",fontFamily:"'DM Sans',sans-serif",border:"1px solid #1a3535",padding:"1px 6px",borderRadius:3,whiteSpace:"nowrap"}}>Day {step.day}</span>
-                          <span style={{fontSize:11,color:"#e2e8f0",fontWeight:600,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{step.subject}</span>
+                          <span style={{fontSize:9,color:"#3aada0",fontFamily:"'DM Sans',sans-serif",border:"1px solid #b8d4cf",padding:"1px 6px",borderRadius:3,whiteSpace:"nowrap"}}>Day {step.day}</span>
+                          <span style={{fontSize:11,color:"#1a3a3a",fontWeight:600,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{step.subject}</span>
                         </div>
                         <div style={{fontSize:11,color:"#3a6a6a",lineHeight:1.6,whiteSpace:"pre-wrap"}}>{step.body.split("\n").slice(0,2).join(" ").trim()}…</div>
                       </div>
@@ -1309,12 +1446,12 @@ export default function App({ session, onBack }){
                 <span style={{color:"#3aada0"}}>Organisation plan</span> (~$99/mo) for API access.{" "}
                 <a href="https://app.apollo.io/#/settings/integrations/api" target="_blank" rel="noreferrer" style={{color:"#3aada0",textDecoration:"none"}}>Get your key →</a>
               </div>
-              <div style={{background:"#080c10",border:"1px solid #111827",borderRadius:7,padding:"10px 12px",marginBottom:14,fontSize:12,color:"#2a5555",lineHeight:1.6}}>
+              <div style={{background:"#e8f4f1",border:"1px solid #c0d4d0",borderRadius:7,padding:"10px 12px",marginBottom:14,fontSize:12,color:"#2a5555",lineHeight:1.6}}>
                 Your key is stored securely in your account and never shared. It is only used to run contact searches on your behalf.
               </div>
               {/* Key input row */}
               <div style={{display:"flex",gap:8,marginBottom:10}}>
-                <div style={{flex:1,display:"flex",border:"1px solid #1e2535",borderRadius:8,overflow:"hidden",background:"#080c10"}}>
+                <div style={{flex:1,display:"flex",border:"1px solid #c0d4d0",borderRadius:8,overflow:"hidden",background:"#e8f4f1"}}>
                   <input
                     type={showApolloKey?"text":"password"}
                     value={apolloKeyInput}
@@ -1324,7 +1461,7 @@ export default function App({ session, onBack }){
                     autoComplete="off"
                     spellCheck={false}
                   />
-                  <button onClick={()=>setShowApolloKey(s=>!s)} style={{background:"none",border:"none",borderLeft:"1px solid #1e2535",padding:"0 13px",color:"#3a6a6a",fontSize:11,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>
+                  <button onClick={()=>setShowApolloKey(s=>!s)} style={{background:"none",border:"none",borderLeft:"1px solid #c0d4d0",padding:"0 13px",color:"#3a6a6a",fontSize:11,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>
                     {showApolloKey?"Hide":"Show"}
                   </button>
                 </div>
@@ -1348,13 +1485,13 @@ export default function App({ session, onBack }){
               )}
               {/* Status message */}
               {apolloKeyMessage&&(
-                <div style={{fontSize:12,lineHeight:1.5,color:apolloKeyStatus==="valid"||apolloKeyStatus==="saved"?"#22c55e":apolloKeyStatus==="invalid"||apolloKeyStatus==="error"?"#ef4444":"#7dd4cc",marginTop:4}}>
+                <div style={{fontSize:12,lineHeight:1.5,color:apolloKeyStatus==="valid"||apolloKeyStatus==="saved"?"#22c55e":apolloKeyStatus==="invalid"||apolloKeyStatus==="error"?"#ef4444":"#1a7a72",marginTop:4}}>
                   {apolloKeyMessage}
                 </div>
               )}
               {/* No-key prompt */}
               {!apolloKey&&(
-                <div style={{marginTop:12,padding:"10px 13px",background:"#080c10",borderRadius:8,border:"1px dashed #1e2535"}}>
+                <div style={{marginTop:12,padding:"10px 13px",background:"#e8f4f1",borderRadius:8,border:"1px dashed #c0d4d0"}}>
                   <div style={{fontSize:11,color:"#3a4070",lineHeight:1.5}}>Without an Apollo key, searches will load sample demo data only. Real contact data with emails, phone numbers, and lease estimates requires a live key.</div>
                 </div>
               )}
@@ -1402,7 +1539,7 @@ export default function App({ session, onBack }){
             {/* Account info */}
             <div style={{...card,marginBottom:12}}>
               <div style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase",marginBottom:10}}>Account</div>
-              <div style={{fontSize:12,color:"#7dd4cc",marginBottom:14,wordBreak:"break-all"}}>{session?.user?.email}</div>
+              <div style={{fontSize:12,color:"#1a7a72",marginBottom:14,wordBreak:"break-all"}}>{session?.user?.email}</div>
               <div style={{fontSize:11,color:"#3a4070",marginBottom:14,lineHeight:1.5}}>
                 Leads, pipeline, and outreach history are synced to your account and available on any device.
               </div>
@@ -1418,6 +1555,87 @@ export default function App({ session, onBack }){
                 {leads.length>0&&<button className="bd" onClick={()=>{if(window.confirm(`Clear all ${leads.length} leads? This cannot be undone.`))setLeads([]);}}>✕ Clear All Leads</button>}
               </div>
               <input ref={csvRef} type="file" accept=".csv" style={{display:"none"}} onChange={handleCSV}/>
+            </div>
+
+            {/* Restart tour */}
+            <div style={{...card,marginTop:12}}>
+              <div style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase",marginBottom:10}}>Guided Tour</div>
+              <div style={{fontSize:12,color:"#3a6a6a",marginBottom:10,lineHeight:1.5}}>New to Dunlin? Replay the guided tour to explore all the features.</div>
+              <button className="bg" onClick={()=>{localStorage.removeItem(`dunlin_tour_${userId}`);setTourStep(0);}}>▶ Replay Tour</button>
+            </div>
+          </div>
+        )}
+
+        {/* ══ HELP ════════════════════════════════════════════════════════════ */}
+        {tab==="help"&&(
+          <div>
+            {/* Hero */}
+            <div style={{background:"#1a4a4a",borderRadius:12,padding:"28px 24px",marginBottom:16,textAlign:"center"}}>
+              <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:32,fontWeight:300,color:"#fff",letterSpacing:"0.04em",marginBottom:8}}>Dunlin Renewal Radar</div>
+              <div style={{fontSize:14,color:"rgba(125,212,204,0.8)",lineHeight:1.7,maxWidth:480,margin:"0 auto"}}>The only prospecting tool that combines UK lease intelligence, contact verification, and Space Pressure Scoring — purpose-built for flex space operators.</div>
+            </div>
+
+            {/* What makes Dunlin different */}
+            <div style={{...card,marginBottom:12}}>
+              <div style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase",marginBottom:14}}>What Makes Dunlin Different</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+                {[
+                  {i:"⬆",t:"Space Pressure Score™",d:"0–100 urgency score combining lease timing, headcount growth, funding signals, and seniority. Know who needs space before they're even looking."},
+                  {i:"📅",t:"Renewal Radar Calendar",d:"See exactly which companies' leases expire in 30, 60 or 90 days. Your daily hit list — sorted by urgency. Nobody else shows you this."},
+                  {i:"🎯",t:"Traffic Light Emails",d:"Dual-layer verification: Apollo confirms deliverability, DNS confirms the mail server exists. Green means send. No more bounces."},
+                  {i:"🇬🇧",t:"UK-Native Intelligence",d:"Companies House data cross-referenced with Apollo contacts. Lease expiry estimation built specifically for UK companies — not a US tool with UK data bolted on."},
+                ].map(x=>(
+                  <div key={x.t} style={{background:"#d4e8e4",borderRadius:8,padding:"12px 14px"}}>
+                    <div style={{fontSize:20,marginBottom:6}}>{x.i}</div>
+                    <div style={{fontWeight:600,fontSize:12,color:"#1a3a3a",marginBottom:4}}>{x.t}</div>
+                    <div style={{fontSize:11,color:"#3a6a6a",lineHeight:1.55}}>{x.d}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Step-by-step guide */}
+            <div style={{...card,marginBottom:12}}>
+              <div style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase",marginBottom:14}}>How To Use Dunlin — Step by Step</div>
+              {[
+                {n:1,t:"Add your Apollo API key",d:"Go to Settings → Apollo API Key. Paste your Apollo Organisation plan key. Without this you're in demo mode — all features work but with sample data only."},
+                {n:2,t:"Search by location",d:"Go to Search, enter a UK city or postcode, and hit Find Contacts. Dunlin returns up to 25 Office Managers, Facilities Directors, and Operations leads in that area."},
+                {n:3,t:"Review Space Pressure Scores",d:"Each contact has a HOT / WARM / COLD badge with a 0–100 score. Start with HOT contacts — they have the most signals pointing to an imminent space need."},
+                {n:4,t:"Check email confidence",d:"Green (VERIFIED) = safe to send. Amber (LIKELY / DNS OK) = warm approach recommended. Red (NO EMAIL) = skip or find via LinkedIn."},
+                {n:5,t:"Open Renewal Radar",d:"Go to the Renewal tab to see your leads plotted on a 30/60/90-day calendar by estimated lease expiry. Filter by urgency to build your weekly call list."},
+                {n:6,t:"Enrol in an outreach sequence",d:"Click into a lead and enrol them in the Lease Renewal Outreach or Flex Operator Warm Pitch sequence. Dunlin personalises each email and queues your daily tasks."},
+                {n:7,t:"Track in Pipeline",d:"Move contacts through New → Contacted → Interested → Converted. Drag and drop. Sync to HubSpot whenever you're ready."},
+              ].map(s=>(
+                <div key={s.n} style={{display:"flex",gap:12,marginBottom:12,paddingBottom:12,borderBottom:"1px solid #d4e8e4"}}>
+                  <div style={{width:26,height:26,borderRadius:13,background:"#3aada0",color:"#fff",fontSize:12,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{s.n}</div>
+                  <div>
+                    <div style={{fontWeight:600,fontSize:13,color:"#1a3a3a",marginBottom:3}}>{s.t}</div>
+                    <div style={{fontSize:12,color:"#3a6a6a",lineHeight:1.55}}>{s.d}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* FAQ */}
+            <div style={{...card,marginBottom:12}}>
+              <div style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase",marginBottom:14}}>Frequently Asked Questions</div>
+              {FAQ.map((f,i)=>(
+                <div key={i} style={{borderBottom:i<FAQ.length-1?"1px solid #d4e8e4":"none",marginBottom:i<FAQ.length-1?4:0}}>
+                  <button onClick={()=>setFaqOpen(faqOpen===i?null:i)} style={{width:"100%",background:"none",border:"none",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 0",textAlign:"left"}}>
+                    <span style={{fontSize:13,fontWeight:600,color:"#1a3a3a",paddingRight:12}}>{f.q}</span>
+                    <span style={{color:"#3aada0",fontSize:16,flexShrink:0,transition:"transform .2s",transform:faqOpen===i?"rotate(45deg)":"rotate(0)"}}>+</span>
+                  </button>
+                  {faqOpen===i&&(
+                    <div style={{fontSize:12,color:"#3a6a6a",lineHeight:1.7,paddingBottom:14}}>{f.a}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Replay tour CTA */}
+            <div style={{...card,textAlign:"center",padding:"20px"}}>
+              <div style={{fontSize:13,color:"#3a6a6a",marginBottom:10}}>Want a walkthrough of the actual interface?</div>
+              <button className="bs" onClick={()=>{localStorage.removeItem(`dunlin_tour_${userId}`);setTourStep(0);}}>▶ Replay Guided Tour</button>
             </div>
           </div>
         )}

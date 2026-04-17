@@ -4,6 +4,24 @@
 // + Companies House enrichment for lease expiry estimation
 
 const COMPANIES_HOUSE_KEY = process.env.COMPANIES_HOUSE_API_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL || "https://lykkmusrpdziosviwkac.supabase.co";
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+
+// Verify the caller is a logged-in Dunlin user by checking their Supabase session token
+async function verifySupabaseToken(token) {
+  if (!token) return false;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "apikey": SUPABASE_ANON_KEY,
+      },
+    });
+    return res.ok; // 200 = valid user, anything else = reject
+  } catch {
+    return false;
+  }
+}
 
 const TARGET_TITLES = [
   "Office Manager","Facilities Manager","Operations Director","Head of Workplace",
@@ -15,6 +33,16 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: JSON.stringify({ error: "Method not allowed" }) };
   }
+
+  // ── Auth gate: only logged-in Dunlin users can call this function ──────────
+  const authHeader = event.headers["authorization"] || event.headers["Authorization"] || "";
+  const sessionToken = authHeader.replace("Bearer ", "").trim();
+  const isAuthenticated = await verifySupabaseToken(sessionToken);
+  if (!isAuthenticated) {
+    return { statusCode: 401, body: JSON.stringify({ error: "Unauthorised. Please sign in to use Dunlin." }) };
+  }
+  // ───────────────────────────────────────────────────────────────────────────
+
   let body;
   try { body = JSON.parse(event.body); }
   catch { return { statusCode: 400, body: JSON.stringify({ error: "Invalid request body" }) }; }

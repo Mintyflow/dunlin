@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Help & FAQ — Dunlin Renewal Radar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#f0ece3;color:#1a3a3a;line-height:1.6}
+    a{color:#3aada0;text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Nav */
+    .nav{background:#1a4a4a;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:56px;position:sticky;top:0;z-index:100}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:22px;color:#fff;letter-spacing:.06em}
+    .nav-sub{font-size:10px;color:rgba(125,212,204,0.6);letter-spacing:.18em;text-transform:uppercase;margin-left:10px}
+    .nav-links{display:flex;gap:20px;align-items:center}
+    .nav-links a{font-size:13px;color:rgba(255,255,255,0.7)}
+    .nav-links a:hover{color:#fff;text-decoration:none}
+    .nav-cta{background:#3aada0;color:#fff!important;padding:8px 16px;border-radius:6px;font-weight:600;font-size:13px}
+    .nav-cta:hover{background:#2a9488!important}
+
+    /* Hero */
+    .hero{background:#1a4a4a;padding:72px 24px;text-align:center}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:48px;color:#fff;letter-spacing:.04em;margin-bottom:16px}
+    .hero p{font-size:16px;color:rgba(125,212,204,0.85);max-width:560px;margin:0 auto 28px;line-height:1.7}
+    .hero-badge{display:inline-block;background:rgba(58,173,160,0.2);border:1px solid rgba(58,173,160,0.4);color:#3aada0;padding:6px 14px;border-radius:20px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px}
+
+    /* Content */
+    .container{max-width:780px;margin:0 auto;padding:48px 24px}
+
+    /* Section headers */
+    .section-label{font-size:10px;letter-spacing:2px;color:#3a8080;text-transform:uppercase;font-weight:600;margin-bottom:16px}
+
+    /* Differentiators grid */
+    .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:48px}
+    .diff-card{background:#fff;border:1px solid #d4e8e4;border-radius:10px;padding:20px}
+    .diff-card .icon{font-size:24px;margin-bottom:10px}
+    .diff-card h3{font-size:14px;font-weight:700;color:#1a3a3a;margin-bottom:6px}
+    .diff-card p{font-size:13px;color:#4a7070;line-height:1.6}
+
+    /* Steps */
+    .steps{margin-bottom:48px}
+    .step{display:flex;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #e0ece8}
+    .step:last-child{border-bottom:none}
+    .step-num{width:32px;height:32px;border-radius:16px;background:#3aada0;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+    .step h3{font-size:14px;font-weight:700;color:#1a3a3a;margin-bottom:4px}
+    .step p{font-size:13px;color:#4a7070;line-height:1.6}
+
+    /* FAQ */
+    .faq{margin-bottom:48px}
+    .faq-item{border-bottom:1px solid #d4e8e4}
+    .faq-item:last-child{border-bottom:none}
+    .faq-q{width:100%;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:16px 0;text-align:left;font-family:'DM Sans',sans-serif}
+    .faq-q span{font-size:14px;font-weight:600;color:#1a3a3a;padding-right:16px}
+    .faq-q .icon{color:#3aada0;font-size:20px;flex-shrink:0;transition:transform .2s;line-height:1}
+    .faq-q.open .icon{transform:rotate(45deg)}
+    .faq-a{display:none;font-size:13px;color:#4a7070;line-height:1.75;padding-bottom:16px}
+    .faq-a.open{display:block}
+
+    /* CTA block */
+    .cta-block{background:#1a4a4a;border-radius:12px;padding:40px;text-align:center;margin-bottom:48px}
+    .cta-block h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:34px;color:#fff;margin-bottom:12px}
+    .cta-block p{font-size:14px;color:rgba(125,212,204,0.8);margin-bottom:24px;max-width:420px;margin-left:auto;margin-right:auto}
+    .btn-primary{display:inline-block;background:#3aada0;color:#fff;padding:13px 28px;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+    .btn-primary:hover{background:#2a9488;text-decoration:none;color:#fff}
+
+    /* Comparison table */
+    .compare{width:100%;border-collapse:collapse;margin-bottom:48px;font-size:13px}
+    .compare th{background:#1a4a4a;color:#fff;padding:10px 14px;text-align:left;font-weight:600}
+    .compare th:first-child{border-radius:8px 0 0 0}
+    .compare th:last-child{border-radius:0 8px 0 0}
+    .compare td{padding:10px 14px;border-bottom:1px solid #d4e8e4;color:#3a5a5a}
+    .compare tr:last-child td{border-bottom:none}
+    .compare tr:nth-child(even) td{background:#f8f5f0}
+    .compare .yes{color:#22c55e;font-weight:600}
+    .compare .no{color:#ef4444}
+    .compare .partial{color:#f59e0b}
+    .compare .dunlin{background:#e8f8f4!important}
+    .compare .dunlin td{color:#1a3a3a;font-weight:500}
+
+    @media(max-width:600px){
+      .diff-grid{grid-template-columns:1fr}
+      .hero h1{font-size:34px}
+      .compare{font-size:11px}
+      .compare td,.compare th{padding:8px 10px}
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div style="display:flex;align-items:center">
+      <a href="/" style="text-decoration:none">
+        <span class="nav-logo">dunlin</span>
+        <span class="nav-sub">Renewal Radar</span>
+      </a>
+    </div>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/help.html" style="color:#fff">Help</a>
+      <a href="/app" class="nav-cta">Open App →</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">Help Centre</div>
+    <h1>Everything you need to know</h1>
+    <p>How to find office decision-makers, understand Space Pressure Scores, run outreach sequences, and close more deals.</p>
+    <a href="/app" class="btn-primary">Open Renewal Radar →</a>
+  </div>
+
+  <div class="container">
+
+    <!-- What Makes Dunlin Different -->
+    <div style="margin-bottom:8px" class="section-label">What makes Dunlin different</div>
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="icon">⬆</div>
+        <h3>Space Pressure Score™</h3>
+        <p>A proprietary 0–100 urgency score calculated for every contact. It combines estimated lease urgency, headcount growth trends, recent funding activity, and decision-maker seniority. HOT (70+) means they likely need new space right now — not just that they work near an office.</p>
+      </div>
+      <div class="diff-card">
+        <div class="icon">📅</div>
+        <h3>Renewal Radar Calendar</h3>
+        <p>Using UK Companies House data cross-referenced with Apollo contact records, Dunlin estimates when each company's office lease expires. The Renewal calendar plots them across 30, 60, and 90-day horizons — your hit list, sorted by urgency, updated daily.</p>
+      </div>
+      <div class="diff-card">
+        <div class="icon">🎯</div>
+        <h3>Traffic Light Email Verification</h3>
+        <p>Two-layer confidence checking: Apollo's database confirms email deliverability, then our DNS/MX check verifies the mail server actually exists. Green = verified and safe to send. Amber = likely valid. Red = skip. No more wasted outreach on dead addresses.</p>
+      </div>
+      <div class="diff-card">
+        <div class="icon">🇬🇧</div>
+        <h3>Purpose-Built for UK Flex Space</h3>
+        <p>Not a US enterprise tool adapted for the UK market. Dunlin is built from the ground up using UK company data, UK-specific lease patterns, and UK decision-maker titles. At a price point that makes sense for independent flex operators, not just institutional landlords.</p>
+      </div>
+    </div>
+
+    <!-- vs Competitors -->
+    <div class="section-label">How Dunlin compares</div>
+    <table class="compare" style="margin-bottom:48px">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th style="color:#7dd4cc">Dunlin</th>
+          <th>VTS</th>
+          <th>CoStar</th>
+          <th>Leasecake</th>
+          <th>Apollo alone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="dunlin"><td>Space Pressure Score</td><td class="yes">✓ Proprietary</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>UK lease expiry estimation</td><td class="yes">✓</td><td class="no">✗</td><td class="partial">Partial</td><td class="yes">✓ (tenants)</td><td class="no">✗</td></tr>
+        <tr class="dunlin"><td>Contact search + email verify</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td></tr>
+        <tr><td>Built-in outreach sequences</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td></tr>
+        <tr class="dunlin"><td>Renewal calendar / urgency view</td><td class="yes">✓</td><td class="partial">Partial</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td></tr>
+        <tr><td>HubSpot CRM integration</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="yes">✓</td><td class="partial">Via Zap</td></tr>
+        <tr class="dunlin"><td>Built for flex space operators</td><td class="yes">✓</td><td class="no">✗ (landlords)</td><td class="no">✗ (brokers)</td><td class="no">✗ (tenants)</td><td class="no">✗</td></tr>
+        <tr><td>Typical annual cost</td><td class="yes">Affordable</td><td class="no">£15k–40k</td><td class="no">£8k–25k</td><td class="partial">£2k–5k</td><td class="partial">£800–3k</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Step by step -->
+    <div class="section-label">Step-by-step guide</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Add your Apollo API key</h3>
+          <p>Go to <strong>Settings → Apollo API Key</strong>. Paste your Apollo Organisation plan key. This unlocks live searches against Apollo's 270M+ contact database. Without it, you'll be in demo mode with sample data — all features still work so you can explore first.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Search by location</h3>
+          <p>Enter any UK city, postcode, or area in the <strong>Search tab</strong> and click Find Contacts. Dunlin returns up to 25 Office Managers, Facilities Directors, Operations Directors, and similar decision-makers near that location — the people who control office decisions.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Review Space Pressure Scores</h3>
+          <p>Each contact has a <strong>HOT / WARM / COLD badge</strong> with a 0–100 score. Start your outreach with HOT contacts (70+) — they have the strongest combination of signals pointing to an imminent space need. WARM (40–69) is your follow-up list. COLD (&lt;40) is a longer-term target.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <h3>Check email confidence</h3>
+          <p><strong>Green (VERIFIED)</strong> = Apollo has confirmed deliverability. Safe to send. <strong>Amber (LIKELY / DNS OK)</strong> = likely valid, warm approach recommended. <strong>Red (NO EMAIL / INVALID)</strong> = skip for now or try to find via LinkedIn. Always work green first.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <h3>Open Renewal Radar</h3>
+          <p>The <strong>Renewal tab</strong> plots all your leads on a calendar by estimated lease expiry. Filter by 30 / 60 / 90 days to build your weekly call list. Overdue means they may already be in negotiations — high urgency, high potential.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div>
+          <h3>Enrol in an outreach sequence</h3>
+          <p>Click into a lead in the <strong>Sequences tab</strong> and enrol them in the <em>Lease Renewal Outreach</em> (5-step) or <em>Flex Operator Warm Pitch</em> (3-step) sequence. Dunlin personalises each email and queues your daily tasks. Click to open your email client with the message pre-filled — ready to send in seconds.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">7</div>
+        <div>
+          <h3>Track in Pipeline and sync to HubSpot</h3>
+          <p>Move contacts through <strong>New → Contacted → Interested → Converted</strong> in the Pipeline tab. Drag and drop. When you're ready, push your leads to HubSpot from the Settings tab — all key fields are mapped automatically.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section-label">Frequently asked questions</div>
+    <div class="faq" style="margin-bottom:48px">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>What is the Space Pressure Score?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">A proprietary 0–100 score calculated for every contact, combining four signals: estimated lease urgency (how close the company is to renewal), headcount growth (are they expanding?), recent funding (do they have budget to move?), and seniority (are they a decision-maker?). A score of 70+ = HOT — they likely need new space right now.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>How does lease expiry estimation work?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">Dunlin cross-references Apollo contact data with UK Companies House filings to estimate when a company's office lease is likely to expire. We analyse incorporation date, registered address history, and company size to generate an estimated renewal year. It's an intelligence signal — significantly better than guessing, not a guarantee.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>What does the traffic light system mean?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">Green (VERIFIED) = Apollo has confirmed the email is valid and deliverable. Amber (LIKELY) = Apollo rates it as likely to engage, or our DNS check confirms the mail server exists. Red (NO EMAIL / INVALID) = we couldn't confirm a valid email. Always start with green, warm up amber, skip red.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>Do I need an Apollo API key?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">Yes, for live searches. Dunlin uses Apollo.io's database of 270M+ contacts. You'll need an Apollo Organisation plan — the free tier doesn't include API access. Without a key you can explore the tool in demo mode with sample data. Add your key under Settings in the app.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>What's the difference between demo mode and live mode?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">Demo mode shows a set of sample contacts across UK cities so you can explore every feature before connecting an API key. Live mode runs real searches against Apollo's database, returning actual verified contacts, real company data, and live Space Pressure Scores.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>Can I push contacts to my CRM?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">Yes — Dunlin has a built-in HubSpot integration. Add your HubSpot private app API key in Settings, then push individual leads or your full lead list to HubSpot with one click. Contacts are created with all key fields mapped including email, phone, company, title, and location.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>How do email sequences work?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">Dunlin includes two pre-written email cadences: a 5-step Lease Renewal Outreach sequence and a 3-step Flex Operator Warm Pitch. Each email is personalised with the contact's first name, company, location, and industry. When you're ready to send, one click opens your email client with the message pre-filled — no copy/paste needed.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>Is my data private and secure?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">Yes. Each Dunlin account is completely isolated — your leads, pipeline, and API keys are only visible to you. We use Supabase with row-level security, meaning every database query is scoped to your user ID at the database level. API calls to the search engine are verified against your session token before any data is returned.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>How is Dunlin different from VTS, CoStar, or Leasecake?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">VTS and CoStar are enterprise landlord tools costing £10k–£40k/year, built for managing existing portfolios — not for finding new clients. Leasecake is a tenant-side lease management tool. Dunlin is the only tool purpose-built for the flex space operator doing outbound BD: find who needs space, score them by urgency, and contact them before your competitors do.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          <span>I found a bug or need help — how do I get support?</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-a">Email us at <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a> and we'll get back to you within one business day. If you're reporting a bug, include what you were doing when it happened and your browser/device.</div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-block">
+      <h2>Ready to find your next client?</h2>
+      <p>Start with a location search and see which companies near you are most likely to need new space right now.</p>
+      <a href="/app" class="btn-primary">Open Renewal Radar →</a>
+    </div>
+
+  </div>
+
+  <footer style="background:#1a4a4a;padding:24px;text-align:center">
+    <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#fff;font-weight:300;letter-spacing:.06em">dunlin</span>
+    <span style="font-size:11px;color:rgba(125,212,204,0.4);margin-left:8px;letter-spacing:.1em">RENEWAL RADAR</span>
+    <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:8px">© 2026 Dunlin · <a href="/" style="color:rgba(125,212,204,0.5)">Back to home</a></div>
+  </footer>
+
+  <script>
+    function toggle(btn) {
+      const answer = btn.nextElementSibling;
+      const isOpen = answer.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+      document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
+      // Open clicked (unless it was already open)
+      if (!isOpen) {
+        answer.classList.add('open');
+        btn.classList.add('open');
+      }
+    }
+  </script>
+</body>
+</html>
