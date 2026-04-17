@@ -109,9 +109,9 @@ export default function Dashboard({ session, onSelect }) {
       </div>
 
       {/* ── Wave separator ── */}
-      <div style={{ background: C.dt, marginBottom: 0 }}>
-        <svg viewBox="0 0 1440 40" fill="none" style={{ display: 'block', width: '100%' }}>
-          <path d="M0 0 Q360 40 720 20 Q1080 0 1440 30 L1440 40 L0 40 Z" fill={C.sand}/>
+      <div style={{ background: C.dt, marginBottom: 0, marginTop: -1 }}>
+        <svg viewBox="0 0 1440 41" fill="none" style={{ display: 'block', width: '100%', verticalAlign: 'bottom' }}>
+          <path d="M0 1 Q360 41 720 21 Q1080 1 1440 31 L1440 41 L0 41 Z" fill={C.sand}/>
         </svg>
       </div>
 
