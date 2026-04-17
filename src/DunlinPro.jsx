@@ -1832,17 +1832,53 @@ export default function App({ session, onBack }){
 
       </div>
 
-      {/* Marvanova footer */}
-      <div style={{background:"#0b1622",padding:"12px 24px",textAlign:"center",marginTop:"auto"}}>
-        <a href="https://marvanova.com" target="_blank" rel="noopener noreferrer" style={{display:"inline-flex",alignItems:"center",gap:8,textDecoration:"none",opacity:0.7,transition:"opacity 0.2s"}}
-          onMouseOver={e=>e.currentTarget.style.opacity="1"} onMouseOut={e=>e.currentTarget.style.opacity="0.7"}>
-          <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:"#6a8a9a",letterSpacing:"0.08em"}}>Built by</span>
-          <span style={{fontFamily:"Arial,sans-serif",fontSize:12,fontWeight:700,letterSpacing:"0.12em"}}>
-            <span style={{background:"linear-gradient(90deg,#0066cc,#00aadd)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>MARVA</span>
-            <span style={{color:"#8a9aaa",WebkitTextFillColor:"#8a9aaa"}}>NOVA</span>
-          </span>
-          <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:10,color:"#4a6a7a",letterSpacing:"0.14em",fontWeight:500,textTransform:"uppercase"}}>AI Agency</span>
-        </a>
+      {/* ── App Footer ── */}
+      <div style={{background:"#1a4a4a",marginTop:0}}>
+        <div style={{maxWidth:900,margin:"0 auto",padding:"40px 32px 28px",display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:32}}>
+          {[
+            { title:"Product", links:[
+              {label:"Home",href:"https://getdunlin.com"},
+              {label:"Features",href:"https://getdunlin.com#features"},
+              {label:"Pricing",href:"https://getdunlin.com#pricing"},
+              {label:"Product Overview",href:"https://getdunlin.com/one-pager.html"},
+            ]},
+            { title:"Company", links:[
+              {label:"Affiliate Programme",href:"https://getdunlin.com/affiliate.html"},
+              {label:"Refer a Friend — earn £50",href:"https://getdunlin.com/refer.html"},
+              {label:"Sitemap",href:"https://getdunlin.com/sitemap.html"},
+              {label:"Contact us",href:"mailto:hello@getdunlin.com"},
+            ]},
+            { title:"Legal", links:[
+              {label:"Privacy Policy",href:"https://getdunlin.com/privacy.html"},
+              {label:"Terms of Service",href:"https://getdunlin.com/terms.html"},
+              {label:"Cookie Policy",href:"https://getdunlin.com/cookies.html"},
+              {label:"GDPR",href:"https://getdunlin.com/privacy.html#gdpr"},
+            ]},
+          ].map(({title,links})=>(
+            <div key={title}>
+              <div style={{fontSize:10,fontWeight:600,letterSpacing:"0.18em",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",marginBottom:14}}>{title}</div>
+              {links.map(({label,href})=>(
+                <a key={label} href={href} target={href.startsWith("mailto")? undefined:"_blank"} rel="noopener noreferrer"
+                  style={{display:"block",fontSize:12,color:"rgba(255,255,255,0.5)",textDecoration:"none",marginBottom:10,transition:"color 0.2s"}}
+                  onMouseOver={e=>e.currentTarget.style.color="#7dd4cc"} onMouseOut={e=>e.currentTarget.style.color="rgba(255,255,255,0.5)"}>
+                  {label}
+                </a>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div style={{borderTop:"1px solid rgba(255,255,255,0.06)",padding:"16px 32px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12}}>
+          <span style={{fontSize:11,color:"rgba(255,255,255,0.2)"}}>© 2026 Dunlin · Marvanova Ltd · All rights reserved</span>
+          <a href="https://marvanova.com" target="_blank" rel="noopener noreferrer"
+            style={{display:"inline-flex",alignItems:"center",gap:6,textDecoration:"none",opacity:0.6,transition:"opacity 0.2s"}}
+            onMouseOver={e=>e.currentTarget.style.opacity="1"} onMouseOut={e=>e.currentTarget.style.opacity="0.6"}>
+            <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:10,color:"#6a8a9a",letterSpacing:"0.08em"}}>Built by</span>
+            <span style={{fontFamily:"Arial,sans-serif",fontSize:11,fontWeight:700,letterSpacing:"0.12em"}}>
+              <span style={{background:"linear-gradient(90deg,#0066cc,#00aadd)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>MARVA</span>
+              <span style={{color:"#8a9aaa",WebkitTextFillColor:"#8a9aaa"}}>NOVA</span>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   );
