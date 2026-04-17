@@ -817,6 +817,9 @@ export default function App({ session, onBack }){
           }
           <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
           <span style={{fontSize:9,color:"rgba(125,212,204,0.4)",fontFamily:"'DM Sans',sans-serif"}}>DEMO</span>
+          <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
+          <button title="Take the guided tour again" onClick={()=>{localStorage.removeItem(`dunlin_tour_${userId}`);setTourStep(0);}} style={{background:"rgba(58,173,160,0.18)",border:"1px solid rgba(58,173,160,0.35)",color:"#7dd4cc",borderRadius:5,padding:"3px 8px",fontSize:9,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",letterSpacing:1,fontWeight:600}}>▶ TOUR</button>
+          <button title="Help & how-to guide" onClick={()=>setTab("help")} style={{background:"rgba(58,173,160,0.18)",border:"1px solid rgba(58,173,160,0.35)",color:"#7dd4cc",borderRadius:5,width:22,height:22,fontSize:12,cursor:"pointer",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>?</button>
           <div className={`sw ${demo?"on":""}`} onClick={()=>setDemo(!demo)}><div className="sk"/></div>
           <span style={{fontSize:9,color:demo?"#1a7a72":"rgba(125,212,204,0.3)",minWidth:18,fontFamily:"'DM Sans',sans-serif"}}>{demo?"ON":"OFF"}</span>
         </div>
@@ -835,7 +838,10 @@ export default function App({ session, onBack }){
       {/* Nav */}
       <div style={{borderBottom:"1px solid #c0d4d0",display:"flex",background:"#cce0dc",position:"sticky",top:followupsDueToday.length>0?81:49,zIndex:9,overflowX:"auto"}}>
         {navTabs.map(n=>(
-          <button key={n.id} data-tour={n.tour||undefined} className={`nb ${tab===n.id?"act":""}`} onClick={()=>setTab(n.id)} style={{padding:"7px 4px",minWidth:50}}>
+          <button key={n.id} data-tour={n.tour||undefined} className={`nb ${tab===n.id?"act":""}`} onClick={()=>setTab(n.id)}
+            style={{padding:"7px 4px",minWidth:50,
+              ...(n.id==="help"&&tab!=="help"?{color:"#3aada0",fontWeight:600}:{})
+            }}>
             <span style={{fontSize:13}}>{n.i}</span>
             <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:9,whiteSpace:"nowrap"}}>{n.l}</span>
             {n.b>0&&<span style={{background:"#c0d8d4",color:"#3aada0",fontSize:8,padding:"1px 4px",borderRadius:10}}>{n.b}</span>}
@@ -1470,10 +1476,14 @@ export default function App({ session, onBack }){
                   </span>
                 )}
               </div>
-              <div style={{fontSize:12,color:"#3a6a6a",marginBottom:14,lineHeight:1.7}}>
+              <div style={{fontSize:12,color:"#3a6a6a",marginBottom:10,lineHeight:1.7}}>
                 Required for live contact search. You need an Apollo{" "}
                 <span style={{color:"#3aada0"}}>Organisation plan</span> (~$99/mo) for API access.{" "}
                 <a href="https://app.apollo.io/#/settings/integrations/api" target="_blank" rel="noreferrer" style={{color:"#3aada0",textDecoration:"none"}}>Get your key →</a>
+              </div>
+              <div style={{background:"#d6f0ee",borderRadius:7,padding:"9px 12px",marginBottom:12,fontSize:11,color:"#1a4a4a",lineHeight:1.6,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
+                <span>🤔 Not sure how to get an API key? We've written a plain-English step-by-step guide.</span>
+                <button onClick={()=>setTab("help")} style={{background:"#1a4a4a",border:"none",color:"#d6f0ee",fontSize:11,padding:"6px 12px",borderRadius:5,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600,whiteSpace:"nowrap"}}>View guide →</button>
               </div>
               <div style={{background:"#e8f4f1",border:"1px solid #c0d4d0",borderRadius:7,padding:"10px 12px",marginBottom:14,fontSize:12,color:"#2a5555",lineHeight:1.6}}>
                 Your key is stored securely in your account and never shared. It is only used to run contact searches on your behalf.
@@ -1620,6 +1630,34 @@ export default function App({ session, onBack }){
                     <div style={{fontSize:11,color:"#3a6a6a",lineHeight:1.55}}>{x.d}</div>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Apollo API Key Setup Guide */}
+            <div style={{...card,marginBottom:12,border:"2px solid #3aada0"}}>
+              <div style={{fontSize:9,letterSpacing:2,color:"#3aada0",textTransform:"uppercase",marginBottom:4,fontWeight:700}}>Getting Your Apollo API Key</div>
+              <div style={{fontSize:12,color:"#3a6a6a",marginBottom:14,lineHeight:1.6}}>Apollo is the contact database that powers Dunlin's live search. You'll need an account with their <strong style={{color:"#1a4a4a"}}>Organisation plan</strong> to use Dunlin in live mode. Here's exactly how to get your key:</div>
+              {[
+                {n:1,t:"Go to Apollo.io",d:"Visit apollo.io and click 'Sign up free'. Create your account using your work email."},
+                {n:2,t:"Upgrade to Organisation plan",d:"Once logged in, go to Settings → Billing. You need the Organisation plan (minimum 3 seats, ~£280/mo). The free plan won't work — it doesn't include API access."},
+                {n:3,t:"Find your API key",d:"In your Apollo account, go to Settings → Integrations → API. You'll see a section called 'API Keys'. Click 'Create new API key' and give it a name like 'Dunlin'."},
+                {n:4,t:"Copy the key",d:"Copy the long string of letters and numbers that appears. It usually starts with something like 'eyJ...' or a similar format. Keep it safe — treat it like a password."},
+                {n:5,t:"Paste it into Dunlin",d:"Go to the Settings tab in Dunlin (the ⚙ icon in the nav), paste your key into the Apollo API Key field, and click Save. The amber warning at the top will turn green once it's working."},
+              ].map(s=>(
+                <div key={s.n} style={{display:"flex",gap:12,marginBottom:10,paddingBottom:10,borderBottom:"1px solid #d4e8e4"}}>
+                  <div style={{width:24,height:24,borderRadius:12,background:"#1a4a4a",color:"#d6f0ee",fontSize:11,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{s.n}</div>
+                  <div>
+                    <div style={{fontWeight:600,fontSize:13,color:"#1a3a3a",marginBottom:2}}>{s.t}</div>
+                    <div style={{fontSize:11,color:"#3a6a6a",lineHeight:1.55}}>{s.d}</div>
+                  </div>
+                </div>
+              ))}
+              <div style={{background:"#d6f0ee",borderRadius:8,padding:"10px 14px",marginTop:4,fontSize:11,color:"#1a4a4a",lineHeight:1.6}}>
+                <strong>No Apollo account yet?</strong> You can still explore all of Dunlin's features in <strong>demo mode</strong> — it uses a set of realistic sample contacts so you can see exactly how everything works before committing to Apollo.
+              </div>
+              <div style={{marginTop:12,display:"flex",gap:8}}>
+                <a href="https://apollo.io" target="_blank" rel="noreferrer" style={{background:"#1a4a4a",color:"#d6f0ee",fontSize:11,textDecoration:"none",padding:"8px 14px",borderRadius:6,fontFamily:"'DM Sans',sans-serif",fontWeight:600}}>Go to Apollo.io →</a>
+                <button onClick={()=>setTab("settings")} style={{background:"#e8f4f0",border:"1px solid #3aada0",color:"#1a4a4a",fontSize:11,padding:"8px 14px",borderRadius:6,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600}}>⚙ Open Settings</button>
               </div>
             </div>
 
