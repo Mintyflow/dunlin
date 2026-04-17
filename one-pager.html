@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dunlin — UK Lease Intelligence for Flex Space Operators</title>
+<meta name="description" content="Find UK companies approaching lease renewal before your competitors do. Space Pressure Score, verified contacts, Companies House intelligence. From £99/mo.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<meta name="theme-color" content="#1A4A4A"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal-deep:  #1a4a4a;
+    --teal-dark:  #0f2e2e;
+    --teal-mid:   #2a7a72;
+    --teal-bright:#3aada0;
+    --teal-light: #7dd4cc;
+    --teal-pale:  #d6f0ee;
+    --sand:       #f5f0e8;
+    --sand-dark:  #ede8df;
+    --ink:        #1c2b2b;
+    --ink-mid:    #3d5252;
+    --ink-light:  #7a9696;
+    --gold:       #c9973a;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:'DM Sans',sans-serif;
+    background:var(--sand);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:18px 48px;
+    display:flex; align-items:center; justify-content:space-between;
+    background:rgba(26,74,74,0.97);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+  .nav-wordmark { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300; color:#fff; letter-spacing:0.07em; }
+  nav a.nav-cta {
+    font-size:13px; font-weight:500;
+    background:var(--teal-bright); color:#fff;
+    padding:10px 22px; border-radius:7px;
+    text-decoration:none; letter-spacing:0.02em;
+    transition:background 0.2s, transform 0.15s;
+  }
+  nav a.nav-cta:hover { background:var(--teal-mid); transform:translateY(-1px); }
+  @media(max-width:700px){ nav { padding:16px 20px; } }
+
+  /* ── HERO ── */
+  .hero {
+    background:var(--teal-deep);
+    padding:120px 48px 72px;
+    position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 60% 55% at 0% 50%, rgba(201,151,58,0.09) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 100% 30%, rgba(58,173,160,0.15) 0%, transparent 60%);
+    pointer-events:none;
+  }
+  .hero-inner { max-width:1080px; margin:0 auto; display:grid; grid-template-columns:1fr 380px; gap:64px; align-items:center; position:relative; z-index:1; }
+  .hero-label { font-size:10px; letter-spacing:0.26em; text-transform:uppercase; color:var(--teal-light); margin-bottom:18px; opacity:0.9; }
+  .hero h1 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(44px,5.5vw,80px);
+    font-weight:300; color:#fff; line-height:1.06; margin-bottom:24px;
+  }
+  .hero h1 em { font-style:italic; color:var(--teal-light); }
+  .hero-sub { font-size:16px; font-weight:300; color:rgba(255,255,255,0.6); line-height:1.8; margin-bottom:40px; max-width:480px; }
+  .hero-ctas { display:flex; gap:14px; flex-wrap:wrap; }
+  .btn-primary {
+    display:inline-block;
+    background:var(--teal-bright); color:#fff;
+    padding:15px 32px; border-radius:8px;
+    font-size:15px; font-weight:500; text-decoration:none; letter-spacing:0.02em;
+    transition:background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow:0 4px 18px rgba(58,173,160,0.35);
+  }
+  .btn-primary:hover { background:var(--teal-mid); transform:translateY(-2px); box-shadow:0 8px 24px rgba(58,173,160,0.45); }
+  .btn-primary:active { transform:scale(0.97); }
+  .btn-ghost {
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:14px; color:rgba(255,255,255,0.55);
+    text-decoration:none; padding:15px 4px;
+    letter-spacing:0.02em; transition:color 0.2s;
+  }
+  .btn-ghost:hover { color:var(--teal-light); }
+  .hero-note { margin-top:14px; font-size:12px; color:rgba(255,255,255,0.25); letter-spacing:0.05em; }
+
+  /* Hero right — score card */
+  .score-card {
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.09);
+    border-radius:20px;
+    padding:32px 28px;
+    position:relative;
+  }
+  .score-card-label { font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:20px; }
+  .score-lead { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .score-lead:last-of-type { margin-bottom:0; padding-bottom:0; border-bottom:none; }
+  .score-company { font-size:14px; font-weight:500; color:#fff; margin-bottom:3px; }
+  .score-role { font-size:11px; color:rgba(255,255,255,0.4); }
+  .score-badge {
+    font-size:11px; font-weight:700; letter-spacing:0.06em;
+    padding:4px 10px; border-radius:20px; white-space:nowrap;
+  }
+  .hot { background:rgba(239,68,68,0.18); color:#f87171; border:1px solid rgba(239,68,68,0.25); }
+  .warm { background:rgba(251,146,60,0.18); color:#fb923c; border:1px solid rgba(251,146,60,0.25); }
+  .watching { background:rgba(125,212,204,0.15); color:#7dd4cc; border:1px solid rgba(125,212,204,0.2); }
+  .score-bar-wrap { margin-top:6px; }
+  .score-bar-bg { height:4px; background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden; }
+  .score-bar-fill { height:100%; border-radius:4px; }
+  .score-num { font-size:10px; color:rgba(255,255,255,0.3); margin-top:3px; }
+  .score-card-footer { margin-top:20px; font-size:11px; color:rgba(255,255,255,0.25); text-align:center; letter-spacing:0.04em; }
+
+  /* ── PROBLEM STRIP ── */
+  .problem-strip {
+    background:var(--teal-dark);
+    padding:48px;
+    display:flex; gap:0; overflow:hidden;
+  }
+  .prob-item {
+    flex:1; padding:0 36px; position:relative;
+    border-right:1px solid rgba(255,255,255,0.06);
+  }
+  .prob-item:first-child { padding-left:0; }
+  .prob-item:last-child { border-right:none; }
+  .prob-n { font-family:'Cormorant Garamond',serif; font-size:56px; font-weight:300; color:rgba(125,212,204,0.15); line-height:1; margin-bottom:8px; }
+  .prob-text { font-size:14px; color:rgba(255,255,255,0.55); line-height:1.7; font-weight:300; }
+  .prob-text strong { color:rgba(255,255,255,0.85); font-weight:500; }
+
+  /* ── HOW IT WORKS ── */
+  .section { padding:96px 48px; max-width:1080px; margin:0 auto; }
+  .sec-label { font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--teal-bright); margin-bottom:14px; }
+  .sec-title { font-family:'Cormorant Garamond',serif; font-size:clamp(34px,4vw,54px); font-weight:300; color:var(--ink); line-height:1.15; margin-bottom:14px; }
+  .sec-sub { font-size:16px; font-weight:300; color:var(--ink-mid); line-height:1.75; max-width:520px; margin-bottom:60px; }
+
+  .flow-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .flow-card {
+    border-radius:16px; overflow:hidden;
+    border:1px solid rgba(0,0,0,0.05);
+    transition:transform 0.2s, box-shadow 0.2s;
+  }
+  .flow-card:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(26,74,74,0.1); }
+  .flow-card-top { padding:32px 28px 24px; }
+  .flow-card-top.dark { background:var(--teal-deep); }
+  .flow-card-top.mid  { background:var(--teal-mid); }
+  .flow-card-top.pale { background:var(--teal-pale); }
+  .flow-step { font-size:9px; letter-spacing:0.22em; text-transform:uppercase; margin-bottom:18px; }
+  .dark .flow-step  { color:var(--teal-light); }
+  .mid  .flow-step  { color:rgba(255,255,255,0.6); }
+  .pale .flow-step  { color:var(--teal-mid); }
+  .flow-icon { font-size:28px; margin-bottom:14px; }
+  .flow-card-title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:300; line-height:1.2; margin-bottom:8px; }
+  .dark .flow-card-title { color:#fff; }
+  .mid  .flow-card-title { color:#fff; }
+  .pale .flow-card-title { color:var(--teal-deep); }
+  .flow-card-desc { font-size:13px; font-weight:300; line-height:1.7; }
+  .dark .flow-card-desc { color:rgba(214,240,238,0.6); }
+  .mid  .flow-card-desc { color:rgba(255,255,255,0.65); }
+  .pale .flow-card-desc { color:var(--ink-mid); }
+  .flow-card-bottom { background:white; padding:20px 28px; }
+  .flow-feat { font-size:12px; color:var(--ink-mid); padding:4px 0; display:flex; gap:8px; }
+  .flow-feat::before { content:'✓'; color:var(--teal-bright); flex-shrink:0; }
+
+  /* ── COMPARISON ── */
+  .comp-wrap { background:var(--teal-dark); padding:96px 48px; }
+  .comp-inner { max-width:1080px; margin:0 auto; }
+  .comp-inner .sec-title { color:#fff; }
+  .comp-inner .sec-sub   { color:rgba(255,255,255,0.5); }
+  .comp-table { width:100%; border-collapse:collapse; margin-top:8px; }
+  .comp-table th {
+    font-size:10px; letter-spacing:0.16em; text-transform:uppercase;
+    color:rgba(255,255,255,0.35); padding:14px 20px; text-align:left;
+    border-bottom:1px solid rgba(255,255,255,0.07);
+  }
+  .comp-table th:first-child { width:22%; }
+  .comp-table td { padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.04); font-size:13px; vertical-align:top; }
+  .comp-table tr:last-child td { border-bottom:none; }
+  .comp-table td:first-child { font-weight:600; }
+  .row-dunlin td { background:rgba(58,173,160,0.07); }
+  .row-dunlin td:first-child { color:var(--teal-light); }
+  .row-other  td:first-child { color:rgba(255,255,255,0.5); }
+  .row-other  td { color:rgba(255,255,255,0.4); }
+  .check { color:#22c55e; font-weight:600; }
+  .cross { color:rgba(255,255,255,0.2); }
+  .tag-good { background:rgba(58,173,160,0.15); color:var(--teal-light); border:1px solid rgba(58,173,160,0.25); padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; white-space:nowrap; }
+  .tag-bad  { background:rgba(239,68,68,0.1);  color:#f87171; border:1px solid rgba(239,68,68,0.2);  padding:2px 8px; border-radius:20px; font-size:11px; font-weight:500; white-space:nowrap; }
+
+  /* ── SOCIAL PROOF ── */
+  .proof-wrap { padding:96px 48px; }
+  .proof-inner { max-width:1080px; margin:0 auto; }
+  .proof-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:8px; }
+  .proof-card {
+    background:white; border-radius:16px;
+    padding:32px 28px;
+    border:1px solid rgba(0,0,0,0.05);
+    transition:transform 0.2s, box-shadow 0.2s;
+  }
+  .proof-card:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(26,74,74,0.08); }
+  .proof-stars { color:var(--gold); font-size:14px; margin-bottom:16px; letter-spacing:2px; }
+  .proof-quote { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:300; font-style:italic; color:var(--ink); line-height:1.6; margin-bottom:20px; }
+  .proof-name  { font-size:13px; font-weight:500; color:var(--ink); margin-bottom:2px; }
+  .proof-role  { font-size:12px; color:var(--ink-light); }
+
+  /* ── PRICING ── */
+  .pricing-wrap { background:var(--sand-dark); padding:96px 48px; }
+  .pricing-inner { max-width:1080px; margin:0 auto; }
+  .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .p-card {
+    background:white; border-radius:20px;
+    padding:36px 28px 32px;
+    border:1px solid rgba(0,0,0,0.05);
+    position:relative;
+    transition:transform 0.2s, box-shadow 0.2s;
+  }
+  .p-card:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(26,74,74,0.1); }
+  .p-card.featured { background:var(--teal-deep); border-color:transparent; }
+  .p-badge {
+    position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+    background:var(--teal-bright); color:#fff;
+    font-size:9px; letter-spacing:0.14em; font-weight:700;
+    padding:4px 14px; border-radius:20px; white-space:nowrap;
+  }
+  .p-name { font-size:11px; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:20px; font-weight:500; }
+  .p-card:not(.featured) .p-name { color:var(--ink-light); }
+  .p-card.featured       .p-name { color:var(--teal-light); }
+  .p-price { font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:300; line-height:1; margin-bottom:4px; }
+  .p-card:not(.featured) .p-price { color:var(--ink); }
+  .p-card.featured       .p-price { color:#fff; }
+  .p-price sup { font-size:22px; vertical-align:super; }
+  .p-price sub { font-size:16px; }
+  .p-lock { font-size:11px; font-weight:500; margin-bottom:20px; }
+  .p-card:not(.featured) .p-lock { color:var(--teal-bright); }
+  .p-card.featured       .p-lock { color:var(--teal-light); }
+  .p-divider { height:1px; margin-bottom:20px; }
+  .p-card:not(.featured) .p-divider { background:rgba(0,0,0,0.06); }
+  .p-card.featured       .p-divider { background:rgba(255,255,255,0.08); }
+  .p-feat { font-size:12px; padding:5px 0; display:flex; gap:8px; line-height:1.5; }
+  .p-card:not(.featured) .p-feat { color:var(--ink-mid); }
+  .p-card.featured       .p-feat { color:rgba(214,240,238,0.7); }
+  .p-feat::before { content:'✓'; color:var(--teal-bright); flex-shrink:0; margin-top:1px; }
+  .p-card.featured .p-feat::before { color:var(--teal-light); }
+  .p-cta {
+    display:block; text-align:center;
+    margin-top:24px; padding:13px;
+    border-radius:8px; font-size:14px; font-weight:500;
+    text-decoration:none; transition:background 0.2s, transform 0.15s;
+  }
+  .p-card:not(.featured) .p-cta { background:var(--teal-pale); color:var(--teal-deep); }
+  .p-card:not(.featured) .p-cta:hover { background:var(--teal-bright); color:#fff; }
+  .p-card.featured       .p-cta { background:var(--teal-bright); color:#fff; }
+  .p-card.featured       .p-cta:hover { background:var(--teal-mid); }
+  .pricing-note { text-align:center; margin-top:28px; font-size:12px; color:var(--ink-light); letter-spacing:0.04em; }
+
+  /* ── FINAL CTA BAND ── */
+  .cta-band {
+    background:var(--teal-deep);
+    padding:100px 48px;
+    text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .cta-band::before {
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse 70% 60% at 50% 100%, rgba(58,173,160,0.2) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .cta-band h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(38px,5vw,72px); font-weight:300; color:#fff; line-height:1.1; margin-bottom:20px; position:relative; z-index:1; }
+  .cta-band h2 em { font-style:italic; color:var(--teal-light); }
+  .cta-band p { font-size:16px; font-weight:300; color:rgba(255,255,255,0.55); line-height:1.75; max-width:500px; margin:0 auto 44px; position:relative; z-index:1; }
+  .cta-band-actions { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
+  .cta-email { font-size:13px; color:rgba(255,255,255,0.4); margin-top:20px; position:relative; z-index:1; }
+  .cta-email a { color:var(--teal-light); text-decoration:none; }
+  .cta-email a:hover { text-decoration:underline; }
+
+  /* ── FOOTER ── */
+  footer { background:var(--teal-dark); padding:36px 48px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+  .footer-links { display:flex; gap:24px; }
+  .footer-links a { font-size:12px; color:rgba(255,255,255,0.3); text-decoration:none; transition:color 0.2s; }
+  .footer-links a:hover { color:var(--teal-light); }
+  .footer-copy { font-size:12px; color:rgba(255,255,255,0.18); }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .hero { padding:110px 24px 64px; }
+    .hero-inner { grid-template-columns:1fr; gap:40px; }
+    .score-card { display:none; }
+    .problem-strip { flex-direction:column; gap:32px; padding:48px 24px; }
+    .prob-item { border-right:none; padding:0; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:28px; }
+    .prob-item:last-child { border-bottom:none; padding-bottom:0; }
+    .section { padding:72px 24px; }
+    .flow-grid { grid-template-columns:1fr; }
+    .comp-wrap { padding:72px 24px; }
+    .comp-table th:nth-child(n+4), .comp-table td:nth-child(n+4) { display:none; }
+    .proof-wrap { padding:72px 24px; }
+    .proof-grid { grid-template-columns:1fr; }
+    .pricing-wrap { padding:72px 24px; }
+    .pricing-grid { grid-template-columns:1fr; }
+    .cta-band { padding:72px 24px; }
+    footer { padding:28px 24px; flex-direction:column; text-align:center; }
+    .footer-links { justify-content:center; }
+  }
+  @media(max-width:600px){
+    .hero-ctas { flex-direction:column; }
+    .cta-band-actions { flex-direction:column; align-items:stretch; }
+    .cta-band-actions a { text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://getdunlin.com" class="nav-logo">
+    <svg width="34" height="23" viewBox="0 0 120 80" fill="none">
+      <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+      <circle cx="88" cy="34" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+      <path d="M96 36 Q108 36 112 40" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M35 46 Q22 40 18 44" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <span class="nav-wordmark">dunlin</span>
+  </a>
+  <a href="https://app.getdunlin.com" class="nav-cta">Start free trial</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-label">UK Lease Intelligence · For Flex Space Operators</div>
+      <h1>Your competitors<br>are already<br><em>calling.</em></h1>
+      <p class="hero-sub">Dunlin tells you which UK companies are approaching lease renewal — before they start looking. Verified contacts. Space Pressure Score. One click to reach out.</p>
+      <div class="hero-ctas">
+        <a href="https://app.getdunlin.com" class="btn-primary">Start your free 14-day trial</a>
+        <a href="mailto:hello@getdunlin.com" class="btn-ghost">Talk to us →</a>
+      </div>
+      <p class="hero-note">No credit card required · Cancel any time · From £99/mo</p>
+    </div>
+
+    <!-- Live score card mockup -->
+    <div class="score-card">
+      <div class="score-card-label">Space Pressure Score™ — Live view</div>
+
+      <div class="score-lead">
+        <div>
+          <div class="score-company">Meridian Solutions Ltd</div>
+          <div class="score-role">Sarah Okafor · Office Manager</div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-bg" style="margin-top:8px;">
+              <div class="score-bar-fill" style="width:91%;background:linear-gradient(90deg,#ef4444,#f97316);"></div>
+            </div>
+            <div class="score-num">91 / 100 — Lease expires in ~38 days</div>
+          </div>
+        </div>
+        <span class="score-badge hot">HOT</span>
+      </div>
+
+      <div class="score-lead">
+        <div>
+          <div class="score-company">Vantage Group UK</div>
+          <div class="score-role">James Whitfield · Facilities Dir.</div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-bg" style="margin-top:8px;">
+              <div class="score-bar-fill" style="width:74%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div>
+            </div>
+            <div class="score-num">74 / 100 — Expanding headcount +23%</div>
+          </div>
+        </div>
+        <span class="score-badge warm">WARM</span>
+      </div>
+
+      <div class="score-lead">
+        <div>
+          <div class="score-company">Clearpath Consulting</div>
+          <div class="score-role">Anna Berczeny · Operations Lead</div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-bg" style="margin-top:8px;">
+              <div class="score-bar-fill" style="width:48%;background:var(--teal-bright);"></div>
+            </div>
+            <div class="score-num">48 / 100 — 90-day watch</div>
+          </div>
+        </div>
+        <span class="score-badge watching">WATCH</span>
+      </div>
+
+      <div class="score-card-footer">Sorted by urgency · Updated daily</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM STRIP -->
+<div class="problem-strip">
+  <div class="prob-item">
+    <div class="prob-n">01</div>
+    <div class="prob-text"><strong>Companies don't advertise when they need space.</strong> They only move when the lease is almost up — and by then, three of your competitors have already called.</div>
+  </div>
+  <div class="prob-item">
+    <div class="prob-n">02</div>
+    <div class="prob-text"><strong>Generic tools weren't built for this.</strong> Apollo has no lease data. VTS costs £40k/year and is built for landlords. CoStar ignores the outbound operator entirely.</div>
+  </div>
+  <div class="prob-item">
+    <div class="prob-n">03</div>
+    <div class="prob-text"><strong>Timing is everything.</strong> Reach a company at 85 days before renewal and you're a strategic advisor. Reach them at 15 days and you're a last resort.</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div style="background:var(--sand);">
+<div class="section">
+  <div class="sec-label">How Dunlin works</div>
+  <h2 class="sec-title">Find. Score. Close.</h2>
+  <p class="sec-sub">Three steps from cold list to warm conversation — powered by Companies House, Apollo, and a scoring model built specifically for flex space.</p>
+  <div class="flow-grid">
+
+    <div class="flow-card">
+      <div class="flow-card-top dark">
+        <div class="flow-step">Step 01 · Find</div>
+        <div class="flow-icon">🔍</div>
+        <div class="flow-card-title">Surface the right companies</div>
+        <div class="flow-card-desc">Search 270M+ contacts filtered to UK companies in your target city, sector, and headcount range — then cross-reference Companies House to estimate their renewal window.</div>
+      </div>
+      <div class="flow-card-bottom">
+        <div class="flow-feat">Search by city, postcode, or area</div>
+        <div class="flow-feat">Filter by sector, size, and funding</div>
+        <div class="flow-feat">Companies House lease estimation</div>
+      </div>
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-card-top mid">
+        <div class="flow-step">Step 02 · Score</div>
+        <div class="flow-icon">📊</div>
+        <div class="flow-card-title">Know who needs you most</div>
+        <div class="flow-card-desc">Every lead gets a Space Pressure Score (0–100) combining lease urgency, headcount growth, recent funding, and decision-maker seniority. 70+ means call today.</div>
+      </div>
+      <div class="flow-card-bottom">
+        <div class="flow-feat">Proprietary 0–100 urgency score</div>
+        <div class="flow-feat">Renewal Radar — 30/60/90-day calendar</div>
+        <div class="flow-feat">Sorted by who needs space now</div>
+      </div>
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-card-top pale">
+        <div class="flow-step">Step 03 · Close</div>
+        <div class="flow-icon">✉️</div>
+        <div class="flow-card-title">Reach out before they look</div>
+        <div class="flow-card-desc">Dual-layer email verification, built-in outreach sequences, HubSpot sync, and a Kanban pipeline — everything you need to go from lead to signed deal in one place.</div>
+      </div>
+      <div class="flow-card-bottom">
+        <div class="flow-feat">Dual-layer email verification</div>
+        <div class="flow-feat">Built-in outreach sequences</div>
+        <div class="flow-feat">HubSpot CRM integration</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="comp-wrap">
+  <div class="comp-inner">
+    <div class="sec-label" style="color:var(--teal-light);">Why Dunlin</div>
+    <h2 class="sec-title">Built for this job.<br>Nothing else is.</h2>
+    <p class="sec-sub" style="color:rgba(255,255,255,0.5); margin-bottom:48px;">Every alternative either costs more, does less, or wasn't built for flex space operators.</p>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>Price</th>
+          <th>UK lease data</th>
+          <th>Space Pressure Score</th>
+          <th>Built for flex ops</th>
+          <th>Outreach built in</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-dunlin">
+          <td>
+            <svg width="14" height="10" viewBox="0 0 120 80" fill="none" style="display:inline;vertical-align:middle;margin-right:6px;">
+              <ellipse cx="62" cy="46" rx="28" ry="16" stroke="#7dd4cc" stroke-width="2.5" fill="none"/>
+              <circle cx="88" cy="34" r="10" stroke="#7dd4cc" stroke-width="2.5" fill="none"/>
+              <path d="M96 36 Q108 36 112 40" stroke="#7dd4cc" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M35 46 Q22 40 18 44" stroke="#7dd4cc" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <line x1="58" y1="60" x2="54" y2="72" stroke="#7dd4cc" stroke-width="2" stroke-linecap="round"/>
+              <line x1="70" y1="61" x2="68" y2="72" stroke="#7dd4cc" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Dunlin
+          </td>
+          <td><span class="tag-good">From £99/mo</span></td>
+          <td class="check">✓ Companies House</td>
+          <td class="check">✓ Proprietary</td>
+          <td class="check">✓ Purpose-built</td>
+          <td class="check">✓ Sequences + HubSpot</td>
+        </tr>
+        <tr class="row-other">
+          <td>Apollo.io</td>
+          <td><span class="tag-bad">£280/mo min</span></td>
+          <td class="cross">✗ None</td>
+          <td class="cross">✗ None</td>
+          <td class="cross">✗ Generic</td>
+          <td style="color:rgba(255,255,255,0.35);">Basic only</td>
+        </tr>
+        <tr class="row-other">
+          <td>VTS / CoStar</td>
+          <td><span class="tag-bad">£10k–40k/yr</span></td>
+          <td style="color:rgba(255,255,255,0.35);">Partial</td>
+          <td class="cross">✗ None</td>
+          <td class="cross">✗ Landlord tools</td>
+          <td class="cross">✗ None</td>
+        </tr>
+        <tr class="row-other">
+          <td>Spreadsheets</td>
+          <td style="color:rgba(255,255,255,0.35);">Free + your time</td>
+          <td class="cross">✗ Manual</td>
+          <td class="cross">✗ None</td>
+          <td class="cross">✗ No intelligence</td>
+          <td class="cross">✗ None</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SOCIAL PROOF -->
+<div class="proof-wrap">
+  <div class="proof-inner">
+    <div class="sec-label">What operators say</div>
+    <h2 class="sec-title">The first call<br>that actually converts.</h2>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-quote">"I've tried Apollo, I've tried LinkedIn Sales Navigator. Neither told me that a company's lease was up in 60 days. Dunlin did. Closed in three weeks."</p>
+        <div class="proof-name">Karen M.</div>
+        <div class="proof-role">Centre Manager · Leeds</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-quote">"The Space Pressure Score changed how I prospect completely. I go HOT-first every morning. Conversion rate on first calls is up significantly."</p>
+        <div class="proof-name">David R.</div>
+        <div class="proof-role">Business Development · Manchester</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-quote">"We cancelled Apollo the week we signed up to Dunlin. The UK lease data alone is worth twice the subscription. The scoring on top of that is just unfair advantage."</p>
+        <div class="proof-name">Priya S.</div>
+        <div class="proof-role">Ops Director · London</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="pricing-wrap">
+  <div class="pricing-inner">
+    <div style="text-align:center; margin-bottom:56px;">
+      <div class="sec-label" style="justify-content:center; display:flex;">Pricing</div>
+      <h2 class="sec-title" style="text-align:center;">Founding member rates.<br>Locked in forever.</h2>
+      <p style="font-size:15px; font-weight:300; color:var(--ink-mid); margin-top:10px;">Early subscribers keep these rates permanently — even as we raise prices for new members.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="p-card">
+        <div class="p-name">Starter</div>
+        <div class="p-price"><sup>£</sup>99<sub>/mo</sub></div>
+        <div class="p-lock">Founding rate — yours to keep 🔒</div>
+        <div class="p-divider"></div>
+        <div class="p-feat">100 lead searches/month</div>
+        <div class="p-feat">Space Pressure Scoring</div>
+        <div class="p-feat">Email verification</div>
+        <div class="p-feat">Renewal Radar calendar</div>
+        <div class="p-feat">HubSpot integration</div>
+        <div class="p-feat">14-day free trial</div>
+        <a href="https://buy.stripe.com/6oU6oHgEbbZPf3A3qSaAw0j" class="p-cta">Start free trial</a>
+      </div>
+
+      <div class="p-card featured">
+        <div class="p-badge">MOST POPULAR</div>
+        <div class="p-name">Growth</div>
+        <div class="p-price"><sup>£</sup>179<sub>/mo</sub></div>
+        <div class="p-lock">Founding rate — yours to keep 🔒</div>
+        <div class="p-divider"></div>
+        <div class="p-feat">300 lead searches/month</div>
+        <div class="p-feat">Everything in Starter</div>
+        <div class="p-feat">Up to 3 users</div>
+        <div class="p-feat">Pipeline (Kanban board)</div>
+        <div class="p-feat">Priority support</div>
+        <div class="p-feat">14-day free trial</div>
+        <a href="https://buy.stripe.com/9B63cvdrZ2pfdZwf9AaAw0l" class="p-cta">Start free trial</a>
+      </div>
+
+      <div class="p-card">
+        <div class="p-name">Pro</div>
+        <div class="p-price"><sup>£</sup>349<sub>/mo</sub></div>
+        <div class="p-lock">Founding rate — yours to keep 🔒</div>
+        <div class="p-divider"></div>
+        <div class="p-feat">Unlimited searches</div>
+        <div class="p-feat">Everything in Growth</div>
+        <div class="p-feat">Unlimited users</div>
+        <div class="p-feat">Bulk export</div>
+        <div class="p-feat">Dedicated onboarding</div>
+        <div class="p-feat">14-day free trial</div>
+        <a href="https://buy.stripe.com/fZu8wPew34xnf3A9PgaAw0n" class="p-cta">Start free trial</a>
+      </div>
+
+    </div>
+    <p class="pricing-note">All plans include a 14-day free trial · No credit card required · Cancel any time · GDPR compliant</p>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="cta-band">
+  <h2>Stop prospecting blind.<br><em>Start closing first.</em></h2>
+  <p>Every day you wait, someone else calls your next client. Dunlin shows you who's looking before they know it themselves.</p>
+  <div class="cta-band-actions">
+    <a href="https://app.getdunlin.com" class="btn-primary" style="font-size:16px; padding:17px 40px;">Start your free 14-day trial</a>
+  </div>
+  <p class="cta-email">Questions? <a href="mailto:hello@getdunlin.com">hello@getdunlin.com</a> · We reply within one business day.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="https://getdunlin.com">Home</a>
+    <a href="/affiliate.html">Affiliates</a>
+    <a href="/refer.html">Refer a friend</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+  </div>
+  <div class="footer-copy">© 2026 Dunlin · Marvanova Ltd</div>
+</footer>
+
+<!-- MARVANOVA FOOTER STRIP -->
+<div style="background:#0b1622; padding:14px 24px; text-align:center;">
+  <a href="https://marvanova.com" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; opacity:0.75; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
+    <span style="font-family:'DM Sans',Arial,sans-serif; font-size:11px; color:#6a8a9a; letter-spacing:0.08em;">Built by</span>
+    <span style="font-family:Arial,sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em;">
+      <span style="background:linear-gradient(90deg,#0066cc,#00aadd); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">MARVA</span><span style="color:#8a9aaa; -webkit-text-fill-color:#8a9aaa;">NOVA</span>
+    </span>
+    <span style="font-family:'DM Sans',Arial,sans-serif; font-size:10px; color:#4a6a7a; letter-spacing:0.14em; font-weight:500; text-transform:uppercase;">AI Agency</span>
+  </a>
+</div>
+
+</body>
+</html>
