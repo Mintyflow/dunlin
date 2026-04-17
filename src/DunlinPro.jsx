@@ -44,11 +44,15 @@ function mapApolloResult(r, loc) {
   const tenureSince = r.companiesHouse?.incorporationDate
     ? `Since ${new Date(r.companiesHouse.incorporationDate).getFullYear()}`
     : "";
+  // Apollo email status → confidence mapping
+  const emailStatus = r.emailStatus || (r.emailVerified ? "verified" : "unavailable");
+  const confidence = emailStatus === "verified" ? "high" : emailStatus === "likely to engage" ? "medium" : "low";
   return {
     id: newId() + Math.floor(Math.random() * 9999),
     name: r.name || "",
     title: r.title || "",
     email: r.email || "",
+    emailStatus,                        // "verified" | "likely to engage" | "unavailable"
     phone: r.phone || "",
     company: r.company?.name || "",
     building: chAddress,
@@ -56,7 +60,7 @@ function mapApolloResult(r, loc) {
     tenure: tenureSince,
     contract_expiry: contractExpiry,
     source: r.companiesHouse ? "Apollo + Companies House" : "Apollo",
-    confidence: r.emailVerified ? "high" : "medium",
+    confidence,
     found: new Date().toISOString(),
     linkedin: r.linkedIn || "",
     photo: r.photo || "",
@@ -65,6 +69,10 @@ function mapApolloResult(r, loc) {
     companySite: r.company?.domain || null,
     companySize: r.company?.size || null,
     companyIndustry: r.company?.industry || null,
+    spacePressureScore: r.spacePressureScore ?? null,
+    headcountGrowth: r.headcountGrowth || null,
+    funding: r.funding || null,
+    techStack: r.techStack || [],
   };
 }
 
@@ -428,8 +436,25 @@ export default function App({ session, onBack }){
   const card={background:"#102020",border:"1px solid #1e2535",borderRadius:10,padding:14};
   const notice=w=>({background:w?"#150e00":"#0a1424",border:`1px solid ${w?"#3a2800":"#1a3a5c"}`,borderLeft:`3px solid ${w?"#f59e0b":"#3aada0"}`,padding:"11px 13px",borderRadius:8,color:w?"#c8a840":"#7dd4cc",fontSize:12,lineHeight:1.7,marginBottom:12});
 
-  const confBadge=(r)=>{const ec=emailChecks[r.id];let label=r.confidence?.toUpperCase()||"—",bg,col;if(ec){if(ec.status==="invalid"){bg="#2a0d0d";col="#ef4444";label="BAD EMAIL";}else if(ec.status==="valid"&&r.confidence==="high"){bg="#0d2e1a";col="#22c55e";label="VERIFIED";}else if(ec.status==="risky"){bg="#2a1f00";col="#f59e0b";label="RISKY EMAIL";}else{const m={high:["#0d2e1a","#22c55e"],medium:["#2a1f00","#f59e0b"],low:["#2a0d0d","#ef4444"]};[bg,col]=m[r.confidence]||m.low;}}else{const m={high:["#0d2e1a","#22c55e"],medium:["#2a1f00","#f59e0b"],low:["#2a0d0d","#ef4444"]};[bg,col]=m[r.confidence]||m.low;}return<span style={{background:bg,color:col,border:`1px solid ${col}40`,padding:"2px 5px",borderRadius:3,fontSize:9,fontFamily:"monospace",letterSpacing:1,whiteSpace:"nowrap"}}>{label}</span>;};
-  const emailDot=(id)=>{const ec=emailChecks[id];if(!ec)return<span style={{width:7,height:7,borderRadius:4,background:"#2a3040",display:"inline-block",marginRight:5,flexShrink:0}}/>;const col=ec.status==="valid"?"#22c55e":ec.status==="risky"?"#f59e0b":"#ef4444";return<span style={{width:7,height:7,borderRadius:4,background:col,display:"inline-block",marginRight:5,flexShrink:0,boxShadow:`0 0 4px ${col}88`}}/>;};
+  // ── Traffic light: Apollo status is ground truth; DNS check is secondary ──
+  const getEmailTier=(r)=>{
+    const apollo=r.emailStatus;
+    const dns=emailChecks[r.id];
+    if(apollo==="verified")return{tier:"green",label:"VERIFIED",col:"#22c55e",bg:"#0a2015"};
+    if(apollo==="likely to engage")return{tier:"amber",label:"LIKELY",col:"#f59e0b",bg:"#1a1000"};
+    if(dns?.status==="valid")return{tier:"amber",label:"DNS OK",col:"#f59e0b",bg:"#1a1000"};
+    if(dns?.status==="risky")return{tier:"amber",label:"RISKY",col:"#e08a00",bg:"#1a0d00"};
+    if(dns?.status==="invalid")return{tier:"red",label:"INVALID",col:"#ef4444",bg:"#1a0808"};
+    if(apollo==="unavailable"||!r.email||r.email==="unknown")return{tier:"red",label:"NO EMAIL",col:"#ef4444",bg:"#1a0808"};
+    return{tier:"pending",label:"CHECKING",col:"#3a6a6a",bg:"#0a1a1a"};
+  };
+
+  const confBadge=(r)=>{const{label,col,bg}=getEmailTier(r);return<span style={{background:bg,color:col,border:`1px solid ${col}40`,padding:"2px 5px",borderRadius:3,fontSize:9,fontFamily:"monospace",letterSpacing:1,whiteSpace:"nowrap"}}>{label}</span>;};
+  const emailDot=(id,r)=>{if(!r)return<span style={{width:7,height:7,borderRadius:4,background:"#2a3040",display:"inline-block",marginRight:5,flexShrink:0}}/>;const{col,tier}=getEmailTier(r);return<span style={{width:7,height:7,borderRadius:4,background:col,display:"inline-block",marginRight:5,flexShrink:0,boxShadow:tier==="pending"?undefined:`0 0 4px ${col}88`}}/>;};
+
+  // ── Space Pressure Score badge ────────────────────────────────────────────
+  const scoreBadge=(score)=>{if(score==null)return null;const col=score>=70?"#22c55e":score>=40?"#f59e0b":"#ef4444";const label=score>=70?"HOT":score>=40?"WARM":"COLD";return<span title={`Space Pressure Score: ${score}/100`} style={{background:col+"18",color:col,border:`1px solid ${col}30`,padding:"2px 6px",borderRadius:3,fontSize:9,fontFamily:"monospace",letterSpacing:1,whiteSpace:"nowrap"}}>⬆ {score} {label}</span>;};
+
 
   const navTabs=[
     {id:"search",   l:"Search",   i:"⌖"},
@@ -491,8 +516,8 @@ export default function App({ session, onBack }){
           </div>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
-          {verifying&&<span style={{fontSize:9,color:"#7dd4cc",fontFamily:"'IBM Plex Mono',monospace"}} className="pulse">✉ CHECKING</span>}
-          {!verifying&&leads.length>0&&<span style={{fontSize:9,color:"#22c55e",fontFamily:"'IBM Plex Mono',monospace"}}>✉ {verifiedCount}/{leads.filter(r=>r.email&&r.email!=="unknown").length}</span>}
+          {verifying&&<span style={{fontSize:9,color:"#7dd4cc",fontFamily:"'IBM Plex Mono',monospace"}} className="pulse">✉ DNS…</span>}
+          {leads.length>0&&<span style={{fontSize:9,color:"#22c55e",fontFamily:"'IBM Plex Mono',monospace"}}>🟢 {leads.filter(r=>r.emailStatus==="verified").length}/{leads.filter(r=>r.email).length}</span>}
           <div style={{width:1,height:14,background:"rgba(255,255,255,0.12)"}}/>
           {apolloKey
             ? <span style={{fontSize:9,color:"#22c55e",letterSpacing:1,fontFamily:"'IBM Plex Mono',monospace"}}>⬡ APOLLO</span>
@@ -635,11 +660,14 @@ export default function App({ session, onBack }){
         {/* ══ RESULTS ═════════════════════════════════════════════════════════ */}
         {tab==="results"&&(
           <div>
-            {leads.length>0&&Object.keys(emailChecks).length>0&&(
-              <div style={{background:"#080c14",border:"1px solid #1a2535",borderRadius:8,padding:"8px 13px",marginBottom:10,display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+            {leads.length>0&&(
+              <div style={{background:"#080c14",border:"1px solid #1a2535",borderRadius:8,padding:"8px 13px",marginBottom:10,display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
                 <span style={{fontSize:9,color:"#2a5555",letterSpacing:2,textTransform:"uppercase"}}>Email</span>
-                {[["✓",Object.values(emailChecks).filter(e=>e.status==="valid").length,"#22c55e"],["⚠",Object.values(emailChecks).filter(e=>e.status==="risky").length,"#f59e0b"],["✗",Object.values(emailChecks).filter(e=>e.status==="invalid").length,"#ef4444"]].map(([ic,v,c])=>(<span key={ic} style={{fontSize:11,color:c}}>{ic} {v}</span>))}
-                {verifying&&<span style={{fontSize:10,color:"#3aada0",marginLeft:"auto"}} className="pulse">checking...</span>}
+                <span style={{fontSize:11,color:"#22c55e"}}>🟢 {leads.filter(l=>l.emailStatus==="verified").length} verified</span>
+                <span style={{fontSize:11,color:"#f59e0b"}}>🟡 {leads.filter(l=>l.emailStatus==="likely to engage").length} likely</span>
+                <span style={{fontSize:11,color:"#ef4444"}}>🔴 {leads.filter(l=>!l.emailStatus||l.emailStatus==="unavailable").length} unverified</span>
+                {leads.some(l=>l.spacePressureScore!=null)&&<span style={{fontSize:11,color:"#3aada0",marginLeft:"auto"}}>⬆ {Math.round(leads.filter(l=>l.spacePressureScore!=null).reduce((s,l)=>s+l.spacePressureScore,0)/leads.filter(l=>l.spacePressureScore!=null).length)} avg score</span>}
+                {verifying&&<span style={{fontSize:10,color:"#3aada0",marginLeft:"auto"}} className="pulse">checking DNS…</span>}
               </div>
             )}
             <div style={{display:"flex",gap:7,flexWrap:"wrap",marginBottom:12}}>
@@ -656,23 +684,24 @@ export default function App({ session, onBack }){
                 <div style={{fontSize:11,marginTop:6,color:"#1a4040"}}>Search, add manually, or import a CSV</div>
               </div>
             ):leads.map(r=>{
-              const ec=emailChecks[r.id];const stage=getStage(r.id);const stageInfo=PIPELINE_STAGES.find(s=>s.id===stage);const lc=lastContact(r.id);
+              const tier=getEmailTier(r);const stage=getStage(r.id);const stageInfo=PIPELINE_STAGES.find(s=>s.id===stage);const lc=lastContact(r.id);
               return(
-                <div key={r.id} className={`rcard ${ec?.status==="invalid"?"inv":""}`} onClick={()=>setExpanded(expanded===r.id?null:r.id)}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                <div key={r.id} className={`rcard ${tier.tier==="red"&&!r.email?"inv":""}`} onClick={()=>setExpanded(expanded===r.id?null:r.id)}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
                     <div style={{minWidth:0,flex:1}}>
                       <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name||"—"}</div>
                       <div style={{fontSize:10,color:"#3a6a6a",marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{[r.title,r.company].filter(Boolean).join(" · ")}</div>
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0,marginLeft:8}}>
+                      {r.spacePressureScore!=null&&scoreBadge(r.spacePressureScore)}
                       <span style={{fontSize:9,color:stageInfo?.color,border:`1px solid ${stageInfo?.color}40`,padding:"2px 5px",borderRadius:3,fontFamily:"monospace",letterSpacing:1}}>{stage.toUpperCase()}</span>
                       {confBadge(r)}
                       <span style={{color:"#2a5555",fontSize:10}}>{expanded===r.id?"▲":"▼"}</span>
                     </div>
                   </div>
-                  <div style={{fontSize:11,color:"#7dd4cc",marginBottom:6,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {[r.building,r.location].filter(v=>v&&v!=="unknown").join(" — ")||"—"}</div>
+                  <div style={{fontSize:11,color:"#7dd4cc",marginBottom:5,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {[r.building,r.location].filter(v=>v&&v!=="unknown").join(" — ")||"—"}</div>
                   {r.contract_expiry&&r.contract_expiry!=="unknown"&&(
-                    <div style={{background:"#0d1f0a",border:"1px solid #1e4a1a",borderRadius:5,padding:"5px 9px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                    <div style={{background:"#0d1f0a",border:"1px solid #1e4a1a",borderRadius:5,padding:"5px 9px",marginBottom:5,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <span style={{fontSize:9,color:"#4a7a40",letterSpacing:1,textTransform:"uppercase"}}>{r.contract_expiry.startsWith("Est.")?"Lease renewal est.":"Contract due"}</span>
                       <div style={{textAlign:"right"}}>
                         <span style={{fontSize:11,color:"#22c55e",fontWeight:600,fontFamily:"'IBM Plex Sans',sans-serif"}}>{r.contract_expiry}</span>
@@ -681,7 +710,7 @@ export default function App({ session, onBack }){
                     </div>
                   )}
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:5}}>
-                    <div style={{fontSize:10,display:"flex",alignItems:"center",overflow:"hidden"}}>{emailDot(r.id)}<span style={{color:ec?.status==="valid"?"#22c55e":ec?.status==="invalid"?"#ef4444":"#94a3b8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.email||"—"}</span></div>
+                    <div style={{fontSize:10,display:"flex",alignItems:"center",overflow:"hidden"}}>{emailDot(r.id,r)}<span style={{color:tier.col,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.email||"—"}</span></div>
                     <div style={{fontSize:10,color:"#94a3b8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📞 {r.phone||"—"}</div>
                   </div>
                   {lc&&<div style={{marginTop:6,fontSize:10,color:outcomeColor(lc.outcome),display:"flex",alignItems:"center",gap:4}}>◉ {outcomeLabel(lc.outcome)} · {new Date(lc.date).toLocaleDateString()}{lc.followup&&<span style={{color:"#7dd4cc",marginLeft:6}}>↻ {lc.followup}</span>}</div>}
@@ -696,14 +725,44 @@ export default function App({ session, onBack }){
                           ))}
                         </div>
                       </div>
+                      {/* Email status detail */}
+                      <div style={{background:tier.bg,border:`1px solid ${tier.col}30`,borderRadius:6,padding:"7px 11px",marginBottom:11,display:"flex",alignItems:"center",gap:8}}>
+                        <span style={{fontSize:16}}>{tier.tier==="green"?"🟢":tier.tier==="amber"?"🟡":"🔴"}</span>
+                        <div>
+                          <div style={{fontSize:10,color:tier.col,fontFamily:"monospace",letterSpacing:1,fontWeight:600}}>{tier.label}</div>
+                          <div style={{fontSize:10,color:"#3a6a6a",marginTop:1}}>{r.emailStatus==="verified"?"SMTP-verified by Apollo — safe to send":r.emailStatus==="likely to engage"?"Apollo confidence: likely to engage — flag when sending":r.email?"No Apollo verification — proceed with caution":"No email found for this contact"}</div>
+                        </div>
+                      </div>
                       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9,marginBottom:11}}>
-                        {[["Company",r.company],["Building / Address",r.building],["Location",r.location],["Tenure",r.tenure],["Contract Due",r.contract_expiry],["Lease Confidence",r.leaseConfidence||null],["Company Size",r.companySize||null],["Industry",r.companyIndustry||null],["Source",r.source]].map(([l,v])=>v?(
+                        {[["Company",r.company],["Building / Address",r.building],["Location",r.location],["Tenure",r.tenure],["Contract Due",r.contract_expiry],["Lease Confidence",r.leaseConfidence||null],["Company Size",r.companySize||null],["Industry",r.companyIndustry||null],["Funding Stage",r.funding?.stage||null],["Total Funding",r.funding?.totalPrinted||null],["Headcount (30d Δ)",r.headcountGrowth?.change30d!=null?`${r.headcountGrowth.change30d>0?"+":""}${r.headcountGrowth.change30d} employees`:null],["Source",r.source]].map(([l,v])=>v!=null?(
                           <div key={l}><div style={{fontSize:9,letterSpacing:2,color:"#2a5555",textTransform:"uppercase",marginBottom:2}}>{l}</div><div style={{fontSize:11,wordBreak:"break-word",color:"#e2e8f0"}}>{v}</div></div>
                         ):null)}
                       </div>
                       {r.leaseBasis&&(
-                        <div style={{fontSize:10,color:"#2a5555",marginBottom:11,padding:"7px 10px",background:"#080c10",borderRadius:5,border:"1px solid #111827",lineHeight:1.5}}>
+                        <div style={{fontSize:10,color:"#2a5555",marginBottom:8,padding:"7px 10px",background:"#080c10",borderRadius:5,border:"1px solid #111827",lineHeight:1.5}}>
                           📊 {r.leaseBasis}
+                        </div>
+                      )}
+                      {/* Space Pressure Score breakdown */}
+                      {r.spacePressureScore!=null&&(
+                        <div style={{marginBottom:8,padding:"8px 11px",background:"#070f0f",border:"1px solid #0f2020",borderRadius:6}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                            <span style={{fontSize:9,color:"#2a5555",letterSpacing:2,textTransform:"uppercase"}}>Space Pressure Score</span>
+                            {scoreBadge(r.spacePressureScore)}
+                          </div>
+                          <div style={{height:4,background:"#0f2020",borderRadius:2,overflow:"hidden"}}>
+                            <div style={{height:"100%",width:`${r.spacePressureScore}%`,background:r.spacePressureScore>=70?"#22c55e":r.spacePressureScore>=40?"#f59e0b":"#ef4444",borderRadius:2,transition:"width .3s"}}/>
+                          </div>
+                          <div style={{fontSize:9,color:"#2a5555",marginTop:4,lineHeight:1.5}}>Combines lease urgency · headcount growth · funding · seniority</div>
+                        </div>
+                      )}
+                      {/* Tech stack */}
+                      {r.techStack&&r.techStack.length>0&&(
+                        <div style={{marginBottom:8}}>
+                          <div style={{fontSize:9,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:5}}>Tech Stack</div>
+                          <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                            {r.techStack.map(t=><span key={t} style={{fontSize:9,background:"#0a2020",border:"1px solid #1a3535",color:"#3aada0",padding:"2px 7px",borderRadius:4,fontFamily:"monospace"}}>{t}</span>)}
+                          </div>
                         </div>
                       )}
                       <div style={{display:"flex",gap:7,flexWrap:"wrap"}}>

@@ -113,21 +113,102 @@ function estimateLeaseExpiry(incorporationDateStr) {
 
 function confidenceRank(c) { return { overdue: 4, high: 3, medium: 2, low: 1 }[c] || 0; }
 
+function calcSpacePressureScore(leaseEstimate, org, title) {
+  let score = 0;
+
+  // ── Lease urgency (0–40 pts) ──────────────────────────────────────────────
+  const conf = leaseEstimate?.confidence;
+  if (conf === "overdue") score += 40;
+  else if (conf === "high") score += 35;
+  else if (conf === "medium") score += 20;
+  else if (conf === "low") score += 10;
+  else score += 5;
+
+  // ── Headcount growth (0–30 pts) ───────────────────────────────────────────
+  const emp30 = org?.num_employees_30_day_change;
+  const empTotal = org?.estimated_num_employees || 1;
+  if (emp30 != null && empTotal > 0) {
+    const pct = (emp30 / empTotal) * 100;
+    if (pct > 20) score += 30;
+    else if (pct > 10) score += 20;
+    else if (pct > 5) score += 10;
+    else if (pct >= 0) score += 5;
+    // shrinking = 0
+  } else {
+    score += 5; // unknown — small default
+  }
+
+  // ── Recent funding (0–20 pts) ─────────────────────────────────────────────
+  const fundingStage = (org?.latest_funding_stage || "").toLowerCase();
+  const fundingDate = org?.latest_funding_round_date ? new Date(org.latest_funding_round_date) : null;
+  const monthsAgo = fundingDate ? (Date.now() - fundingDate.getTime()) / (1000 * 60 * 60 * 24 * 30) : null;
+  const bigStages = ["series_b", "series_c", "series_d", "series_e", "late_stage_vc", "private_equity", "debt_financing"];
+  const midStages = ["series_a", "series_b"];
+  if (fundingStage && monthsAgo !== null) {
+    if (bigStages.some(s => fundingStage.includes(s)) && monthsAgo <= 12) score += 20;
+    else if (midStages.some(s => fundingStage.includes(s)) && monthsAgo <= 12) score += 15;
+    else if (monthsAgo <= 24) score += 10;
+  }
+
+  // ── Decision-maker seniority (0–10 pts) ───────────────────────────────────
+  const t = (title || "").toLowerCase();
+  if (t.includes("chief") || t.includes("coo") || t.includes("director") || t.includes("vp") || t.includes("vice president")) score += 10;
+  else if (t.includes("head of") || t.includes("manager")) score += 6;
+  else score += 3;
+
+  return Math.min(100, Math.max(0, score));
+}
+
 function formatResults(apolloPeople, chData) {
   return apolloPeople.map((person) => {
     const companyName = person.organization?.name || "";
     const ch = chData[companyName] || null;
-    const emailVerified = person.email_status === "verified";
+    const org = person.organization || {};
+
+    // ── Email status (full 3-tier) ──────────────────────────────────────────
+    const emailStatus = person.email_status || "unavailable"; // "verified" | "likely to engage" | "unavailable"
+
+    // ── Headcount growth ────────────────────────────────────────────────────
+    const headcountGrowth = {
+      current: org.estimated_num_employees || null,
+      change30d: org.num_employees_30_day_change ?? null,
+      change6m: org.num_employees_6_month_change ?? null,
+    };
+
+    // ── Funding ─────────────────────────────────────────────────────────────
+    const funding = (org.latest_funding_stage || org.total_funding_printed || org.latest_funding_round_date) ? {
+      stage: org.latest_funding_stage || null,
+      totalPrinted: org.total_funding_printed || null,
+      lastRoundDate: org.latest_funding_round_date || null,
+    } : null;
+
+    // ── Tech stack (top 6) ──────────────────────────────────────────────────
+    const techStack = (org.current_technologies || []).slice(0, 6).map(t => t.name || t.uid || String(t)).filter(Boolean);
+
+    // ── Space Pressure Score ────────────────────────────────────────────────
+    const spacePressureScore = calcSpacePressureScore(ch?.leaseEstimate || null, org, person.title);
+
     return {
       id: person.id,
       name: [person.first_name, person.last_name].filter(Boolean).join(" "),
       title: person.title || "",
       email: person.email || null,
-      emailVerified,
+      emailStatus,          // full status string — replaces old emailVerified boolean
+      emailVerified: emailStatus === "verified", // kept for backward compat
       phone: person.phone_numbers?.[0]?.sanitized_number || null,
       linkedIn: person.linkedin_url || null,
       photo: person.photo_url || null,
-      company: { name: companyName, domain: person.organization?.website_url || null, size: formatEmployeeCount(person.organization?.estimated_num_employees), industry: person.organization?.industry || null, location: person.organization?.city ? `${person.organization.city}, UK` : "United Kingdom" },
+      company: {
+        name: companyName,
+        domain: org.website_url || null,
+        size: formatEmployeeCount(org.estimated_num_employees),
+        industry: org.industry || null,
+        location: org.city ? `${org.city}, UK` : "United Kingdom",
+      },
+      headcountGrowth,
+      funding,
+      techStack,
+      spacePressureScore,
       companiesHouse: ch ? { companyNumber: ch.number, status: ch.status, incorporationDate: ch.incorporationDate, registeredAddress: ch.registeredAddress } : null,
       leaseEstimate: ch?.leaseEstimate || null,
     };
