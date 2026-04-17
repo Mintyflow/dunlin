@@ -239,7 +239,7 @@ export default function Dashboard({ session, onSelect }) {
               { label: 'Pricing', href: '/#pricing' },
               { label: 'Product Overview', href: '/one-pager.html' },
             ].map(({ label, href }) => (
-              <a key={label} href={href}"
+              <a key={label} href={href}
                 style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
                 onMouseOver={e => e.currentTarget.style.color = '#7dd4cc'} onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}>
                 {label}
@@ -255,7 +255,7 @@ export default function Dashboard({ session, onSelect }) {
               { label: 'Sitemap', href: '/sitemap.html' },
               { label: 'Contact us', href: 'mailto:hello@getdunlin.com' },
             ].map(({ label, href }) => (
-              <a key={label} href={href}"
+              <a key={label} href={href}
                 style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
                 onMouseOver={e => e.currentTarget.style.color = '#7dd4cc'} onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}>
                 {label}
@@ -271,7 +271,7 @@ export default function Dashboard({ session, onSelect }) {
               { label: 'Cookie Policy', href: '/cookies.html' },
               { label: 'GDPR', href: '/privacy.html#gdpr' },
             ].map(({ label, href }) => (
-              <a key={label} href={href}"
+              <a key={label} href={href}
                 style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
                 onMouseOver={e => e.currentTarget.style.color = '#7dd4cc'} onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}>
                 {label}
