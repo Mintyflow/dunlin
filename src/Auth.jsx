@@ -271,6 +271,19 @@ export default function Auth() {
     link.rel = 'stylesheet'
     link.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap'
     document.head.appendChild(link)
+
+    // Fix browser autofill grey background on inputs
+    const style = document.createElement('style')
+    style.innerHTML = `
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+        -webkit-text-fill-color: #1c2b2b !important;
+        transition: background-color 5000s ease-in-out 0s;
+      }
+    `
+    document.head.appendChild(style)
   }, [])
 
   const sidebar = (

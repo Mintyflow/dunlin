@@ -71,14 +71,81 @@ function OpportunityTool({ session, onBack }) {
   )
 }
 
+// ── Reset Password Screen ─────────────────────────────────────────────────────
+function ResetPassword({ onDone }) {
+  const C = { dt:'#1a4a4a', mt:'#2a7a72', bt:'#3aada0', lt:'#7dd4cc', pt:'#d6f0ee', sand:'#f5f0e8', ink:'#1c2b2b', inkm:'#3d5252', inkl:'#7a9696', white:'#ffffff' }
+  const [password, setPassword]   = useState('')
+  const [confirm, setConfirm]     = useState('')
+  const [loading, setLoading]     = useState(false)
+  const [error, setError]         = useState('')
+  const [done, setDone]           = useState(false)
+
+  const submit = async () => {
+    if (password.length < 8) { setError('Password must be at least 8 characters.'); return }
+    if (password !== confirm) { setError("Passwords don't match."); return }
+    setLoading(true); setError('')
+    const { error } = await supabase.auth.updateUser({ password })
+    setLoading(false)
+    if (error) { setError(error.message); return }
+    setDone(true)
+    setTimeout(onDone, 2000)
+  }
+
+  return (
+    <div style={{ minHeight:'100vh', background:C.sand, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'DM Sans', sans-serif" }}>
+      <div style={{ width:'100%', maxWidth:400, padding:'0 24px' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:40 }}>
+          <svg width="24" height="16" viewBox="0 0 120 80" fill="none">
+            <ellipse cx="62" cy="46" rx="28" ry="16" stroke={C.dt} strokeWidth="1.5" fill="none"/>
+            <circle cx="88" cy="34" r="10" stroke={C.dt} strokeWidth="1.5" fill="none"/>
+            <path d="M96 36 Q108 36 112 40" stroke={C.dt} strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+          </svg>
+          <span style={{ fontFamily:"'Cormorant Garamond', serif", fontWeight:300, fontSize:22, color:C.dt, letterSpacing:'0.06em' }}>dunlin</span>
+        </div>
+
+        {done ? (
+          <div style={{ textAlign:'center' }}>
+            <div style={{ fontSize:44, marginBottom:16 }}>✓</div>
+            <h2 style={{ fontFamily:"'Cormorant Garamond', serif", fontWeight:300, fontSize:32, color:C.dt, marginBottom:12 }}>Password updated</h2>
+            <p style={{ fontSize:14, color:C.inkl }}>Taking you to your dashboard…</p>
+          </div>
+        ) : (
+          <div>
+            <h1 style={{ fontFamily:"'Cormorant Garamond', serif", fontWeight:300, fontSize:38, color:C.dt, marginBottom:8, lineHeight:1.1 }}>Set new password.</h1>
+            <p style={{ fontSize:14, color:C.inkl, marginBottom:30, fontWeight:300 }}>Choose a strong password for your account.</p>
+
+            <div style={{ marginBottom:18 }}>
+              <label style={{ display:'block', fontSize:12, color:C.inkl, letterSpacing:'0.5px', marginBottom:7 }}>New password</label>
+              <input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="At least 8 characters"
+                style={{ width:'100%', background:'#fff', border:`1px solid rgba(26,74,74,0.15)`, color:C.ink, padding:'13px 15px', fontFamily:"'DM Sans', sans-serif", fontSize:15, borderRadius:8, outline:'none', boxSizing:'border-box' }}/>
+            </div>
+            <div style={{ marginBottom:18 }}>
+              <label style={{ display:'block', fontSize:12, color:C.inkl, letterSpacing:'0.5px', marginBottom:7 }}>Confirm password</label>
+              <input type="password" value={confirm} onChange={e=>setConfirm(e.target.value)} placeholder="Repeat your password"
+                style={{ width:'100%', background:'#fff', border:`1px solid rgba(26,74,74,0.15)`, color:C.ink, padding:'13px 15px', fontFamily:"'DM Sans', sans-serif", fontSize:15, borderRadius:8, outline:'none', boxSizing:'border-box' }}/>
+            </div>
+
+            {error && <div style={{ background:'#FEE2E2', border:'1px solid rgba(239,68,68,0.3)', borderRadius:8, padding:'11px 14px', marginBottom:16, fontSize:13, color:'#991B1B' }}>{error}</div>}
+
+            <button onClick={submit} disabled={loading}
+              style={{ width:'100%', background:loading?C.lt:C.bt, color:'#fff', border:'none', padding:'14px', fontFamily:"'DM Sans', sans-serif", fontSize:15, fontWeight:500, cursor:loading?'not-allowed':'pointer', borderRadius:8, transition:'background 0.2s' }}>
+              {loading ? 'Saving…' : 'Set new password'}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ── Main App ──────────────────────────────────────────────────────────────────
 export default function App() {
-  const [session, setSession]     = useState(null)
-  const [loading, setLoading]     = useState(true)
-  const [activeTool, setActiveTool] = useState(null) // null = dashboard
+  const [session, setSession]         = useState(null)
+  const [loading, setLoading]         = useState(true)
+  const [activeTool, setActiveTool]   = useState(null)
+  const [resetting, setResetting]     = useState(false)
 
   useEffect(() => {
-    // Load fonts
     const link = document.createElement('link')
     link.rel = 'stylesheet'
     link.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap'
@@ -89,9 +156,12 @@ export default function App() {
       setLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session)
-      if (!session) setActiveTool(null) // reset on logout
+      if (event === 'PASSWORD_RECOVERY') {
+        setResetting(true)  // show the set-new-password screen
+      }
+      if (!session && event !== 'PASSWORD_RECOVERY') setActiveTool(null)
     })
 
     return () => subscription.unsubscribe()
@@ -116,6 +186,9 @@ export default function App() {
       </div>
     )
   }
+
+  // Password recovery flow
+  if (resetting) return <ResetPassword onDone={() => setResetting(false)} />
 
   // Not logged in → auth screen
   if (!session) return <Auth />
