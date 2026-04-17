@@ -76,6 +76,48 @@ function mapApolloResult(r, loc) {
   };
 }
 
+// ─── EMAIL SEQUENCES ──────────────────────────────────────────────────────────
+const DEFAULT_SEQUENCES = [
+  {
+    id: "renewal-radar",
+    name: "Lease Renewal Outreach",
+    description: "5-step cadence for companies approaching renewal. Warm intro → value → case study → direct ask → final.",
+    steps: [
+      { day: 0,  subject: "Quick question about your office space, {name}",
+        body: `Hi {name},\n\nI came across {company} and noticed you're based in the {location} area — I work with businesses there who are reviewing their office situation, and given the current market I wanted to reach out.\n\nAre you likely to be reviewing your space in the next 6–12 months? Happy to share what's available and what comparable companies are paying right now.\n\nWorth a quick chat?\n\nBest,` },
+      { day: 3,  subject: "Re: Office space in {location}",
+        body: `Hi {name},\n\nFollowing up on my note from earlier this week — just wanted to make sure it didn't get lost.\n\nWe've recently helped a number of {industry} businesses in {location} negotiate significantly better terms on their next space — whether that's a move, a renewal, or a flex arrangement.\n\nWould you be open to a 15-minute call to explore what options look like?\n\nBest,` },
+      { day: 7,  subject: "{company} — office market update for {location}",
+        body: `Hi {name},\n\nI wanted to share something useful regardless of where you are in your space planning. Rents in {location} have moved meaningfully in the last 12 months, and we're seeing companies of your size securing deals that weren't on the market 6 months ago.\n\nIf you're open to it, I'd love to put together a brief market snapshot specific to your requirements — no obligation, just useful context.\n\nLet me know and I'll send it over.\n\nBest,` },
+      { day: 14, subject: "One more thought on {company}'s office plans",
+        body: `Hi {name},\n\nI know inboxes get busy — I'll keep this brief.\n\nWe have a few options in {location} that I think would be a strong fit for a team of your size. I'd rather share them with someone who'll appreciate them than let them sit on a list.\n\nAre you the right person to talk to about office decisions at {company}, or should I be speaking to someone else?\n\nEither way, happy to help.\n\nBest,` },
+      { day: 21, subject: "Closing the loop — {company}",
+        body: `Hi {name},\n\nI've reached out a few times over the past few weeks and I don't want to clog your inbox further — so this will be my last note for now.\n\nIf your office situation changes or you'd like to understand what your options look like, I'm easy to find.\n\nWishing you and {company} well.\n\nBest,` },
+    ],
+  },
+  {
+    id: "flex-operator",
+    name: "Flex Operator Warm Pitch",
+    description: "3-step sequence for operators pitching their building directly to growing companies.",
+    steps: [
+      { day: 0,  subject: "Office space near you — {company}",
+        body: `Hi {name},\n\nI run a flexible workspace in {location} and noticed {company} is based nearby. We work with a number of growing teams who need space that moves with them — private offices, part-time desks, or a dedicated floor.\n\nWould it be useful to see what we have? Happy to arrange a tour at your convenience.\n\nBest,` },
+      { day: 5,  subject: "Quick follow-up — workspace for {company}",
+        body: `Hi {name},\n\nJust checking in on my note from a few days ago. We've had a couple of teams move in recently who were in a similar position to {company} — growing fast and needing flexibility.\n\nIf timing isn't right now, no problem at all — but I'd rather you had our details for when it is.\n\nAre you open to a quick tour?\n\nBest,` },
+      { day: 12, subject: "Last note — workspace in {location}",
+        body: `Hi {name},\n\nFinal note from me — I don't want to be a nuisance.\n\nIf you ever need flexible workspace in {location}, we're here. We've helped a number of local businesses through transitions, and we make it easy.\n\nFeel free to reach out any time.\n\nBest,` },
+    ],
+  },
+];
+
+function applyTokens(text, lead) {
+  return text
+    .replace(/\{name\}/g, lead.name?.split(" ")[0] || "there")
+    .replace(/\{company\}/g, lead.company || "your company")
+    .replace(/\{location\}/g, lead.location?.replace(/, UK/, "").replace(/, United Kingdom/, "") || "your area")
+    .replace(/\{industry\}/g, lead.companyIndustry || "your sector");
+}
+
 export default function App({ session, onBack }){
   const userId = session?.user?.id;
 
@@ -99,6 +141,15 @@ export default function App({ session, onBack }){
   const [apolloKeyStatus,setApolloKeyStatus]=useState("idle");
   const [apolloKeyMessage,setApolloKeyMessage]=useState("");
   const [showApolloKey,setShowApolloKey]=useState(false);
+
+  // ── Sequences ──────────────────────────────────────────────────────────────
+  const [enrollments,setEnrollments]=useState({}); // {leadId: {seqId, enrolledAt, step, done}}
+  const [seqView,setSeqView]=useState("tasks");    // "tasks" | "library" | "enrolled"
+  const [seqPreview,setSeqPreview]=useState(null); // {seqId, stepIdx, lead}
+  const [hubspotKey,setHubspotKey]=useState("");
+  const [hubspotKeyInput,setHubspotKeyInput]=useState("");
+  const [hubspotStatus,setHubspotStatus]=useState("idle");
+  const [hubspotMsg,setHubspotMsg]=useState("");
 
   // ── Pipeline ──────────────────────────────────────────────────────────────
   const [pipeline,setPipeline]=useState({});
@@ -154,10 +205,14 @@ export default function App({ session, onBack }){
         setOutreach(map);
       }
       // Load Apollo API key from profiles
-      const {data:profileData}=await supabase.from("profiles").select("apollo_api_key").eq("user_id",userId).single();
+      const {data:profileData}=await supabase.from("profiles").select("apollo_api_key,hubspot_api_key").eq("user_id",userId).single();
       if(profileData?.apollo_api_key){
         setApolloKey(profileData.apollo_api_key);
         setApolloKeyInput(profileData.apollo_api_key);
+      }
+      if(profileData?.hubspot_api_key){
+        setHubspotKey(profileData.hubspot_api_key);
+        setHubspotKeyInput(profileData.hubspot_api_key);
       }
 
       setDbLoading(false);
@@ -394,6 +449,61 @@ export default function App({ session, onBack }){
   const outcomeLabel=(o)=>({no_reply:"No reply",interested:"Interested",not_now:"Not now",converted:"Converted",do_not_call:"Do not call"}[o]||o);
   const outcomeColor=(o)=>({no_reply:"#3a6a6a",interested:"#22c55e",not_now:"#f59e0b",converted:"#7dd4cc",do_not_call:"#ef4444"}[o]||"#3a6a6a");
 
+  // ── Sequence helpers ───────────────────────────────────────────────────────
+  const enrollLead=(leadId,seqId)=>setEnrollments(p=>({...p,[leadId]:{seqId,enrolledAt:new Date().toISOString(),step:0,done:false}}));
+  const unenrollLead=(leadId)=>setEnrollments(p=>{const n={...p};delete n[leadId];return n;});
+  const advanceStep=(leadId)=>setEnrollments(p=>{const e=p[leadId];if(!e)return p;const seq=DEFAULT_SEQUENCES.find(s=>s.id===e.seqId);const next=e.step+1;return{...p,[leadId]:{...e,step:next,done:next>=(seq?.steps?.length||0)}}});
+
+  // Tasks due today or overdue
+  const seqTasksDue=useMemo(()=>{
+    const today=new Date();today.setHours(0,0,0,0);
+    const tasks=[];
+    Object.entries(enrollments).forEach(([leadId,e])=>{
+      if(e.done)return;
+      const seq=DEFAULT_SEQUENCES.find(s=>s.id===e.seqId);
+      if(!seq)return;
+      const step=seq.steps[e.step];
+      if(!step)return;
+      const enrolled=new Date(e.enrolledAt);enrolled.setHours(0,0,0,0);
+      const dueOn=new Date(enrolled);dueOn.setDate(dueOn.getDate()+step.day);
+      if(dueOn<=today){
+        const lead=leads.find(l=>String(l.id)===String(leadId));
+        if(lead)tasks.push({lead,seq,step,stepIdx:e.step,dueOn,enrollment:e});
+      }
+    });
+    return tasks.sort((a,b)=>a.dueOn-b.dueOn);
+  },[enrollments,leads]);
+
+  // ── HubSpot integration ────────────────────────────────────────────────────
+  const saveHubspotKey=async()=>{
+    if(!hubspotKeyInput.trim()){setHubspotMsg("Please enter a valid API key.");setHubspotStatus("error");return;}
+    setHubspotStatus("saving");
+    const{error}=await supabase.from("profiles").update({hubspot_api_key:hubspotKeyInput.trim()}).eq("user_id",userId);
+    if(error){setHubspotStatus("error");setHubspotMsg("Could not save. Please try again.");return;}
+    setHubspotKey(hubspotKeyInput.trim());setHubspotStatus("saved");setHubspotMsg("HubSpot key saved.");
+    setTimeout(()=>setHubspotStatus("idle"),3000);
+  };
+
+  const pushToHubspot=async(leadsToSync)=>{
+    if(!hubspotKey){setHubspotMsg("Add your HubSpot API key first.");setHubspotStatus("error");return;}
+    setHubspotStatus("syncing");setHubspotMsg(`Pushing ${leadsToSync.length} contacts to HubSpot…`);
+    let ok=0,fail=0;
+    for(const r of leadsToSync){
+      if(!r.email)continue;
+      try{
+        const res=await fetch("https://api.hubapi.com/crm/v3/objects/contacts",{
+          method:"POST",
+          headers:{"Content-Type":"application/json","Authorization":`Bearer ${hubspotKey}`},
+          body:JSON.stringify({properties:{email:r.email,firstname:r.name?.split(" ")[0]||"",lastname:r.name?.split(" ").slice(1).join(" ")||"",jobtitle:r.title||"",company:r.company||"",phone:r.phone||"",city:r.location||"",hs_lead_status:"NEW",dunlin_space_pressure_score:String(r.spacePressureScore||""),dunlin_lease_expiry:r.contract_expiry||"",dunlin_email_status:r.emailStatus||""}})
+        });
+        if(res.status===409){ok++;continue;}// already exists
+        if(res.ok)ok++;else fail++;
+      }catch{fail++;}
+    }
+    setHubspotStatus(fail===0?"saved":"error");
+    setHubspotMsg(`Pushed: ${ok} contacts to HubSpot${fail>0?` · ${fail} failed`:""}. Check your HubSpot Contacts list.`);
+  };
+
   // ── Pipeline ──────────────────────────────────────────────────────────────
   const getStage=(id)=>pipeline[id]||"new";
   const moveStage=async(id,stage)=>{
@@ -457,13 +567,14 @@ export default function App({ session, onBack }){
 
 
   const navTabs=[
-    {id:"search",   l:"Search",   i:"⌖"},
-    {id:"results",  l:"Leads",    i:"◈", b:leads.length},
-    {id:"pipeline", l:"Pipeline", i:"⬦", b:leads.filter(l=>getStage(l.id)==="interested").length||undefined},
-    {id:"calendar", l:"Renewal",  i:"📅",dot:calStats.d30>0||calStats.overdue>0},
-    {id:"outreach", l:"Outreach", i:"✉", b:followupsDueToday.length||undefined},
-    {id:"history",  l:"History",  i:"◎", b:history.length||undefined},
-    {id:"settings", l:"Settings", i:"⚙", dot:!apolloKey&&!dbLoading},
+    {id:"search",    l:"Search",    i:"⌖"},
+    {id:"results",   l:"Leads",     i:"◈", b:leads.length},
+    {id:"pipeline",  l:"Pipeline",  i:"⬦", b:leads.filter(l=>getStage(l.id)==="interested").length||undefined},
+    {id:"calendar",  l:"Renewal",   i:"📅",dot:calStats.d30>0||calStats.overdue>0},
+    {id:"sequences", l:"Sequences", i:"✉", b:seqTasksDue.length||undefined, dot:seqTasksDue.length>0},
+    {id:"outreach",  l:"Outreach",  i:"◉", b:followupsDueToday.length||undefined},
+    {id:"history",   l:"History",   i:"◎", b:history.length||undefined},
+    {id:"settings",  l:"Settings",  i:"⚙", dot:!apolloKey&&!dbLoading},
   ];
 
   return(
@@ -491,6 +602,21 @@ export default function App({ session, onBack }){
         .fg{margin-bottom:12px}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}.pulse{animation:pulse 1.6s ease-in-out infinite}
         .ocard{background:#102020;border:1px solid #1a3535;border-radius:10px;padding:13px;margin-bottom:9px}
+        .seq-card{background:#102020;border:1px solid #1a3535;border-radius:10px;padding:13px;margin-bottom:9px;cursor:pointer;transition:border-color .15s}.seq-card:hover{border-color:#3aada0}
+        .seq-step{background:#080c10;border:1px solid #111827;border-radius:7px;padding:10px 12px;margin-bottom:7px}
+        .copy-btn{background:#0a2020;border:1px solid #1a3535;color:#3aada0;padding:5px 10px;border-radius:5px;font-size:10px;cursor:pointer;font-family:monospace;letter-spacing:1px;transition:all .15s}.copy-btn:hover{background:#3aada0;color:#0a1a1a}
+        @media(max-width:600px){
+          div[style*="padding:14px 13px"]{padding:10px 10px!important}
+          div[style*="maxWidth:700px"]{max-width:100vw!important}
+          .rcard{padding:10px!important}
+          div[style*="gridTemplateColumns:1fr 1fr 1fr"]{grid-template-columns:1fr 1fr!important}
+          div[style*="gridTemplateColumns:repeat(4,1fr)"]{grid-template-columns:1fr 1fr!important}
+          div[style*="gridTemplateColumns:repeat(2,1fr)"]{grid-template-columns:1fr!important}
+          div[style*="gridTemplateColumns:1fr 1fr"][style*="gap:9"]{grid-template-columns:1fr!important}
+          div[style*="height:56"]{height:auto!important;padding:10px 12px!important;flex-wrap:wrap!important;gap:8px!important}
+          .nb{min-width:40px!important;padding:6px 2px!important}
+          .nb span:first-child{font-size:15px!important}
+        }
       `}</style>
 
       {/* Header */}
@@ -773,6 +899,28 @@ export default function App({ session, onBack }){
                         {!r.linkedin&&<a href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((r.name||"")+" "+(r.company||""))}`} target="_blank" rel="noreferrer" style={{color:"#3aada0",fontSize:11,textDecoration:"none",background:"#071e1e",border:"1px solid #0a2535",padding:"6px 11px",borderRadius:5}} onClick={e=>e.stopPropagation()}>🔗 LinkedIn</a>}
                         <button onClick={e=>{e.stopPropagation();setOutreachForm(r.id);setTab("outreach");}} style={{background:"#0e2424",border:"1px solid #3a2060",color:"#7dd4cc",fontSize:11,padding:"6px 11px",borderRadius:5,cursor:"pointer",fontFamily:"monospace"}}>◉ Log</button>
                       </div>
+                      {/* Sequence enrolment */}
+                      <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #111827"}}>
+                        <div style={{fontSize:9,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:7}}>Email Sequence</div>
+                        {enrollments[r.id]&&!enrollments[r.id].done?(()=>{
+                          const e=enrollments[r.id];const seq=DEFAULT_SEQUENCES.find(s=>s.id===e.seqId);
+                          return<div style={{background:"#070f0f",border:"1px solid #0f2020",borderRadius:6,padding:"8px 11px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:6}}>
+                            <div><div style={{fontSize:11,color:"#3aada0",fontWeight:600}}>{seq?.name}</div><div style={{fontSize:10,color:"#3a6a6a",marginTop:2}}>Step {e.step+1} of {seq?.steps?.length} · <span style={{color:"#7dd4cc",cursor:"pointer",textDecoration:"underline"}} onClick={ev=>{ev.stopPropagation();setSeqPreview({seqId:e.seqId,stepIdx:e.step,lead:r});setTab("sequences");}}>Preview email</span></div></div>
+                            <div style={{display:"flex",gap:6}}>
+                              <button className="bs" onClick={ev=>{ev.stopPropagation();advanceStep(r.id);}} style={{fontSize:10,padding:"4px 10px"}}>✓ Mark Sent</button>
+                              <button className="bd" onClick={ev=>{ev.stopPropagation();unenrollLead(r.id);}} style={{fontSize:10,padding:"4px 8px"}}>✕</button>
+                            </div>
+                          </div>;
+                        })():enrollments[r.id]?.done?(
+                          <div style={{fontSize:11,color:"#22c55e",background:"#0a2015",border:"1px solid #1a4a2a",borderRadius:6,padding:"7px 11px"}}>✓ Sequence complete</div>
+                        ):(
+                          <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                            {DEFAULT_SEQUENCES.map(s=>(
+                              <button key={s.id} className="bg" onClick={ev=>{ev.stopPropagation();enrollLead(r.id,s.id);}} style={{fontSize:10,padding:"5px 10px"}}>+ {s.name}</button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1026,6 +1174,121 @@ export default function App({ session, onBack }){
           </div>
         )}
 
+        {/* ══ SEQUENCES ═══════════════════════════════════════════════════════ */}
+        {tab==="sequences"&&(
+          <div>
+            {/* Sub-nav */}
+            <div style={{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap"}}>
+              {[["tasks","Today's Tasks"],["enrolled","Enrolled Leads"],["library","Template Library"]].map(([v,l])=>(
+                <button key={v} className={`fb ${seqView===v?"act":""}`} onClick={()=>{setSeqView(v);setSeqPreview(null);}} style={seqView===v?{background:"#3aada0",color:"#0a1a1a",borderColor:"#3aada0"}:{}}>{l}{v==="tasks"&&seqTasksDue.length>0&&<span style={{marginLeft:6,background:"#ef4444",color:"#fff",borderRadius:10,fontSize:9,padding:"1px 5px"}}>{seqTasksDue.length}</span>}</button>
+              ))}
+            </div>
+
+            {/* ── TODAY'S TASKS ── */}
+            {seqView==="tasks"&&(seqTasksDue.length===0?(
+              <div style={{textAlign:"center",padding:"50px 20px",color:"#2a5555"}}>
+                <div style={{fontSize:36,marginBottom:10}}>✉</div>
+                <div style={{fontSize:11,letterSpacing:2}}>NO EMAILS DUE TODAY</div>
+                <div style={{fontSize:11,marginTop:6,color:"#1a4040"}}>Enroll leads in a sequence from their contact card</div>
+              </div>
+            ):seqTasksDue.map(({lead,seq,step,stepIdx,enrollment},i)=>{
+              const isOpen=seqPreview?.lead?.id===lead.id&&seqPreview?.stepIdx===stepIdx;
+              const personalised={subject:applyTokens(step.subject,lead),body:applyTokens(step.body,lead)};
+              return(
+                <div key={i} className="seq-card" onClick={()=>setSeqPreview(isOpen?null:{seqId:seq.id,stepIdx,lead})}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
+                    <div>
+                      <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13}}>{lead.name}</div>
+                      <div style={{fontSize:10,color:"#3a6a6a",marginTop:2}}>{[lead.title,lead.company].filter(Boolean).join(" · ")}</div>
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",gap:6,flexShrink:0}}>
+                      <span style={{fontSize:9,color:"#7dd4cc",border:"1px solid #1a3535",borderRadius:3,padding:"2px 6px",fontFamily:"monospace"}}>STEP {stepIdx+1}/{seq.steps.length}</span>
+                      <span style={{fontSize:9,color:"#3aada0",border:"1px solid #3aada040",borderRadius:3,padding:"2px 6px",fontFamily:"monospace"}}>{seq.name.split(" ").slice(0,2).join(" ")}</span>
+                    </div>
+                  </div>
+                  <div style={{fontSize:11,color:"#e2e8f0",marginBottom:isOpen?10:0,fontStyle:"italic"}}>"{personalised.subject}"</div>
+                  {isOpen&&(
+                    <div onClick={e=>e.stopPropagation()}>
+                      <div style={{background:"#080c10",border:"1px solid #111827",borderRadius:7,padding:"12px 14px",marginBottom:10}}>
+                        <div style={{fontSize:10,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>Subject</div>
+                        <div style={{fontSize:12,color:"#e2e8f0",marginBottom:12,fontWeight:600}}>{personalised.subject}</div>
+                        <div style={{fontSize:10,color:"#2a5555",letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>Body</div>
+                        <pre style={{fontSize:12,color:"#94a3b8",whiteSpace:"pre-wrap",lineHeight:1.8,fontFamily:"'IBM Plex Sans',sans-serif",margin:0}}>{personalised.body}</pre>
+                      </div>
+                      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                        {lead.email&&<a href={`mailto:${lead.email}?subject=${encodeURIComponent(personalised.subject)}&body=${encodeURIComponent(personalised.body+"\n\n— [Your name]\n[Your company]\n[Phone]")}`} style={{background:"#3aada0",color:"#0a1a1a",fontSize:11,textDecoration:"none",padding:"8px 14px",borderRadius:6,fontFamily:"monospace",fontWeight:700,letterSpacing:1}} onClick={()=>advanceStep(lead.id)}>✉ OPEN IN EMAIL CLIENT</a>}
+                        <button className="copy-btn" style={{padding:"8px 14px"}} onClick={()=>{navigator.clipboard.writeText(`Subject: ${personalised.subject}\n\n${personalised.body}`);advanceStep(lead.id);}}>⧉ COPY &amp; MARK SENT</button>
+                        <button className="bd" style={{fontSize:10,padding:"8px 12px"}} onClick={()=>unenrollLead(lead.id)}>✕ Remove</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }))}
+
+            {/* ── ENROLLED LEADS ── */}
+            {seqView==="enrolled"&&(
+              <div>
+                {Object.keys(enrollments).length===0?(
+                  <div style={{textAlign:"center",padding:"50px 20px",color:"#2a5555"}}>
+                    <div style={{fontSize:36,marginBottom:10}}>◈</div>
+                    <div style={{fontSize:11,letterSpacing:2}}>NO ENROLLED LEADS</div>
+                    <div style={{fontSize:11,marginTop:6,color:"#1a4040"}}>Go to a lead card and click "+ Add to Sequence"</div>
+                  </div>
+                ):Object.entries(enrollments).map(([leadId,e])=>{
+                  const lead=leads.find(l=>String(l.id)===String(leadId));
+                  const seq=DEFAULT_SEQUENCES.find(s=>s.id===e.seqId);
+                  if(!lead||!seq)return null;
+                  const pct=Math.round((e.step/seq.steps.length)*100);
+                  return(
+                    <div key={leadId} className="ocard">
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                        <div>
+                          <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13}}>{lead.name}</div>
+                          <div style={{fontSize:10,color:"#3a6a6a",marginTop:2}}>{[lead.title,lead.company].filter(Boolean).join(" · ")}</div>
+                          <div style={{fontSize:10,color:"#7dd4cc",marginTop:4}}>{seq.name} · Step {Math.min(e.step+1,seq.steps.length)} of {seq.steps.length}{e.done&&" ✓ Complete"}</div>
+                        </div>
+                        <button className="bd" onClick={()=>unenrollLead(leadId)} style={{fontSize:10,padding:"4px 9px"}}>✕</button>
+                      </div>
+                      <div style={{marginTop:8,height:4,background:"#0f2020",borderRadius:2,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:`${e.done?100:pct}%`,background:e.done?"#22c55e":"#3aada0",borderRadius:2,transition:"width .3s"}}/>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* ── TEMPLATE LIBRARY ── */}
+            {seqView==="library"&&(
+              <div>
+                <div style={notice(false)}>Templates are personalised automatically using each lead's name, company, location, and industry. Click a step to preview the copy.</div>
+                {DEFAULT_SEQUENCES.map(seq=>(
+                  <div key={seq.id} style={{...card,marginBottom:12}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                      <div>
+                        <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:14,color:"#e2e8f0"}}>{seq.name}</div>
+                        <div style={{fontSize:11,color:"#3a6a6a",marginTop:3}}>{seq.description}</div>
+                      </div>
+                      <span style={{fontSize:9,color:"#3aada0",border:"1px solid #3aada040",borderRadius:3,padding:"3px 8px",fontFamily:"monospace",whiteSpace:"nowrap"}}>{seq.steps.length} STEPS</span>
+                    </div>
+                    {seq.steps.map((step,i)=>(
+                      <div key={i} className="seq-step">
+                        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+                          <span style={{fontSize:9,color:"#3aada0",fontFamily:"monospace",border:"1px solid #1a3535",padding:"1px 6px",borderRadius:3,whiteSpace:"nowrap"}}>Day {step.day}</span>
+                          <span style={{fontSize:11,color:"#e2e8f0",fontWeight:600,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{step.subject}</span>
+                        </div>
+                        <div style={{fontSize:11,color:"#3a6a6a",lineHeight:1.6,whiteSpace:"pre-wrap"}}>{step.body.split("\n").slice(0,2).join(" ").trim()}…</div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+                <div style={{...notice(true),marginTop:8}}>Custom sequence templates are coming soon. You'll be able to build your own step-by-step cadences tailored to your pitch.</div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* ══ SETTINGS ════════════════════════════════════════════════════════ */}
         {tab==="settings"&&(
           <div>
@@ -1094,6 +1357,45 @@ export default function App({ session, onBack }){
                 <div style={{marginTop:12,padding:"10px 13px",background:"#080c10",borderRadius:8,border:"1px dashed #1e2535"}}>
                   <div style={{fontSize:11,color:"#3a4070",lineHeight:1.5}}>Without an Apollo key, searches will load sample demo data only. Real contact data with emails, phone numbers, and lease estimates requires a live key.</div>
                 </div>
+              )}
+            </div>
+
+            {/* HubSpot */}
+            <div style={{...card,marginBottom:12}}>
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
+                <div style={{fontFamily:"'IBM Plex Sans',sans-serif",fontWeight:600,fontSize:13}}>HubSpot CRM</div>
+                {hubspotKey&&<span style={{background:"#0d2e1a",color:"#22c55e",border:"1px solid #22c55e40",padding:"2px 8px",borderRadius:20,fontSize:9,letterSpacing:1}}>CONNECTED</span>}
+              </div>
+              <div style={{fontSize:12,color:"#3a6a6a",marginBottom:12,lineHeight:1.7}}>
+                Push leads directly into your HubSpot Contacts with email status, lease expiry, and Space Pressure Score mapped as custom properties.{" "}
+                <a href="https://app.hubspot.com/developer-api-key" target="_blank" rel="noreferrer" style={{color:"#3aada0",textDecoration:"none"}}>Get your Private App token →</a>
+              </div>
+              <div style={{display:"flex",gap:8,marginBottom:10}}>
+                <input
+                  type="password"
+                  value={hubspotKeyInput}
+                  onChange={e=>{setHubspotKeyInput(e.target.value);setHubspotStatus("idle");setHubspotMsg("");}}
+                  placeholder="Paste your HubSpot Private App token"
+                  style={{...inp,flex:1,fontFamily:"monospace"}}
+                  autoComplete="off"
+                  spellCheck={false}
+                />
+                <button className="bp" style={{width:"auto",padding:"11px 16px",fontSize:11,opacity:!hubspotKeyInput.trim()||hubspotStatus==="saving"?0.5:1}} disabled={!hubspotKeyInput.trim()||hubspotStatus==="saving"} onClick={saveHubspotKey}>
+                  {hubspotStatus==="saving"?"Saving…":hubspotStatus==="saved"?"✓ Saved":"Save"}
+                </button>
+              </div>
+              {hubspotKey&&leads.length>0&&(
+                <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                  <button className="bx" onClick={()=>pushToHubspot(leads)} disabled={hubspotStatus==="syncing"}>
+                    {hubspotStatus==="syncing"?hubspotMsg:`⬆ Push All ${leads.length} Leads to HubSpot`}
+                  </button>
+                  <button className="bg" onClick={()=>pushToHubspot(leads.filter(l=>l.emailStatus==="verified"))} disabled={hubspotStatus==="syncing"}>
+                    🟢 Verified Only ({leads.filter(l=>l.emailStatus==="verified").length})
+                  </button>
+                </div>
+              )}
+              {hubspotMsg&&hubspotStatus!=="syncing"&&(
+                <div style={{fontSize:12,marginTop:8,color:hubspotStatus==="saved"?"#22c55e":"#ef4444",lineHeight:1.5}}>{hubspotMsg}</div>
               )}
             </div>
 
