@@ -888,13 +888,10 @@ export default function App({ session, onBack }){
                     onClick={()=>{setShowAccount(false);setTab("settings");}}
                     style={{background:"#e8f4f0",border:"1px solid #b0d4cc",color:"#1a4a4a",borderRadius:7,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left"}}
                   >⚙ Account Settings</button>
-                  <a
-                    href="https://billing.stripe.com/p/login/dunlin"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={()=>setShowAccount(false)}
-                    style={{background:"#e8f4f0",border:"1px solid #b0d4cc",color:"#1a4a4a",borderRadius:7,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textDecoration:"none",display:"block"}}
-                  >💳 Manage Subscription</a>
+                  <button
+                    onClick={()=>{setShowAccount(false); alert("To manage your subscription, please email hello@getdunlin.com and we\u2019ll sort it within a few hours. We\u2019re setting up the self-serve billing portal now!");}}
+                    style={{background:"#e8f4f0",border:"1px solid #b0d4cc",color:"#1a4a4a",borderRadius:7,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left"}}
+                  >💳 Manage Subscription</button>
                   <button
                     onClick={()=>{setShowAccount(false);supabase.auth.signOut();}}
                     style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.2)",color:"#dc2626",borderRadius:7,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",marginTop:4}}
