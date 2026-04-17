@@ -359,7 +359,8 @@
     display: inline-block;
   }
 
-  .btn-primary:hover { background: var(--teal-mid); transform: translateY(-1px); }
+  .btn-primary:hover { background: var(--teal-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(58,173,160,0.4); }
+  .btn-primary:active { transform: scale(0.97) translateY(0); box-shadow: none; }
 
   .btn-ghost {
     color: rgba(255,255,255,0.6);
@@ -371,7 +372,8 @@
     display: inline-flex; align-items: center; gap: 8px;
   }
 
-  .btn-ghost:hover { color: var(--teal-light); }
+  .btn-ghost:hover { color: var(--teal-light); transform: translateX(3px); }
+  .btn-ghost:active { transform: scale(0.97); }
 
   .hero-note {
     margin-top: 32px;
@@ -658,10 +660,13 @@
     padding: 36px 32px;
     border: 1px solid rgba(0,0,0,0.06);
     position: relative;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
   }
 
-  .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(26,74,74,0.1); }
+  .pricing-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 56px rgba(26,74,74,0.13), 0 0 0 1px rgba(58,173,160,0.12);
+  }
 
   .pricing-card.featured {
     background: var(--teal-deep);
@@ -670,7 +675,10 @@
     box-shadow: 0 20px 60px rgba(26,74,74,0.25);
   }
 
-  .pricing-card.featured:hover { transform: scale(1.04) translateY(-4px); }
+  .pricing-card.featured:hover {
+    transform: scale(1.04) translateY(-6px);
+    box-shadow: 0 28px 70px rgba(26,74,74,0.3), 0 0 40px rgba(58,173,160,0.2);
+  }
 
   .pricing-badge {
     position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
@@ -761,7 +769,7 @@
     border-radius: 8px;
     font-size: 14px; font-weight: 500;
     text-decoration: none;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
     letter-spacing: 0.01em;
   }
 
@@ -773,14 +781,18 @@
   .plan-btn.outline:hover {
     border-color: var(--teal-mid);
     background: var(--teal-mist);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(58,173,160,0.15);
   }
+
+  .plan-btn:active { transform: scale(0.97) !important; box-shadow: none !important; }
 
   .plan-btn.solid {
     background: var(--teal-bright);
     color: white;
   }
 
-  .plan-btn.solid:hover { background: var(--teal-mid); }
+  .plan-btn.solid:hover { background: var(--teal-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(58,173,160,0.35); }
 
   .pricing-note {
     text-align: center;
@@ -1997,6 +2009,85 @@ function handleFormSubmit(e) {
   decline.addEventListener('click', function(){
     localStorage.setItem('dunlin_cookie_consent','essential');
     banner.style.display = 'none';
+  });
+})();
+</script>
+
+<!-- PWA INSTALL PROMPT -->
+<div id="pwaPrompt" style="display:none; position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:10000; background:#1a4a4a; border:1px solid rgba(58,173,160,0.4); border-radius:16px; padding:18px 22px; box-shadow:0 8px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(58,173,160,0.15); max-width:360px; width:calc(100% - 48px); font-family:'DM Sans',sans-serif; animation:slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1);">
+  <style>
+    @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(24px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+  </style>
+  <div style="display:flex; align-items:center; gap:14px;">
+    <div style="width:44px; height:44px; background:#0f2828; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid rgba(58,173,160,0.3);">
+      <svg width="24" height="16" viewBox="0 0 120 80" fill="none">
+        <ellipse cx="62" cy="46" rx="28" ry="16" stroke="rgba(125,212,204,0.9)" stroke-width="2" fill="none"/>
+        <circle cx="88" cy="34" r="10" stroke="rgba(125,212,204,0.9)" stroke-width="2" fill="none"/>
+        <path d="M96 36 Q108 36 112 40" stroke="rgba(125,212,204,0.9)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M35 46 Q22 40 18 44" stroke="rgba(125,212,204,0.9)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <line x1="58" y1="60" x2="54" y2="72" stroke="rgba(125,212,204,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="70" y1="61" x2="68" y2="72" stroke="rgba(125,212,204,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div style="flex:1; min-width:0;">
+      <div style="font-size:14px; font-weight:600; color:#fff; margin-bottom:2px;">Add Dunlin to your phone</div>
+      <div style="font-size:12px; color:rgba(214,240,238,0.65); line-height:1.4;">Search leads and check your pipeline anywhere.</div>
+    </div>
+    <button id="pwaClose" style="background:none; border:none; color:rgba(255,255,255,0.35); cursor:pointer; font-size:18px; padding:4px; line-height:1; flex-shrink:0;">×</button>
+  </div>
+  <div style="display:flex; gap:10px; margin-top:14px;">
+    <button id="pwaInstall" style="flex:1; background:#3aada0; border:none; color:#fff; padding:10px 0; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:background 0.2s;">Install app →</button>
+    <button id="pwaDismiss" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.5); padding:10px 16px; border-radius:8px; font-size:13px; cursor:pointer; font-family:'DM Sans',sans-serif;">Not now</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  var prompt = document.getElementById('pwaPrompt');
+  var installBtn = document.getElementById('pwaInstall');
+  var dismissBtn = document.getElementById('pwaDismiss');
+  var closeBtn = document.getElementById('pwaClose');
+  var deferredPrompt = null;
+
+  // Catch the browser's install prompt
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Only show if not already dismissed
+    if (!localStorage.getItem('dunlin_pwa_dismissed')) {
+      setTimeout(function() { prompt.style.display = 'block'; }, 3000);
+    }
+  });
+
+  function hide() { prompt.style.display = 'none'; }
+
+  installBtn.addEventListener('click', function() {
+    hide();
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(result) {
+        if (result.outcome === 'accepted') {
+          localStorage.setItem('dunlin_pwa_dismissed', '1');
+        }
+        deferredPrompt = null;
+      });
+    } else {
+      // iOS fallback — direct to app
+      window.location.href = 'https://app.getdunlin.com';
+    }
+  });
+
+  dismissBtn.addEventListener('click', function() {
+    hide();
+    localStorage.setItem('dunlin_pwa_dismissed', '1');
+  });
+
+  closeBtn.addEventListener('click', hide);
+
+  // Already installed — hide
+  window.addEventListener('appinstalled', function() {
+    hide();
+    localStorage.setItem('dunlin_pwa_dismissed', '1');
   });
 })();
 </script>
