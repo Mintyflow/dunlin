@@ -4,12 +4,26 @@ import Auth from './Auth'
 import Dashboard from './Dashboard'
 import DunlinPro from './DunlinPro'
 
-// ── Placeholder for New Lease Opportunity tool (coming soon) ──────────────────
+// ── Space Matcher — coming soon ───────────────────────────────────────────────
 function OpportunityTool({ session, onBack }) {
   const C = {
     dt: '#1a4a4a', mt: '#2a7a72', bt: '#3aada0',
     lt: '#7dd4cc', pt: '#d6f0ee', sand: '#f5f0e8',
     ink: '#1c2b2b', inkm: '#3d5252', inkl: '#7a9696', white: '#ffffff',
+  }
+  const [notifyEmail, setNotifyEmail] = useState(session?.user?.email || '')
+  const [notifySent, setNotifySent]   = useState(false)
+  const [notifyLoading, setNotifyLoading] = useState(false)
+
+  const handleNotify = async () => {
+    if (!notifyEmail.includes('@')) return
+    setNotifyLoading(true)
+    await supabase.from('waitlist').upsert(
+      { email: notifyEmail, tool: 'space_matcher', created_at: new Date().toISOString() },
+      { onConflict: 'email,tool' }
+    )
+    setNotifyLoading(false)
+    setNotifySent(true)
   }
 
   return (
@@ -17,10 +31,7 @@ function OpportunityTool({ session, onBack }) {
       {/* Header */}
       <div style={{ background: C.dt, padding: '0 28px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <button
-            onClick={onBack}
-            style={{ background: 'none', border: 'none', color: 'rgba(125,212,204,0.6)', cursor: 'pointer', fontSize: 13, padding: 0, fontFamily: "'DM Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 6 }}
-          >
+          <button onClick={onBack} style={{ background: 'none', border: 'none', color: 'rgba(125,212,204,0.6)', cursor: 'pointer', fontSize: 13, padding: 0, fontFamily: "'DM Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 6 }}>
             ← back
           </button>
           <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.1)' }} />
@@ -36,34 +47,55 @@ function OpportunityTool({ session, onBack }) {
         <span style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', color: C.lt, opacity: 0.7 }}>Space Matcher</span>
       </div>
 
-      {/* Coming soon body */}
-      <div style={{ maxWidth: 560, margin: '0 auto', padding: '80px 32px', textAlign: 'center' }}>
-        <svg width="72" height="48" viewBox="0 0 120 80" fill="none" style={{ marginBottom: 32 }}>
+      {/* Body */}
+      <div style={{ maxWidth: 520, margin: '0 auto', padding: '72px 32px', textAlign: 'center' }}>
+        <svg width="72" height="48" viewBox="0 0 120 80" fill="none" style={{ marginBottom: 28 }}>
           <ellipse cx="62" cy="46" rx="28" ry="16" fill="rgba(42,122,114,0.12)" stroke={C.mt} strokeWidth="1.5"/>
           <circle cx="88" cy="34" r="10" fill="rgba(42,122,114,0.12)" stroke={C.mt} strokeWidth="1.5"/>
           <path d="M96 36 Q108 36 112 40" stroke={C.mt} strokeWidth="1.5" strokeLinecap="round" fill="none"/>
           <path d="M35 46 Q22 40 18 44" stroke={C.mt} strokeWidth="1.5" strokeLinecap="round" fill="none"/>
           <line x1="58" y1="60" x2="54" y2="72" stroke={C.inkl} strokeWidth="1.2" strokeLinecap="round"/>
-          <line x1="54" y1="72" x2="48" y2="74" stroke={C.inkl} strokeWidth="1.2" strokeLinecap="round"/>
           <line x1="70" y1="61" x2="68" y2="72" stroke={C.inkl} strokeWidth="1.2" strokeLinecap="round"/>
-          <line x1="68" y1="72" x2="62" y2="74" stroke={C.inkl} strokeWidth="1.2" strokeLinecap="round"/>
         </svg>
-        <div style={{ fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.mt, marginBottom: 16 }}>Coming soon</div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 42, color: C.dt, lineHeight: 1.15, marginBottom: 20 }}>
+
+        <div style={{ fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.mt, marginBottom: 14 }}>Coming soon</div>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 42, color: C.dt, lineHeight: 1.15, marginBottom: 16 }}>
           Space Matcher
         </h1>
-        <p style={{ fontSize: 14, color: C.inkm, lineHeight: 1.8, fontWeight: 300, marginBottom: 40 }}>
-          Capture a client brief, match them to available flex spaces, and track the opportunity all the way through to a signed deal — in one place.
+        <p style={{ fontSize: 14, color: C.inkm, lineHeight: 1.8, fontWeight: 300, marginBottom: 36 }}>
+          Capture a client brief, match them to available flex spaces, and track the opportunity from first contact through to signed deal — all in one place.
         </p>
-        <div style={{ background: C.pt, border: `1px solid rgba(58,173,160,0.2)`, borderRadius: 12, padding: '20px 24px', marginBottom: 32 }}>
-          <p style={{ fontSize: 13, color: C.mt, lineHeight: 1.7 }}>
-            This tool is in development. In the meantime, use <strong>Contact Search</strong> to build your pipeline of leads whose leases are coming up for renewal.
-          </p>
-        </div>
-        <button
-          onClick={onBack}
-          style={{ background: C.dt, color: C.white, border: 'none', padding: '13px 32px', borderRadius: 8, fontSize: 14, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", letterSpacing: '0.02em' }}
-        >
+
+        {/* Email capture */}
+        {notifySent ? (
+          <div style={{ background: C.pt, border: `1px solid rgba(58,173,160,0.25)`, borderRadius: 12, padding: '20px 24px', marginBottom: 32 }}>
+            <div style={{ fontSize: 22, marginBottom: 8 }}>✓</div>
+            <p style={{ fontSize: 14, color: C.mt, fontWeight: 500 }}>You're on the list.</p>
+            <p style={{ fontSize: 13, color: C.inkl, marginTop: 4 }}>We'll email you the moment Space Matcher launches.</p>
+          </div>
+        ) : (
+          <div style={{ marginBottom: 32 }}>
+            <p style={{ fontSize: 13, color: C.inkl, marginBottom: 14 }}>Get notified when it launches:</p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <input
+                type="email"
+                value={notifyEmail}
+                onChange={e => setNotifyEmail(e.target.value)}
+                placeholder="your@email.com"
+                style={{ flex: 1, background: C.white, border: `1px solid rgba(26,74,74,0.15)`, color: C.ink, padding: '12px 14px', fontFamily: "'DM Sans', sans-serif", fontSize: 14, borderRadius: 8, outline: 'none', boxSizing: 'border-box' }}
+              />
+              <button
+                onClick={handleNotify}
+                disabled={notifyLoading}
+                style={{ background: C.dt, color: C.white, border: 'none', padding: '12px 20px', borderRadius: 8, fontSize: 14, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", whiteSpace: 'nowrap' }}
+              >
+                {notifyLoading ? '…' : 'Notify me'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        <button onClick={onBack} style={{ background: 'none', border: 'none', color: C.inkl, fontSize: 13, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
           ← Back to tools
         </button>
       </div>

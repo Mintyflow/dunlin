@@ -264,7 +264,7 @@ function Login({ onSwitch }) {
 }
 
 export default function Auth() {
-  const [screen, setScreen] = useState('signup')
+  const [screen, setScreen] = useState('login')
 
   useEffect(() => {
     const link = document.createElement('link')

@@ -47,6 +47,13 @@ const BirdLight = ({ size = 56 }) => (
   </svg>
 )
 
+function getGreeting() {
+  const h = new Date().getHours()
+  if (h < 12) return 'Good morning'
+  if (h < 18) return 'Good afternoon'
+  return 'Good evening'
+}
+
 export default function Dashboard({ session, onSelect }) {
   const email = session?.user?.email || ''
   const name  = session?.user?.user_metadata?.full_name || email.split('@')[0]
@@ -93,7 +100,7 @@ export default function Dashboard({ session, onSelect }) {
             Lease Intelligence Platform
           </div>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 52, color: C.white, lineHeight: 1.1, marginBottom: 16 }}>
-            Good morning, {name.split(' ')[0]}.
+            {getGreeting()}, {name.split(' ')[0]}.
           </h1>
           <p style={{ fontSize: 15, color: 'rgba(214,240,238,0.55)', fontWeight: 300, maxWidth: 500 }}>
             Select a tool to get started. Each one is built to help you find the right opportunity at exactly the right moment.
@@ -138,9 +145,6 @@ export default function Dashboard({ session, onSelect }) {
             <div style={{ marginBottom: 28 }}>
               <BirdDark size={52} />
             </div>
-            <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.lt, opacity: 0.75, marginBottom: 10 }}>
-              Tool 01
-            </div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 34, color: C.white, lineHeight: 1.15, marginBottom: 16 }}>
               Renewal Radar
             </h2>
@@ -175,9 +179,6 @@ export default function Dashboard({ session, onSelect }) {
             <div style={{ marginBottom: 28 }}>
               <BirdLight size={52} />
             </div>
-            <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.mt, marginBottom: 10 }}>
-              Tool 02
-            </div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 34, color: C.dt, lineHeight: 1.15, marginBottom: 16 }}>
               Space Matcher
             </h2>
@@ -195,7 +196,7 @@ export default function Dashboard({ session, onSelect }) {
         {/* ── Footer note ── */}
         <p style={{ textAlign: 'center', fontSize: 12, color: C.inkl, marginTop: 52, lineHeight: 1.7 }}>
           More tools coming soon —{' '}
-          <span style={{ color: C.bt, cursor: 'pointer' }}>send us a request</span>
+          <a href="mailto:hello@getdunlin.com?subject=Tool request" style={{ color: C.bt, cursor: 'pointer', textDecoration: 'none' }}>send us a request</a>
         </p>
       </div>
     </div>
