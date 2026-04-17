@@ -193,8 +193,34 @@ export default function Dashboard({ session, onSelect }) {
 
         </div>
 
+        {/* ── Refer a friend nudge ── */}
+        <a
+          href="/refer.html"
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            gap: 20, marginTop: 32,
+            background: 'linear-gradient(135deg, rgba(26,74,74,0.06) 0%, rgba(58,173,160,0.08) 100%)',
+            border: '1px solid rgba(58,173,160,0.18)',
+            borderRadius: 14, padding: '18px 24px',
+            textDecoration: 'none',
+            transition: 'border-color 0.2s, box-shadow 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(58,173,160,0.45)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(58,173,160,0.1)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(58,173,160,0.18)'; e.currentTarget.style.boxShadow = 'none'; }}
+        >
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 500, color: C.dt, marginBottom: 3 }}>
+              💷 Know someone who needs better leads?
+            </div>
+            <div style={{ fontSize: 12, color: C.inkl, lineHeight: 1.6 }}>
+              Refer a friend to Dunlin — you both get <strong style={{ color: C.bt }}>£50</strong>. No limits.
+            </div>
+          </div>
+          <span style={{ fontSize: 13, color: C.bt, fontWeight: 500, whiteSpace: 'nowrap' }}>Refer a friend →</span>
+        </a>
+
         {/* ── Footer note ── */}
-        <p style={{ textAlign: 'center', fontSize: 12, color: C.inkl, marginTop: 52, lineHeight: 1.7 }}>
+        <p style={{ textAlign: 'center', fontSize: 12, color: C.inkl, marginTop: 28, lineHeight: 1.7 }}>
           More tools coming soon —{' '}
           <a href="mailto:hello@getdunlin.com?subject=Tool request" style={{ color: C.bt, cursor: 'pointer', textDecoration: 'none' }}>send us a request</a>
         </p>

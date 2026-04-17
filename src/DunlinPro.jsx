@@ -1811,6 +1811,17 @@ export default function App({ session, onBack }){
               ))}
             </div>
 
+            {/* Refer a friend */}
+            <a href="/refer.html" style={{...card,display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,marginBottom:12,textDecoration:"none",background:"linear-gradient(135deg,rgba(58,173,160,0.07) 0%,rgba(26,74,74,0.04) 100%)",border:"1px solid rgba(58,173,160,0.2)",cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s"}}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(58,173,160,0.5)";e.currentTarget.style.boxShadow="0 4px 16px rgba(58,173,160,0.1)";}}
+              onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(58,173,160,0.2)";e.currentTarget.style.boxShadow="none";}}>
+              <div>
+                <div style={{fontSize:13,fontWeight:600,color:"#1a4a4a",marginBottom:3}}>💷 Refer a friend — earn £50</div>
+                <div style={{fontSize:12,color:"#3a6a6a",lineHeight:1.6}}>Know someone who needs better leads? You both get £50 when they subscribe.</div>
+              </div>
+              <span style={{fontSize:12,color:"#3aada0",fontWeight:600,whiteSpace:"nowrap"}}>Get your link →</span>
+            </a>
+
             {/* Replay tour CTA */}
             <div style={{...card,textAlign:"center",padding:"20px"}}>
               <div style={{fontSize:13,color:"#3a6a6a",marginBottom:10}}>Want a walkthrough of the actual interface?</div>
